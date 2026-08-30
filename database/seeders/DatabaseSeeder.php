@@ -14,12 +14,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             KedutaanBesarPart1Seeder::class,
             KedutaanBesarPart2Seeder::class,
-            // KedutaanBesarPart3Seeder::class,
-            // KedutaanBesarPart4Seeder::class,
-            // KedutaanBesarPart5Seeder::class,
-            // KedutaanBesarPart6Seeder::class,
-            // KerjasamaSeeder::class,
-            // KolaborasiSeeder::class
+            KedutaanBesarPart3Seeder::class,
+            KedutaanBesarPart4Seeder::class,
+            KedutaanBesarPart5Seeder::class,
+            KedutaanBesarPart6Seeder::class,
         ]);
     }
 }

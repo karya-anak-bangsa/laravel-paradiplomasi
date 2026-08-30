@@ -28,7 +28,7 @@ class KedutaanBesarPart6Seeder extends Seeder
                 'website' => null,
                 'latitude' => -6.2088,
                 'longitude' => 106.8207,
-                'is_active' => true,  // Kode_Negara 'eu' bukan kode ISO 3166-1 resmi (Uni Eropa bukan negara) — cek dukungan flag Tabler
+                'is_active' => true,
             ],
             [
                 'kode_negara' => 'uy',
