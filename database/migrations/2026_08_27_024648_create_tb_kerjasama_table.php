@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('id_kedutaan_besar')->references('id_kedutaan_besar')->on('tb_kedutaan_besar')->restrictOnDelete();
 
             # columns-columns
-            $table->text('pengaduan')->nullable();
+            $table->text('kerjasama')->nullable();
             $table->text('rangkuman')->nullable();
             $table->text('catatan')->nullable();
             $table->string('file_dokumen')->nullable();

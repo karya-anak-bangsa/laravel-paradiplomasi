@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_kolaborasi', function (Blueprint $table) {
-            $table->id('id_kolaborasi');
 
-            # foreign key
+            # primary key dan foreign key
+            $table->id('id_kolaborasi');
             $table->unsignedBigInteger('id_kedutaan_besar');
             $table->foreign('id_kedutaan_besar')->references('id_kedutaan_besar')->on('tb_kedutaan_besar')->restrictOnDelete();
 
