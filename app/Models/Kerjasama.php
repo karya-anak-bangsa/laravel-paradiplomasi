@@ -16,7 +16,7 @@ class Kerjasama extends Model
 
     protected $fillable = [
         'id_kedutaan_besar',
-        'pengaduan',
+        'kerjasama',
         'rangkuman',
         'catatan',
         'file_dokumen',
