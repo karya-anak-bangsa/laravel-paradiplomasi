@@ -25,6 +25,7 @@
         {{-- stylesheet fontawesome 6.7.2 --}}
         <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}">
 
+        {{-- stylesheet datatables --}}
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
 
         @stack('styles')
@@ -63,7 +64,7 @@
         {{-- scripts tabler 1.4.0 --}}
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
 
-        <!-- jQuery (Jika menggunakan DataTables dengan jQuery) -->
+        <!-- scripts jQuery dan datatables -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
