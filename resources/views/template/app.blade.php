@@ -22,16 +22,21 @@
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-socials.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-payments.min.css') }}" />
 
-        {{-- stylesheet fontawesome 6.7.2 --}}
-        <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}">
-
-        {{-- stylesheet datatables --}}
+        {{-- ------------------------------------------------------------------------------------------------------------------ --}}
+        {{-- Plugin ----------------------------------------------------------------------------------------------------------- --}}
+        {{-- 1. fontawesome 6.7.2 --}}
+        {{-- 2. datatables 2.1.8 --}}
+        {{-- ------------------------------------------------------------------------------------------------------------------ --}}
+        <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
+
+        {{-- stylesheet tabler custom --}}
+        <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
 
         @stack('styles')
     </head>
 
-    <body class="antialiased">
+    <body>
         <div class="page">
 
             @include('template.header')
@@ -64,10 +69,42 @@
         {{-- scripts tabler 1.4.0 --}}
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
 
-        <!-- scripts jQuery dan datatables -->
+        <!-- scripts jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+        <!-- scripts datatables -->
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('table.datatable').forEach(function(table) {
+
+                    const columnDefs = [];
+                    table.querySelectorAll('thead th').forEach(function(th, index) {
+                        if (th.dataset.orderable === 'false') {
+                            columnDefs.push({
+                                targets: index,
+                                orderable: false
+                            });
+                        }
+                    });
+
+                    new DataTable(table, {
+                        columnDefs,
+                        language: {
+                            search: 'Cari:',
+                            lengthMenu: 'Tampilkan _MENU_ data',
+                            info: 'Menampilkan _START_ - _END_ dari _TOTAL_ data',
+                            infoEmpty: 'Tidak ada data',
+                            paginate: {
+                                previous: 'Sebelumnya',
+                                next: 'Berikutnya',
+                            },
+                        },
+                    });
+                });
+            });
+        </script>
 
         @stack('scripts')
     </body>
