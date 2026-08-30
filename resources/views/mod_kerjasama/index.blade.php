@@ -15,12 +15,12 @@
 
         <x-slot name="thead">
             <tr>
-                <th>Negara</th>
-                <th>Kerjasama</th>
-                <th data-orderable="false">Rangkuman</th>
-                <th data-orderable="false">File Dokumen</th>
-                <th data-orderable="false">Status Kerjasama</th>
-                <th data-orderable="false" class="text-center">Aksi</th>
+                <th style="width: 15%">Negara</th>
+                <th style="width: 23%">Kerjasama</th>
+                <th data-orderable="false" style="width: 35%">Rangkuman</th>
+                <th data-orderable="false" style="width: 10%">File Dokumen</th>
+                <th data-orderable="false" style="width: 10%">Status Kerjasama</th>
+                <th data-orderable="false" class="text-center" style="width: 1%; white-space: nowrap;">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
@@ -49,9 +49,9 @@
                             {{ $item->status_kerjasama }}
                         </span>
                     </td>
-                    <td>
-                        <div class="btn-list justify-content-center">
-                            <a href="{{ route('kerjasama.show', $item) }}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
+                    <td style="white-space: nowrap;">
+                        <div class="btn-list flex-nowrap justify-content-center">
+                            <a href="#" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
                             <a href="#" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
                             <a href="#" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></a>
                         </div>
