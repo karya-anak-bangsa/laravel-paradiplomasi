@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
         <meta name="description" content="Biro Kerjasama Daerah Setda Provinsi DKI Jakarta">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Paradiplomatic Compass Analytical Systems</title>
+        <title>Paradiplomatic Compass Analytical System</title>
 
         {{-- set icon --}}
         <link rel="icon" href="{{ asset('img/dki-jakarta.webp') }}" type="image/webp">
