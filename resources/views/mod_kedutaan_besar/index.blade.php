@@ -30,7 +30,10 @@
             @foreach ($kedutaanBesar as $item)
                 <tr>
                     <td>
-                        {{ $item->nama_negara }}
+                        <div class="d-flex align-items-center">
+                            <span class="flag flag-sm flag-country-{{ $item->kode_negara }} me-2"></span>
+                            <span class="fw-bold">{{ $item->nama_negara }}</span>
+                        </div>
                     </td>
                     <td>
                         <p class="fst-normal mb-0">{{ $item->nama_kedutaan_besar_id ?? '-' }}</p>
