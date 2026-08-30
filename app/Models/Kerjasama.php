@@ -39,13 +39,12 @@ class Kerjasama extends Model
     {
         return Attribute::make(
             get: fn() => match ($this->status_kerjasama) {
-                'Berjalan' => 'badge-primary',
-                'Selesai'  => 'badge-success',
-                'Batal'    => 'badge-danger',
+                'Berjalan' => 'bg-blue-lt',
+                'Selesai'  => 'bg-success-lt',
+                'Batal'    => 'bg-danger-lt',
             },
         );
     }
-
 
     public function kedutaanBesar(): BelongsTo
     {
