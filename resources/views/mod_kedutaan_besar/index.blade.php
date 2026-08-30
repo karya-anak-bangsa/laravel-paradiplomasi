@@ -4,9 +4,12 @@
 @section('nav-kedutaan-besar', 'active')
 @section('page-header')
     <x-page-header
+        title="Modul Kedutaan Besar">
+    </x-page-header>
+    {{-- <x-page-header
         title="Modul Kedutaan Besar"
         action="kedutaan-besar.create">
-    </x-page-header>
+    </x-page-header> --}}
 @endsection
 
 {{-- content --}}
@@ -38,11 +41,9 @@
                         <small class="fst-italic mb-0">{{ $item->jabatan_diplomat ?? '-' }}</small>
                     </td>
                     <td>
-                        @if ($item->is_active)
-                            <span class="badge bg-success-lt">Aktif</span>
-                        @else
-                            <span class="badge bg-warning-lt">Nonaktif</span>
-                        @endif
+                        <span class="badge {{ $item->active_badge_color }}">
+                            {{ $item->active_label }}
+                        </span>
                     </td>
                     <td>
                         <div class="btn-list justify-content-center">

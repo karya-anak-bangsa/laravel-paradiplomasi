@@ -41,6 +41,10 @@ class KedutaanBesar extends Model
         'longitude'     => 'decimal:7',
     ];
 
+    #--------------------------------------------------------------------------
+    # ACCESSOR (FOR UI)
+    #--------------------------------------------------------------------------
+
     # accessor - pecah telepon_kantor jadi array
     protected function teleponKantorArray(): Attribute
     {
@@ -61,7 +65,26 @@ class KedutaanBesar extends Model
         );
     }
 
-    # relasi - hub ke modul kerjasama
+    # accessor - label status aktif/nonaktif
+    protected function activeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->is_active ? 'Aktif' : 'Nonaktif',
+        );
+    }
+
+    # accessor - warna badge status aktif/nonaktif
+    protected function activeBadgeColor(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->is_active ? 'bg-success-lt' : 'bg-warning-lt',
+        );
+    }
+
+    #--------------------------------------------------------------------------
+    # RELASI ANTAR TABLE
+    #--------------------------------------------------------------------------
+
     public function kerjasama(): HasMany
     {
         return $this->hasMany(Kerjasama::class, 'id_kedutaan_besar');

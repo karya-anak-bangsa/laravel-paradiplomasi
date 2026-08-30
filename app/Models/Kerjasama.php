@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 
 class Kerjasama extends Model
 {
@@ -34,6 +34,17 @@ class Kerjasama extends Model
         'tanggal_selesai'  => 'date',
         'is_active'        => 'boolean',
     ];
+
+    protected function statusBadgeColor(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => match ($this->status_kerjasama) {
+                'Berjalan' => 'badge-primary',
+                'Selesai'  => 'badge-success',
+                'Batal'    => 'badge-danger',
+            },
+        );
+    }
 
 
     public function kedutaanBesar(): BelongsTo
