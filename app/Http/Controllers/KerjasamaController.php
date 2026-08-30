@@ -9,7 +9,10 @@ class KerjasamaController extends Controller
 {
     public function index()
     {
-        $kerjasama = Kerjasama::with('kedutaanBesar')->latest('tanggal_diterima')->get();
+        $kerjasama = Kerjasama::with('kedutaanBesar')
+            ->where('is_active', true)
+            ->latest('tanggal_diterima')
+            ->get();
         return view('mod_kerjasama.index', compact('kerjasama'));
     }
 

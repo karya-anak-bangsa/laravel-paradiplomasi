@@ -10,7 +10,10 @@ class KolaborasiController extends Controller
     public function index()
     {
 
-        $kolaborasi = Kolaborasi::with('kedutaanBesar')->latest('tanggal_diterima')->get();
+        $kolaborasi = Kolaborasi::with('kedutaanBesar')
+            ->where('is_active', true)
+            ->latest('tanggal_diterima')
+            ->get();
         return view('mod_kolaborasi.index', compact('kolaborasi'));
     }
 
