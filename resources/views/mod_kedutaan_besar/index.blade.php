@@ -4,12 +4,9 @@
 @section('nav-kedutaan-besar', 'active')
 @section('page-header')
     <x-page-header
-        title="Modul Kedutaan Besar">
-    </x-page-header>
-    {{-- <x-page-header
         title="Modul Kedutaan Besar"
         action="kedutaan-besar.create">
-    </x-page-header> --}}
+    </x-page-header>
 @endsection
 
 {{-- content --}}
@@ -50,7 +47,7 @@
                     </td>
                     <td>
                         <div class="btn-list justify-content-center">
-                            <a href="#" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
+                            <a href="{{ route('kedutaan-besar.show', $item) }}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
                             <a href="#" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
                             <a href="#" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></a>
                         </div>

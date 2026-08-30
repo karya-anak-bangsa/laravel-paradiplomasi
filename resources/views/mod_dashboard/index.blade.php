@@ -151,7 +151,49 @@
                 <div class="card-header">
                     <h3 class="card-title">Daftar Mitra Aktif</h3>
                 </div>
-                <div class="card-body"></div>
+                <div class="card-body">
+                    <div class="divide-y">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="flag flag-sm flag-country-us"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-truncate">
+                                    <span class="fst-normal mb-0">Kedutaan Besar Amerika Serikat</span>
+                                </div>
+                                <div class="text-secondary">
+                                    <small class="fst-italic mb-0">Embassy of the United States of America</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="flag flag-sm flag-country-gb"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-truncate">
+                                    <span class="fst-normal mb-0">Kedutaan Besar Britania Raya</span>
+                                </div>
+                                <div class="text-secondary">
+                                    <small class="fst-italic mb-0">Embassy of the United Kingdom</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="flag flag-sm flag-country-de"></span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-truncate">
+                                    <span class="fst-normal mb-0">Kedutaan Besar Republik Federal Jerman</span>
+                                </div>
+                                <div class="text-secondary">
+                                    <small class="fst-italic mb-0">Embassy of the Federal Republic of Germany</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

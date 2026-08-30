@@ -91,6 +91,7 @@
 
                     new DataTable(table, {
                         columnDefs,
+                        pageLength: 25,
                         language: {
                             search: 'Cari:',
                             lengthMenu: 'Tampilkan _MENU_ data',

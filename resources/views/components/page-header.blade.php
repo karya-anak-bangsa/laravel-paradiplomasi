@@ -7,6 +7,10 @@
             <a class="btn btn-success" href="{{ route($action) }}">
                 <i class="fa-solid fa-plus me-1"></i>Tambah Data
             </a>
+        @elseif ($backRoute)
+            <a class="btn btn-secondary" href="{{ route($backRoute) }}">
+                <i class="fa-solid fa-arrow-left me-1"></i>Kembali
+            </a>
         @endif
     </div>
 </div>

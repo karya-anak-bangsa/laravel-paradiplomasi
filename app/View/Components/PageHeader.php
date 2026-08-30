@@ -11,11 +11,13 @@ class PageHeader extends Component
 
     public $title       = '';
     public $action      = '';
+    public $backRoute   = '';
 
-    public function __construct($title = '', $action = '')
+    public function __construct($title = '', $action = '', $backRoute = '')
     {
-        $this->title    = $title;
-        $this->action   = $action;
+        $this->title        = $title;
+        $this->action       = $action;
+        $this->backRoute    = $backRoute;
     }
 
     public function render(): View|Closure|string
