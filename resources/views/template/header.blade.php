@@ -29,7 +29,7 @@
         <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item d-none d-md-flex me-0">
                 <div class="btn-list">
-                    <a href="" class="btn btn-danger">
+                    <a href="{{ route('login') }}" class="btn btn-danger">
                         <i class="fa-solid fa-square-arrow-up-right me-2"></i>Logout
                     </a>
                 </div>
