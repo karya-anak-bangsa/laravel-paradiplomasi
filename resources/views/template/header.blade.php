@@ -29,8 +29,8 @@
         <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item d-none d-md-flex me-0">
                 <div class="btn-list">
-                    <a href="" class="btn btn-primary">
-                        <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
+                    <a href="" class="btn btn-danger">
+                        <i class="fa-solid fa-square-arrow-up-right me-2"></i>Logout
                     </a>
                 </div>
             </div>
