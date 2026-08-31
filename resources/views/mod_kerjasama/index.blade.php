@@ -15,11 +15,11 @@
 
         <x-slot name="thead">
             <tr>
-                <th style="width: 15%">Negara</th>
-                <th style="width: 23%">Kerjasama</th>
+                <th data-orderable="true" style="width: 15%">Negara</th>
+                <th data-orderable="false" style="width: 23%">Kerjasama</th>
                 <th data-orderable="false" style="width: 35%">Rangkuman</th>
                 <th data-orderable="false" style="width: 10%">File Dokumen</th>
-                <th data-orderable="false" style="width: 10%">Status Kerjasama</th>
+                <th data-orderable="true" style="width: 10%">Status Kerjasama</th>
                 <th data-orderable="false" class="text-center" style="width: 1%; white-space: nowrap;">Aksi</th>
             </tr>
         </x-slot>
