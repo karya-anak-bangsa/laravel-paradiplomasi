@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             KedutaanBesarPart5Seeder::class,
             KedutaanBesarPart6Seeder::class,
             KerjasamaSeeder::class,
+            KolaborasiSeeder::class,
         ]);
     }
 }

@@ -10,6 +10,8 @@
 @endsection
 
 @section('page-content')
+
+    {{-- Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta --}}
     <div class="row row-cards mb-4">
         <div class="col-lg-12">
             <div class="card">
@@ -137,6 +139,7 @@
         </div>
     </div>
 
+    {{-- Analisa Statistik Pelayanan Perwakilan Negara Asing --}}
     <div class="row row-cards mb-4">
         <div class="col-lg-8">
             <div class="card">
@@ -198,15 +201,54 @@
         </div>
     </div>
 
+    {{-- Peta Geospasial Sebaran Kedutaan Besar --}}
     <div class="row row-cards mb-4">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Peta Geospasial Sebaran Kedutaan Besar</h3>
                 </div>
-                <div class="card-body"></div>
+                <div class="card-body">
+                    <div id="peta-kedutaan" style="height: 500px; width: 100%; border-radius: 4px;"></div>
+                </div>
             </div>
         </div>
     </div>
 
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
+@endpush
+
+@push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const balaiKota = [-6.175392, 106.827153]; // Balai Kota DKI Jakarta
+
+            const peta = L.map('peta-kedutaan', {
+                zoomControl: false, // hilangkan tombol +/-
+                scrollWheelZoom: false, // scroll mouse tidak zoom
+                doubleClickZoom: false, // double click tidak zoom
+                boxZoom: false, // shift+drag tidak zoom
+                touchZoom: false, // pinch di touchscreen tidak zoom
+                keyboard: false, // panah keyboard tidak zoom/geser via keyboard
+                dragging: true, // geser tetap bisa
+            }).setView(balaiKota, 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19,
+            }).addTo(peta);
+
+            L.marker(balaiKota).addTo(peta)
+                .bindPopup('Balai Kota DKI Jakarta')
+                .openPopup();
+        });
+    </script>
+@endpush
