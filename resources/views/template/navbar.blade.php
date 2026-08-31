@@ -18,11 +18,6 @@
                                     <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Mitra Kedutaan Besar</span>
                                 </a>
                             </li>
-                            <li class="nav-item @yield('nav-dashboard')">
-                                <a class="nav-link" href="{{ route('dashboard.index') }}">
-                                    <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Mitra Non Kedutaan</span>
-                                </a>
-                            </li>
                             <li class="nav-item @yield('nav-kerjasama')">
                                 <a class="nav-link" href="{{ route('kerjasama.index') }}">
                                     <span class="nav-link-title"><i class="fa-solid fa-folder-closed me-2"></i>Kerjasama</span>
