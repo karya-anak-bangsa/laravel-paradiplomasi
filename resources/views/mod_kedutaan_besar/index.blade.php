@@ -19,7 +19,7 @@
                 <th>Negara</th>
                 <th>Nama Kedutaan</th>
                 <th>Nama Diplomat</th>
-                <th data-orderable="false">Status</th>
+                {{-- <th data-orderable="false">Status</th> --}}
                 <th data-orderable="false" class="text-center">Aksi</th>
             </tr>
         </x-slot>
@@ -40,11 +40,11 @@
                         <p class="fst-normal mb-0">{{ $item->nama_diplomat ?? '-' }}</p>
                         <small class="fst-italic mb-0">{{ $item->jabatan_diplomat ?? '-' }}</small>
                     </td>
-                    <td>
+                    {{-- <td>
                         <span class="badge {{ $item->active_badge_color }}">
                             {{ $item->active_label }}
                         </span>
-                    </td>
+                    </td> --}}
                     <td>
                         <div class="btn-list justify-content-center">
                             <a href="{{ route('kedutaan-besar.show', $item) }}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
