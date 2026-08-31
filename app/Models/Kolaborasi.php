@@ -38,7 +38,7 @@ class Kolaborasi extends Model
     protected function statusBadgeColor(): Attribute
     {
         return Attribute::make(
-            get: fn() => match ($this->status_kerjasama) {
+            get: fn() => match ($this->status_kolaborasi) {
                 'Berjalan' => 'bg-blue-lt',
                 'Selesai'  => 'bg-success-lt',
                 'Batal'    => 'bg-danger-lt',
