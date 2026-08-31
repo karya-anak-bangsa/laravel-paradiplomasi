@@ -19,7 +19,6 @@
                 <th data-orderable="true" style="width: 15%">Negara</th>
                 <th data-orderable="false" style="width: 23%">Kolaborasi</th>
                 <th data-orderable="false" style="width: 35%">Rangkuman</th>
-                <th data-orderable="false" style="width: 10%">File Dokumen</th>
                 <th data-orderable="true" style="width: 10%">Status Kolaborasi</th>
                 <th data-orderable="false" class="text-center" style="width: 1%; white-space: nowrap;">Aksi</th>
             </tr>
@@ -38,12 +37,6 @@
                     </td>
                     <td>
                         {{ str($item->rangkuman)->stripTags()->limit(100) }}
-                    </td>
-                    <td>
-                        {{-- Dummy: belum ada route/storage download, tinggal ganti href saat sudah siap --}}
-                        <a href="#" class="badge bg-blue-lt">
-                            <i class="fa-solid fa-download me-1"></i>Unduh
-                        </a>
                     </td>
                     <td>
                         <span class="badge {{ $item->status_badge_color }}">

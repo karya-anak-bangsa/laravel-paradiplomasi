@@ -15,7 +15,12 @@
                             </li>
                             <li class="nav-item @yield('nav-kedutaan-besar')">
                                 <a class="nav-link" href="{{ route('kedutaan-besar.index') }}">
-                                    <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Kedutaan Besar</span>
+                                    <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Mitra Kedutaan Besar</span>
+                                </a>
+                            </li>
+                            <li class="nav-item @yield('nav-dashboard')">
+                                <a class="nav-link" href="{{ route('dashboard.index') }}">
+                                    <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Mitra Non Kedutaan</span>
                                 </a>
                             </li>
                             <li class="nav-item @yield('nav-kerjasama')">

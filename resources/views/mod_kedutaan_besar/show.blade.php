@@ -58,14 +58,14 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="datagrid-item">
+                        {{-- <div class="datagrid-item">
                             <div class="datagrid-title">Status</div>
                             <div class="datagrid-content">
                                 <span class="badge {{ $kedutaanBesar->active_badge_color }}">
                                     {{ $kedutaanBesar->active_label }}
                                 </span>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     {{-- identitas --}}
 
