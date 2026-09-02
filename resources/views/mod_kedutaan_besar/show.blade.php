@@ -88,10 +88,10 @@
                         </div>
                     </div>
 
-                    <div class="hr-text hr-text-start">Alamat</div>
+                    <div class="hr-text hr-text-start">Lokasi</div>
                     <div class="datagrid align-items-center">
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Alamat Lengkap</div>
+                            <div class="datagrid-title">Alamat</div>
                             <div class="datagrid-content">{{ $kedutaanBesar->alamat ?? '-' }}</div>
                         </div>
                         <div class="datagrid-item">
@@ -111,6 +111,14 @@
                             <div class="datagrid-content">{{ $kedutaanBesar->kode_pos ?? '-' }}</div>
                         </div>
                     </div>
+
+                    <div class="hr-text hr-text-start">Peta</div>
+                    @if ($kedutaanBesar->latitude && $kedutaanBesar->longitude)
+                        <div id="peta-lokasi" style="height: 500px; width: 100%; border-radius: 4px;"></div>
+                    @else
+                        <p class="text-secondary mb-0">Koordinat lokasi belum tersedia.</p>
+                    @endif
+
                 </div>
                 <div class="card-footer">
                     {{-- <small class="text-danger">Diakses pada {{ now()->format('d M Y, H:i') }} WIB</small> --}}
@@ -144,3 +152,40 @@
     {{-- row --}}
 
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+@endpush
+
+@push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const elPeta = document.getElementById('peta-lokasi');
+            if (!elPeta) return; // koordinat belum ada, tidak perlu render peta
+
+            const lokasi = [{{ $kedutaanBesar->latitude }}, {{ $kedutaanBesar->longitude }}];
+
+            const peta = L.map('peta-lokasi', {
+                zoomControl: true,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                touchZoom: false,
+                keyboard: false,
+                dragging: true,
+            }).setView(lokasi, 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19,
+            }).addTo(peta);
+
+            L.marker(lokasi).addTo(peta)
+                .bindPopup('{{ $kedutaanBesar->nama_negara }}')
+                .openPopup();
+        });
+    </script>
+@endpush
