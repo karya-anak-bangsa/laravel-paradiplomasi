@@ -17,8 +17,16 @@ class DashboardController extends Controller
             'kolaborasi'     => Kolaborasi::where('is_active', true)->count(),
         ];
 
+        $daftarKedutaan = KedutaanBesar::where('is_active', true)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->orderBy('nama_negara')
+            ->get(['id_kedutaan_besar', 'kode_negara', 'nama_negara', 'latitude', 'longitude']);
+
+
         return view('mod_dashboard.index', compact(
             'dash_akumulasi',
+            'daftarKedutaan',
         ));
     }
 
