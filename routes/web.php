@@ -26,7 +26,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 # ------------------------------------------------------------------------------------------------- #
 Route::middleware('cek.auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
-    Route::resource('kedutaan-besar', KedutaanBesarController::class);
-    Route::resource('kerjasama', KerjasamaController::class);
-    Route::resource('kolaborasi', KolaborasiController::class);
+
+    // admin & guest, cuma boleh lihat
+    Route::resource('kedutaan-besar', KedutaanBesarController::class)->only(['index', 'show']);
+    Route::resource('kerjasama', KerjasamaController::class)->only(['index', 'show']);
+    Route::resource('kolaborasi', KolaborasiController::class)->only(['index', 'show']);
+
+    // khusus admin, boleh CRUD penuh
+    Route::middleware('cek.admin')->group(function () {
+        Route::resource('kedutaan-besar', KedutaanBesarController::class)->except(['index', 'show']);
+        Route::resource('kerjasama', KerjasamaController::class)->except(['index', 'show']);
+        Route::resource('kolaborasi', KolaborasiController::class)->except(['index', 'show']);
+    });
 });

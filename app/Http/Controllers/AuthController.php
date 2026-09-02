@@ -22,10 +22,12 @@ class AuthController extends Controller
             'admin@mail.com' => [
                 'password' => '2026paradiplomasi2026',
                 'nama'     => 'Administrator',
+                'role'     => 'admin',
             ],
             'guest@mail.com' => [
                 'password' => '2026paradiplomasi2026',
                 'nama'     => 'Tamu',
+                'role'     => 'guest',
             ],
         ];
 
@@ -36,6 +38,7 @@ class AuthController extends Controller
             session([
                 'auth_email' => $request->email,
                 'auth_nama'  => $akun['nama'],
+                'auth_role'  => $akun['role'],
             ]);
             return redirect()->route('dashboard.index');
         }
