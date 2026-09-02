@@ -21,11 +21,11 @@
                 <div class="card-body">
 
                     {{-- format undangan --}}
-                    <div class="hr-text hr-text-left mt-4">Format Undangan</div>
+                    <div class="hr-text hr-text-start">Format Undangan</div>
                     @if ($kedutaanBesar->format_undangan)
-                        <p class="mb-0" style="white-space: pre-line;">{{ $kedutaanBesar->format_undangan }}</p>
+                        <p class="badge bg-teal-lt text-teal-lt-fg fs-4 mb-0">{{ $kedutaanBesar->format_undangan }}</p>
                     @else
-                        <p class="text-secondary mb-0">Belum ada catatan format undangan.</p>
+                        <p class="badge bg-primary-lt fs-4 mb-0">Belum ada catatan format undangan.</p>
                     @endif
                     {{-- format undangan --}}
 
@@ -85,6 +85,16 @@
                                     -
                                 @endif
                             </div>
+                        </div>
+
+                        {{-- filler kosong biar jumlah item = 5, samain lebar kolom sama section Diplomasi/Lokasi --}}
+                        <div class="datagrid-item">
+                            <div class="datagrid-title"></div>
+                            <div class="datagrid-content"></div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title"></div>
+                            <div class="datagrid-content"></div>
                         </div>
                     </div>
 
@@ -154,17 +164,17 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 @endpush
 
 @push('scripts')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            // koordinat belum ada, tidak perlu render peta
             const elPeta = document.getElementById('peta-lokasi');
-            if (!elPeta) return; // koordinat belum ada, tidak perlu render peta
+            if (!elPeta) return;
 
             const lokasi = [{{ $kedutaanBesar->latitude }}, {{ $kedutaanBesar->longitude }}];
 
