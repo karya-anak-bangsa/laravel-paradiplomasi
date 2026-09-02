@@ -43,23 +43,15 @@
                         <form action="{{ route('login.process') }}" method="POST" autocomplete="off" novalidate>
                             @csrf
                             <div class="mb-3">
-                                <label class="form-label">Alamat email</label>
-                                <input type="email" class="form-control" placeholder="Alamat email Anda" autocomplete="off" />
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                                    value="{{ old('email') }}" placeholder="Alamat email Anda" autocomplete="off" />
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Kata sandi</label>
-                                <div class="input-group input-group-flat">
-                                    <input type="password" class="form-control" placeholder="Kata sandi Anda" autocomplete="off" />
-                                    <span class="input-group-text">
-                                        <a href="#" class="link-secondary" title="Tampilkan password">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </a>
-                                    </span>
-                                </div>
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                                    value="{{ old('password') }}" placeholder="Kata sandi Anda" autocomplete="off" />
                             </div>
 
                             <div class="mb-3">

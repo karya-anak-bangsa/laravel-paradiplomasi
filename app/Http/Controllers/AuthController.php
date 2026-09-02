@@ -37,7 +37,6 @@ class AuthController extends Controller
                 'auth_email' => $request->email,
                 'auth_nama'  => $akun['nama'],
             ]);
-
             return redirect()->route('dashboard.index');
         }
 
@@ -50,7 +49,6 @@ class AuthController extends Controller
     {
         $request->session()->flush();
         $request->session()->regenerateToken();
-
         return redirect()->route('login');
     }
 }

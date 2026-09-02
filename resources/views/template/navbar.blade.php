@@ -15,7 +15,7 @@
                             </li>
                             <li class="nav-item @yield('nav-kedutaan-besar')">
                                 <a class="nav-link" href="{{ route('kedutaan-besar.index') }}">
-                                    <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Mitra Kedutaan Besar</span>
+                                    <span class="nav-link-title"><i class="fa-solid fa-landmark me-2"></i>Kedutaan Besar</span>
                                 </a>
                             </li>
                             <li class="nav-item @yield('nav-kerjasama')">
@@ -46,6 +46,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="">
                                     <span class="nav-link-title"><i class="fa-solid fa-calendar-days me-2"></i>Acara DKI </span>
+                                </a>
+                            </li>
+                            <li class="nav-item @yield('nav-pengaturan-sistem')">
+                                <a class="nav-link" href="">
+                                    <span class="nav-link-title"><i class="fa-solid fa-gear me-2"></i>Pengaturan Sistem</span>
                                 </a>
                             </li>
                         </ul>
