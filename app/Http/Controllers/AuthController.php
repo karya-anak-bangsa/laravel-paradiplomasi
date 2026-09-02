@@ -13,33 +13,34 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // deklarasi akun admin + guest (hardcode dulu, belum ada tabel pengguna)
+        $request->validate([
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
         $daftarAkun = [
             'admin@mail.com' => [
                 'password' => '2026paradiplomasi2026',
-                'role' => 'admin',
-                'nama' => 'Administrator',
+                'nama'     => 'Administrator',
             ],
             'guest@mail.com' => [
                 'password' => '2026paradiplomasi2026',
-                'role' => 'guest',
-                'nama' => 'Tamu',
+                'nama'     => 'Tamu',
             ],
         ];
 
         $akun = $daftarAkun[$request->email] ?? null;
 
-        // cek kondisi jika benar
         if ($akun && $akun['password'] === $request->password) {
+            $request->session()->regenerate();
             session([
                 'auth_email' => $request->email,
-                'auth_role' => $akun['role'],
-                'auth_nama' => $akun['nama'],
+                'auth_nama'  => $akun['nama'],
             ]);
+
             return redirect()->route('dashboard.index');
         }
 
-        // jika salah, ulangi (kembali ke form login dengan pesan error, email tetap terisi)
         return back()
             ->withInput($request->only('email'))
             ->withErrors(['email' => 'Email atau kata sandi salah.']);
@@ -47,7 +48,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        session()->flush();
+        $request->session()->flush();
+        $request->session()->regenerateToken();
 
         return redirect()->route('login');
     }

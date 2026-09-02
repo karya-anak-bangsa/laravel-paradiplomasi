@@ -40,11 +40,14 @@
                 <div class="card card-md">
                     <div class="card-body">
                         <h2 class="h2 text-center mb-4">Masuk ke akun Anda</h2>
-                        <form action="{{ route('dashboard.index') }}" method="GET" autocomplete="off" novalidate>
-
+                        <form action="{{ route('login.process') }}" method="POST" autocomplete="off" novalidate>
+                            @csrf
                             <div class="mb-3">
                                 <label class="form-label">Alamat email</label>
                                 <input type="email" class="form-control" placeholder="Alamat email Anda" autocomplete="off" />
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
