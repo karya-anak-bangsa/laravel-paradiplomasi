@@ -27,6 +27,9 @@
         {{-- header-left --}}
 
         <div class="navbar-nav flex-row order-md-last">
+            <div class="nav-item d-none d-md-flex me-3">
+                <span class="badge bg-primary-lt fs-4">{{ session('auth_nama') }}</span>
+            </div>
             <div class="nav-item d-none d-md-flex me-0">
                 <div class="btn-list">
                     <form action="{{ route('logout') }}" method="POST">
@@ -37,6 +40,7 @@
                     </form>
                 </div>
             </div>
+            {{-- nav-item --}}
         </div>
         {{-- header-right --}}
 

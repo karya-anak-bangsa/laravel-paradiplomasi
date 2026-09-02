@@ -26,7 +26,7 @@ class AuthController extends Controller
             ],
             'guest@mail.com' => [
                 'password' => '2026paradiplomasi2026',
-                'nama'     => 'Tamu',
+                'nama'     => 'Tamu Biro KSD',
                 'role'     => 'guest',
             ],
         ];
