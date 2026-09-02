@@ -114,7 +114,7 @@
 
                     <div class="hr-text hr-text-start">Peta</div>
                     @if ($kedutaanBesar->latitude && $kedutaanBesar->longitude)
-                        <div id="peta-lokasi" style="height: 500px; width: 100%; border-radius: 4px;"></div>
+                        <div id="peta-lokasi" style="height: 450px; width: 100%; border-radius: 4px;"></div>
                     @else
                         <p class="text-secondary mb-0">Koordinat lokasi belum tersedia.</p>
                     @endif
@@ -176,7 +176,7 @@
                 touchZoom: false,
                 keyboard: false,
                 dragging: true,
-            }).setView(lokasi, 16);
+            }).setView(lokasi, 15);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
