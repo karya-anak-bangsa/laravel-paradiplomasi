@@ -150,8 +150,7 @@
                 </div>
                 <div class="card-body">
 
-                    <div class="mb-4">
-                        <div class="hr-text hr-text-start">Diplomasi</div>
+                    <div class="mb-3">
                         <div class="datagrid align-items-center">
                             <div class="datagrid-item">
                                 <div class="datagrid-content d-flex align-items-center">
@@ -188,60 +187,70 @@
 
                             {{-- Kerjasama --}}
                             <div class="tab-pane active show" id="tab-kerjasama" role="tabpanel">
-                                @forelse ($kedutaanBesar->kerjasama as $item)
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto">
-                                                    <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
-                                                </div>
-                                                <div class="col text-truncate">
-                                                    <div class="text-body">{{ str($item->kerjasama)->stripTags() }}</div>
-                                                    <div class="text-secondary text-truncate mt-n1">
-                                                        {{ str($item->rangkuman)->stripTags()->limit(120) }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto text-secondary" style="white-space: nowrap;">
-                                                    {{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}
-                                                    @if ($item->tanggal_selesai)
-                                                        &ndash; {{ $item->tanggal_selesai->format('d M Y') }}
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
+                                @if ($kedutaanBesar->kerjasama->isNotEmpty())
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 30%">Kerjasama</th>
+                                                    <th>Rangkuman</th>
+                                                    <th style="width: 12%">Tanggal Diterima</th>
+                                                    <th style="width: 12%">Tanggal Selesai</th>
+                                                    <th style="width: 10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kedutaanBesar->kerjasama as $item)
+                                                    <tr>
+                                                        <td>{{ str($item->kerjasama)->stripTags() }}</td>
+                                                        <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
+                                                        <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                                        <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                @empty
+                                @else
                                     <p class="text-secondary mb-0">Belum ada riwayat kerjasama untuk kedutaan ini.</p>
-                                @endforelse
+                                @endif
                             </div>
 
                             {{-- Kolaborasi --}}
                             <div class="tab-pane" id="tab-kolaborasi" role="tabpanel">
-                                @forelse ($kedutaanBesar->kolaborasi as $item)
-                                    <div class="list-group list-group-flush">
-                                        <div class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto">
-                                                    <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
-                                                </div>
-                                                <div class="col text-truncate">
-                                                    <div class="text-body">{{ str($item->kolaborasi)->stripTags() }}</div>
-                                                    <div class="text-secondary text-truncate mt-n1">
-                                                        {{ str($item->rangkuman)->stripTags()->limit(120) }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto text-secondary" style="white-space: nowrap;">
-                                                    {{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}
-                                                    @if ($item->tanggal_selesai)
-                                                        &ndash; {{ $item->tanggal_selesai->format('d M Y') }}
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
+                                @if ($kedutaanBesar->kolaborasi->isNotEmpty())
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 30%">Kolaborasi</th>
+                                                    <th>Rangkuman</th>
+                                                    <th style="width: 12%">Tanggal Diterima</th>
+                                                    <th style="width: 12%">Tanggal Selesai</th>
+                                                    <th style="width: 10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kedutaanBesar->kolaborasi as $item)
+                                                    <tr>
+                                                        <td>{{ str($item->kolaborasi)->stripTags() }}</td>
+                                                        <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
+                                                        <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                                        <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                @empty
+                                @else
                                     <p class="text-secondary mb-0">Belum ada riwayat kolaborasi untuk kedutaan ini.</p>
-                                @endforelse
+                                @endif
                             </div>
 
                             {{-- Modul belum dibangun --}}
