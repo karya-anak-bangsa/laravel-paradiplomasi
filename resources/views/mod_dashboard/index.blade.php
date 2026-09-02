@@ -198,7 +198,7 @@
     </div>
 
     {{-- Peta Sebaran & Pencarian Lokasi Kedutaan Besar --}}
-    <div class="row row-cards mb-4">
+    <div class="row row-cards mb-0">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
