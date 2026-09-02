@@ -224,7 +224,6 @@
                                         data-nama="{{ $kedutaan->nama_negara }}">
                                         <span class="flag flag-sm flag-country-{{ $kedutaan->kode_negara }}"></span>
                                         <span class="text-truncate">{{ $kedutaan->nama_negara }}</span>
-                                        <span class="text-truncate">{{ $kedutaan->nama_negara }}</span>
                                     </button>
                                 @endforeach
                             </div>
@@ -245,7 +244,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const monas = [-6.175392, 106.827153]; // Monumen Nasional (Monas)
+            const lokasi = [-6.2023, 106.8315]; // Balai Kota DKI Jakarta
 
             const peta = L.map('peta-kedutaan', {
                 zoomControl: true,
@@ -255,7 +254,7 @@
                 touchZoom: false,
                 keyboard: false,
                 dragging: true,
-            }).setView(monas, 14);
+            }).setView(lokasi, 14);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -292,7 +291,9 @@
 
                 document.querySelectorAll('#daftar-kedutaan .btn-cari-kedutaan').forEach(function(item) {
                     const namaNegara = item.dataset.nama.toLowerCase();
-                    item.style.display = namaNegara.includes(kataKunci) ? '' : 'none';
+                    const cocok = namaNegara.includes(kataKunci);
+
+                    item.classList.toggle('d-none', !cocok);
                 });
             });
         });
