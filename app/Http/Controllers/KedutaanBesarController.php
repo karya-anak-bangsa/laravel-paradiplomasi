@@ -15,6 +15,11 @@ class KedutaanBesarController extends Controller
 
     public function show(KedutaanBesar $kedutaanBesar)
     {
+        $kedutaanBesar->load([
+            'kerjasama'  => fn($query) => $query->latest('tanggal_diterima'),
+            'kolaborasi' => fn($query) => $query->latest('tanggal_diterima'),
+        ]);
+
         return view('mod_kedutaan_besar.show', compact('kedutaanBesar'));
     }
 

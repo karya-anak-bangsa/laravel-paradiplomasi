@@ -32,8 +32,9 @@
                     <div class="hr-text hr-text-start">Diplomasi</div>
                     <div class="datagrid align-items-center">
                         <div class="datagrid-item">
-                            <div class="datagrid-content">
-                                <span class="flag flag-lg flag-country-{{ $kedutaanBesar->kode_negara }}"></span>
+                            <div class="datagrid-content d-flex align-items-center">
+                                <span class="flag flag-md flag-country-{{ $kedutaanBesar->kode_negara }} me-2"></span>
+                                <span class="fw-bold">{{ $kedutaanBesar->nama_negara }}</span>
                             </div>
                         </div>
                         <div class="datagrid-item">
@@ -148,18 +149,126 @@
                     <h3 class="card-title">Riwayat Diplomasi</h3>
                 </div>
                 <div class="card-body">
-                    <span>Abaikan ini. Next development</span>
+
+                    <div class="mb-4">
+                        <div class="hr-text hr-text-start">Diplomasi</div>
+                        <div class="datagrid align-items-center">
+                            <div class="datagrid-item">
+                                <div class="datagrid-content d-flex align-items-center">
+                                    <span class="flag flag-md flag-country-{{ $kedutaanBesar->kode_negara }} me-2"></span>
+                                    <span class="fw-bold">{{ $kedutaanBesar->nama_negara }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-0">
+                        <ul class="nav nav-tabs" data-bs-toggle="tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-kerjasama" class="nav-link active" data-bs-toggle="tab" role="tab">Kerjasama</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-kolaborasi" class="nav-link" data-bs-toggle="tab" role="tab">Kolaborasi</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-undangan" class="nav-link" data-bs-toggle="tab" role="tab">Undangan</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-audiensi" class="nav-link" data-bs-toggle="tab" role="tab">Audiensi</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-kunjungan" class="nav-link" data-bs-toggle="tab" role="tab">Kunjungan</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-acara-dki" class="nav-link" data-bs-toggle="tab" role="tab">Acara DKI</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content pt-3">
+
+                            {{-- Kerjasama --}}
+                            <div class="tab-pane active show" id="tab-kerjasama" role="tabpanel">
+                                @forelse ($kedutaanBesar->kerjasama as $item)
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                    <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
+                                                </div>
+                                                <div class="col text-truncate">
+                                                    <div class="text-body">{{ str($item->kerjasama)->stripTags() }}</div>
+                                                    <div class="text-secondary text-truncate mt-n1">
+                                                        {{ str($item->rangkuman)->stripTags()->limit(120) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto text-secondary" style="white-space: nowrap;">
+                                                    {{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}
+                                                    @if ($item->tanggal_selesai)
+                                                        &ndash; {{ $item->tanggal_selesai->format('d M Y') }}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-secondary mb-0">Belum ada riwayat kerjasama untuk kedutaan ini.</p>
+                                @endforelse
+                            </div>
+
+                            {{-- Kolaborasi --}}
+                            <div class="tab-pane" id="tab-kolaborasi" role="tabpanel">
+                                @forelse ($kedutaanBesar->kolaborasi as $item)
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                    <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
+                                                </div>
+                                                <div class="col text-truncate">
+                                                    <div class="text-body">{{ str($item->kolaborasi)->stripTags() }}</div>
+                                                    <div class="text-secondary text-truncate mt-n1">
+                                                        {{ str($item->rangkuman)->stripTags()->limit(120) }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto text-secondary" style="white-space: nowrap;">
+                                                    {{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}
+                                                    @if ($item->tanggal_selesai)
+                                                        &ndash; {{ $item->tanggal_selesai->format('d M Y') }}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-secondary mb-0">Belum ada riwayat kolaborasi untuk kedutaan ini.</p>
+                                @endforelse
+                            </div>
+
+                            {{-- Modul belum dibangun --}}
+                            <div class="tab-pane" id="tab-undangan" role="tabpanel">
+                                <p class="text-secondary mb-0">Belum tersedia. Modul Undangan akan dikembangkan pada tahap berikutnya.</p>
+                            </div>
+                            <div class="tab-pane" id="tab-audiensi" role="tabpanel">
+                                <p class="text-secondary mb-0">Belum tersedia. Modul Audiensi akan dikembangkan pada tahap berikutnya.</p>
+                            </div>
+                            <div class="tab-pane" id="tab-kunjungan" role="tabpanel">
+                                <p class="text-secondary mb-0">Belum tersedia. Modul Kunjungan akan dikembangkan pada tahap berikutnya.</p>
+                            </div>
+                            <div class="tab-pane" id="tab-acara-dki" role="tabpanel">
+                                <p class="text-secondary mb-0">Belum tersedia. Modul Acara DKI akan dikembangkan pada tahap berikutnya.</p>
+                            </div>
+
+                        </div>
+                        {{-- tab-content --}}
+                    </div>
+
                 </div>
                 <div class="card-footer">
                     {{-- <small class="text-danger">Diakses pada {{ now()->format('d M Y, H:i') }} WIB</small> --}}
                 </div>
-                {{-- card-footer --}}
             </div>
-            {{-- card --}}
         </div>
-        {{-- col --}}
     </div>
-    {{-- row --}}
 
 @endsection
 
