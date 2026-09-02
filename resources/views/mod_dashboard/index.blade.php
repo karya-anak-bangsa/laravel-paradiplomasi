@@ -2,11 +2,7 @@
 
 @section('nav-dashboard', 'active')
 @section('page-header')
-    <div class="row">
-        <div class="col-lg-12">
-            <h2 class="page-title">Dashboard</h2>
-        </div>
-    </div>
+    <x-page-header title="Dashboard" />
 @endsection
 
 @section('page-content')
@@ -29,7 +25,7 @@
                                             <span class="avatar bg-blue-lt">KB</span>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="fw-semibold">9999 Data</div>
+                                            <div class="fw-semibold">{{ $dash_akumulasi['kedutaan_besar'] }} Data</div>
                                             <div class="text-secondary">Jumlah Kedutaan Besar</div>
                                         </div>
                                     </div>
@@ -45,7 +41,7 @@
                                             <span class="avatar bg-green-lt">KS</span>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="fw-semibold">9999 Data</div>
+                                            <div class="fw-semibold">{{ $dash_akumulasi['kerjasama'] }} Data</div>
                                             <div class="text-secondary">Jumlah Kerjasama</div>
                                         </div>
                                     </div>
@@ -61,7 +57,7 @@
                                             <span class="avatar bg-yellow-lt">KL</span>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="fw-semibold">9999 Data</div>
+                                            <div class="fw-semibold">{{ $dash_akumulasi['kolaborasi'] }} Data</div>
                                             <div class="text-secondary">Jumlah Kolaborasi</div>
                                         </div>
                                     </div>
@@ -203,7 +199,17 @@
 
     {{-- Peta Geospasial Sebaran Kedutaan Besar --}}
     <div class="row row-cards mb-4">
-        <div class="col-lg-12">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Peta Geospasial Sebaran Kedutaan Besar</h3>
+                </div>
+                <div class="card-body">
+                    <div id="peta-kedutaan" style="height: 500px; width: 100%; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Peta Geospasial Sebaran Kedutaan Besar</h3>

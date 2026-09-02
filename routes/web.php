@@ -1,13 +1,15 @@
 <?php
 
-# List Controller
+# halaman auth
 use App\Http\Controllers\AuthController;
+
+# halaman backend
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KedutaanBesarController;
 use App\Http\Controllers\KerjasamaController;
 use App\Http\Controllers\KolaborasiController;
 
-# Other
+# other
 use Illuminate\Support\Facades\Route;
 
 # ------------------------------------------------------------------------------------------------- #
