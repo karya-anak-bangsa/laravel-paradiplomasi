@@ -48,11 +48,13 @@
                                     <span class="nav-link-title"><i class="fa-solid fa-calendar-days me-2"></i>Acara DKI </span>
                                 </a>
                             </li>
-                            <li class="nav-item @yield('nav-pengaturan-sistem')">
-                                <a class="nav-link" href="">
-                                    <span class="nav-link-title"><i class="fa-solid fa-gear me-2"></i>Pengaturan Sistem</span>
-                                </a>
-                            </li>
+                            @if (session('auth_role') === 'admin')
+                                <li class="nav-item @yield('nav-pengaturan-sistem')">
+                                    <a class="nav-link" href="">
+                                        <span class="nav-link-title"><i class="fa-solid fa-gear me-2"></i>Pengaturan Sistem</span>
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
 
                     </div>
