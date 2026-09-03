@@ -18,6 +18,7 @@ class KerjasamaController extends Controller
 
     public function show(Kerjasama $kerjasama)
     {
+        $kerjasama->load('kedutaanBesar');
         return view('mod_kerjasama.show', compact('kerjasama'));
     }
 
