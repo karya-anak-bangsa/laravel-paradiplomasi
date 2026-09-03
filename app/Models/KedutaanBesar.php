@@ -94,4 +94,19 @@ class KedutaanBesar extends Model
     {
         return $this->hasMany(Kolaborasi::class, 'id_kedutaan_besar');
     }
+
+    public function undangan(): HasMany
+    {
+        return $this->hasMany(Undangan::class, 'id_kedutaan_besar');
+    }
+
+    public function audiensi(): HasMany
+    {
+        return $this->hasMany(Audiensi::class, 'id_kedutaan_besar');
+    }
+
+    public function kunjungan(): HasMany
+    {
+        return $this->hasMany(Kunjungan::class, 'id_kedutaan_besar');
+    }
 }

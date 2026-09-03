@@ -6,20 +6,34 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('tb_kunjungan', function (Blueprint $table) {
-            $table->id();
+
+            # primary key dan foreign key
+            $table->id('id_kunjungan');
+            $table->unsignedBigInteger('id_kedutaan_besar');
+            $table->foreign('id_kedutaan_besar')->references('id_kedutaan_besar')->on('tb_kedutaan_besar')->restrictOnDelete();
+
+            # columns-columns
+            $table->text('perihal')->nullable();
+            $table->text('rangkuman')->nullable();
+            $table->text('catatan')->nullable();
+            $table->string('file_dokumen')->nullable();
+            $table->date('tanggal_diterima')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+            $table->enum('triwulan_kunjungan', ['TW I', 'TW II', 'TW III', 'TW IV'])->default('TW I');
+            $table->enum('status_kunjungan', ['Selesai', 'Berjalan', 'Batal'])->default('Berjalan');
+            $table->string('nama_pic')->nullable();
+            $table->string('nomor_pic')->nullable();
+
+            # status data & timestamps
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('tb_kunjungan');

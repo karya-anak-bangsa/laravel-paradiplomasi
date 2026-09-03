@@ -9,8 +9,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_undangan', function (Blueprint $table) {
-            $table->id();
+
+            # primary key dan foreign key
+            $table->id('id_undangan');
+            $table->unsignedBigInteger('id_kedutaan_besar');
+            $table->foreign('id_kedutaan_besar')->references('id_kedutaan_besar')->on('tb_kedutaan_besar')->restrictOnDelete();
+
+            # columns-columns
+            $table->text('acara')->nullable();
+            $table->text('rangkuman')->nullable();
+            $table->text('catatan')->nullable();
+            $table->string('file_dokumen')->nullable();
+            $table->date('tanggal_diterima')->nullable();
+            $table->date('tanggal_selesai')->nullable();
+            $table->enum('triwulan_undangan', ['TW I', 'TW II', 'TW III', 'TW IV'])->default('TW I');
+            $table->enum('status_undangan', ['Selesai', 'Berjalan', 'Batal'])->default('Berjalan');
+            $table->string('nama_pic')->nullable();
+            $table->string('nomor_pic')->nullable();
+
+            # status data & timestamps
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

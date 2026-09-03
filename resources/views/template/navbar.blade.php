@@ -28,27 +28,32 @@
                                     <span class="nav-link-title"><i class="fa-solid fa-thumbs-up me-2"></i>Kolaborasi </span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
+                            <li class="nav-item @yield('nav-undangan')">
+                                <a class="nav-link" href="{{ route('undangan.index') }}">
                                     <span class="nav-link-title"><i class="fa-solid fa-envelope me-2"></i>Undangan </span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
+                            <li class="nav-item @yield('nav-audiensi')">
+                                <a class="nav-link" href="{{ route('audiensi.index') }}">
                                     <span class="nav-link-title"><i class="fa-solid fa-comments me-2"></i>Audiensi </span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
+                            <li class="nav-item @yield('nav-kunjungan')">
+                                <a class="nav-link" href="{{ route('kunjungan.index') }}">
                                     <span class="nav-link-title"><i class="fa-solid fa-user-graduate me-2"></i>Kunjungan </span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
+                            <li class="nav-item @yield('nav-acara-dki')">
+                                <a class="nav-link" href="{{ route('acara-dki.index') }}">
                                     <span class="nav-link-title"><i class="fa-solid fa-calendar-days me-2"></i>Acara DKI </span>
                                 </a>
                             </li>
                             @if (session('auth_role') === 'admin')
+                                <li class="nav-item @yield('nav-menu-lainnya')">
+                                    <a class="nav-link" href="">
+                                        <span class="nav-link-title"><i class="fa-solid fa-layer-group me-2"></i>Menu Lainnya</span>
+                                    </a>
+                                </li>
                                 <li class="nav-item @yield('nav-pengaturan-sistem')">
                                     <a class="nav-link" href="">
                                         <span class="nav-link-title"><i class="fa-solid fa-gear me-2"></i>Pengaturan Sistem</span>
