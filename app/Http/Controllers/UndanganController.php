@@ -9,11 +9,11 @@ class UndanganController extends Controller
 {
     public function index()
     {
-        $kolaborasi = Undangan::with('kedutaanBesar')
+        $undangan = Undangan::with('kedutaanBesar')
             ->where('is_active', true)
             ->latest('tanggal_diterima')
             ->get();
-        return view('mod_undangan.index', compact('kolaborasi'));
+        return view('mod_undangan.index', compact('undangan'));
     }
 
     public function show(string $id)

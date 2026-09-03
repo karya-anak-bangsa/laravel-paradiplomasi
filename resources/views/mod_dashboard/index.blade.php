@@ -73,7 +73,7 @@
                                             <span class="avatar bg-red-lt">UD</span>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="fw-semibold">9999 Data</div>
+                                            <div class="fw-semibold">{{ $dash_akumulasi['undangan'] }} Data</div>
                                             <div class="text-secondary">Jumlah Undangan</div>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                             <span class="avatar bg-blue-lt">AU</span>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="fw-semibold">9999 Data</div>
+                                            <div class="fw-semibold">{{ $dash_akumulasi['audiensi'] }} Data</div>
                                             <div class="text-secondary">Jumlah Audiensi</div>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                                             <span class="avatar bg-green-lt">VI</span>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="fw-semibold">9999 Data</div>
+                                            <div class="fw-semibold">{{ $dash_akumulasi['kunjungan'] }} Data</div>
                                             <div class="text-secondary">Jumlah Kunjungan</div>
                                         </div>
                                     </div>
