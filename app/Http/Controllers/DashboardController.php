@@ -8,7 +8,6 @@ use App\Models\Kolaborasi;
 use App\Models\Undangan;
 use App\Models\Audiensi;
 use App\Models\Kunjungan;
-// use App\Models\AcaraDKI;
 
 use Illuminate\Http\Request;
 
@@ -17,13 +16,12 @@ class DashboardController extends Controller
     public function index()
     {
         $dash_akumulasi = [
-            'kedutaan_besar' => KedutaanBesar::where('is_active', true)->count(),
-            'kerjasama'      => Kerjasama::where('is_active', true)->count(),
-            'kolaborasi'     => Kolaborasi::where('is_active', true)->count(),
-            'undangan'     => Undangan::where('is_active', true)->count(),
-            'audiensi'     => Audiensi::where('is_active', true)->count(),
-            'kunjungan'     => Kunjungan::where('is_active', true)->count(),
-            // 'acara_dki'     => AcaraDKI::where('is_active', true)->count(),
+            'kedutaan_besar'    => KedutaanBesar::where('is_active', true)->count(),
+            'kerjasama'         => Kerjasama::where('is_active', true)->count(),
+            'kolaborasi'        => Kolaborasi::where('is_active', true)->count(),
+            'undangan'          => Undangan::where('is_active', true)->count(),
+            'audiensi'          => Audiensi::where('is_active', true)->count(),
+            'kunjungan'         => Kunjungan::where('is_active', true)->count(),
         ];
 
         $daftarKedutaan = KedutaanBesar::where('is_active', true)

@@ -142,6 +142,7 @@
     </div>
     {{-- row --}}
 
+    {{--  Riwayat Diplomasi --}}
     <div class="row row-cards mb-4">
         <div class="col-lg-12">
             <div class="card">
@@ -253,16 +254,108 @@
                                 @endif
                             </div>
 
-                            {{-- Modul belum dibangun --}}
+                            {{-- Undangan --}}
                             <div class="tab-pane" id="tab-undangan" role="tabpanel">
-                                <p class="text-secondary mb-0">Belum tersedia. Modul Undangan akan dikembangkan pada tahap berikutnya.</p>
+                                @if ($kedutaanBesar->undangan->isNotEmpty())
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 30%">Acara</th>
+                                                    <th>Rangkuman</th>
+                                                    <th style="width: 12%">Tanggal Diterima</th>
+                                                    <th style="width: 12%">Tanggal Selesai</th>
+                                                    <th style="width: 10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kedutaanBesar->undangan as $item)
+                                                    <tr>
+                                                        <td>{{ str($item->acara)->stripTags() }}</td>
+                                                        <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
+                                                        <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                                        <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $item->status_badge_color }}">{{ $item->status_undangan }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-secondary mb-0">Belum ada riwayat undangan untuk kedutaan ini.</p>
+                                @endif
                             </div>
+
+                            {{-- Audiensi --}}
                             <div class="tab-pane" id="tab-audiensi" role="tabpanel">
-                                <p class="text-secondary mb-0">Belum tersedia. Modul Audiensi akan dikembangkan pada tahap berikutnya.</p>
+                                @if ($kedutaanBesar->audiensi->isNotEmpty())
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 30%">Topik</th>
+                                                    <th>Rangkuman</th>
+                                                    <th style="width: 12%">Tanggal Diterima</th>
+                                                    <th style="width: 12%">Tanggal Selesai</th>
+                                                    <th style="width: 10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kedutaanBesar->audiensi as $item)
+                                                    <tr>
+                                                        <td>{{ str($item->topik)->stripTags() }}</td>
+                                                        <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
+                                                        <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                                        <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $item->status_badge_color }}">{{ $item->status_audiensi }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-secondary mb-0">Belum ada riwayat audiensi untuk kedutaan ini.</p>
+                                @endif
                             </div>
+
+                            {{-- Kunjungan --}}
                             <div class="tab-pane" id="tab-kunjungan" role="tabpanel">
-                                <p class="text-secondary mb-0">Belum tersedia. Modul Kunjungan akan dikembangkan pada tahap berikutnya.</p>
+                                @if ($kedutaanBesar->kunjungan->isNotEmpty())
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 30%">Perihal</th>
+                                                    <th>Rangkuman</th>
+                                                    <th style="width: 12%">Tanggal Diterima</th>
+                                                    <th style="width: 12%">Tanggal Selesai</th>
+                                                    <th style="width: 10%">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kedutaanBesar->kunjungan as $item)
+                                                    <tr>
+                                                        <td>{{ str($item->perihal)->stripTags() }}</td>
+                                                        <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
+                                                        <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                                        <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kunjungan }}</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <p class="text-secondary mb-0">Belum ada riwayat kunjungan untuk kedutaan ini.</p>
+                                @endif
                             </div>
+
                             <div class="tab-pane" id="tab-acara-dki" role="tabpanel">
                                 <p class="text-secondary mb-0">Belum tersedia. Modul Acara DKI akan dikembangkan pada tahap berikutnya.</p>
                             </div>

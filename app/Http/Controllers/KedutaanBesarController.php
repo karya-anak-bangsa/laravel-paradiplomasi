@@ -19,6 +19,8 @@ class KedutaanBesarController extends Controller
             'kerjasama'     => fn($query) => $query->latest('tanggal_diterima'),
             'kolaborasi'    => fn($query) => $query->latest('tanggal_diterima'),
             'undangan'      => fn($query) => $query->latest('tanggal_diterima'),
+            'audiensi'      => fn($query) => $query->latest('tanggal_diterima'),
+            'kunjungan'     => fn($query) => $query->latest('tanggal_diterima'),
         ]);
 
         return view('mod_kedutaan_besar.show', compact('kedutaanBesar'));
