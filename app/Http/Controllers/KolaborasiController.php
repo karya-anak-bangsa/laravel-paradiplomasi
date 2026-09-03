@@ -9,12 +9,17 @@ class KolaborasiController extends Controller
 {
     public function index()
     {
-
         $kolaborasi = Kolaborasi::with('kedutaanBesar')
             ->where('is_active', true)
             ->latest('tanggal_diterima')
             ->get();
         return view('mod_kolaborasi.index', compact('kolaborasi'));
+    }
+
+    public function show(Kolaborasi $kolaborasi)
+    {
+        $kolaborasi->load('kedutaanBesar');
+        return view('mod_kolaborasi.show', compact('kolaborasi'));
     }
 
     public function create()
@@ -23,11 +28,6 @@ class KolaborasiController extends Controller
     }
 
     public function store(Request $request)
-    {
-        //
-    }
-
-    public function show(string $id)
     {
         //
     }
