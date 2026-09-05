@@ -43,10 +43,14 @@
                                     <span class="nav-link-title"><i class="fa-solid fa-user-graduate me-2"></i>Kunjungan </span>
                                 </a>
                             </li>
-                            <li class="nav-item @yield('nav-acara-dki')">
-                                <a class="nav-link" href="{{ route('acara-dki.index') }}">
-                                    <span class="nav-link-title"><i class="fa-solid fa-calendar-days me-2"></i>Acara DKI </span>
+                            <li class="nav-item dropdown @yield('nav-kegiatan')">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                    <span class="nav-link-title"><i class="fa-solid fa-calendar-days me-2"></i>Kegiatan</span>
                                 </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('acara-dki.index') }}">Acara DKI</a>
+                                    <a class="dropdown-item" href="#">Tanggal Penting</a>
+                                </div>
                             </li>
                             @if (session('auth_role') === 'admin')
                                 <li class="nav-item @yield('nav-menu-lainnya')">

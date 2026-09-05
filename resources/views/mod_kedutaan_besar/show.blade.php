@@ -55,6 +55,30 @@
                         </div>
                     </div>
 
+                    <div class="hr-text hr-text-start">Lokasi</div>
+                    <div class="datagrid align-items-center">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Alamat</div>
+                            <div class="datagrid-content">{{ $kedutaanBesar->alamat ?? '-' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Kelurahan</div>
+                            <div class="datagrid-content">{{ $kedutaanBesar->kelurahan ?? '-' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Kecamatan</div>
+                            <div class="datagrid-content">{{ $kedutaanBesar->kecamatan ?? '-' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Kota</div>
+                            <div class="datagrid-content">{{ $kedutaanBesar->kota ?? '-' }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Kode Pos</div>
+                            <div class="datagrid-content">{{ $kedutaanBesar->kode_pos ?? '-' }}</div>
+                        </div>
+                    </div>
+
                     <div class="hr-text hr-text-start">Kontak</div>
                     <div class="datagrid align-items-center">
                         <div class="datagrid-item">
@@ -96,30 +120,6 @@
                         <div class="datagrid-item">
                             <div class="datagrid-title"></div>
                             <div class="datagrid-content"></div>
-                        </div>
-                    </div>
-
-                    <div class="hr-text hr-text-start">Lokasi</div>
-                    <div class="datagrid align-items-center">
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Alamat</div>
-                            <div class="datagrid-content">{{ $kedutaanBesar->alamat ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Kelurahan</div>
-                            <div class="datagrid-content">{{ $kedutaanBesar->kelurahan ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Kecamatan</div>
-                            <div class="datagrid-content">{{ $kedutaanBesar->kecamatan ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Kota</div>
-                            <div class="datagrid-content">{{ $kedutaanBesar->kota ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Kode Pos</div>
-                            <div class="datagrid-content">{{ $kedutaanBesar->kode_pos ?? '-' }}</div>
                         </div>
                     </div>
 
@@ -198,6 +198,7 @@
                                                     <th style="width: 12%">Tanggal Diterima</th>
                                                     <th style="width: 12%">Tanggal Selesai</th>
                                                     <th style="width: 10%">Status</th>
+                                                    <th style="width: 10%">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -209,6 +210,11 @@
                                                         <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                                         <td>
                                                             <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{-- route('kedutaan-besar.show',$item) --}}" class="btn btn-icon btn-primary">
+                                                                <i class="fa-solid fa-eye"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
