@@ -33,16 +33,11 @@
                         Agenda Mendatang
                     </h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div id="agenda-mendatang-list" class="list-group list-group-flush">
                         {{-- diisi otomatis lewat JS berdasarkan data acara yang belum terlaksana --}}
                     </div>
                 </div>
-
-                {{-- <div class="card-body text-center py-5" id="agenda-mendatang-kosong" style="display: none;">
-                    <i class="fa-regular fa-calendar-check fs-1 text-secondary d-block mb-2"></i>
-                    <p class="text-secondary mb-0">Tidak ada agenda yang akan datang.</p>
-                </div> --}}
             </div>
             {{-- card --}}
         </div>
@@ -60,7 +55,6 @@
 
             var calendarEl = document.getElementById('calendar-tanggal-penting');
             var agendaListEl = document.getElementById('agenda-mendatang-list');
-            var agendaKosongEl = document.getElementById('agenda-mendatang-kosong');
             var currentYear = new Date().getFullYear();
             var namaBulanSingkat = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
@@ -164,6 +158,11 @@
                 // hanya tampilkan judul acara, tanpa jam mulai
                 displayEventTime: false,
 
+                // paksa semua acara (1 hari maupun beberapa hari) tampil sebagai
+                // blok rata penuh, bukan list-item bertitik yang menjorok
+                // (default FullCalendar beda gaya render antara keduanya)
+                eventDisplay: 'block',
+
                 // batasi jumlah baris acara per kotak tanggal, sisanya
                 // dilipat jadi link "+N lainnya" (popover) supaya tinggi
                 // kotak tanggal tetap presisi/rata, baik ada acara maupun tidak
@@ -262,7 +261,7 @@
 
                 var tanggal = document.createElement('div');
                 tanggal.className = 'text-secondary text-truncate';
-                tanggal.innerHTML = '<i class="fa-regular fa-clock me-1"></i>' + formatRentangTanggal(acara);
+                tanggal.innerHTML = formatRentangTanggal(acara);
 
                 infoWrapper.appendChild(judul);
                 infoWrapper.appendChild(tanggal);
@@ -289,15 +288,11 @@
                 .sort(function(a, b) {
                     return a.start - b.start;
                 })
-                .slice(0, 5); // batasi 6 agenda terdekat
+                .slice(0, 5); // batasi 5 agenda terdekat
 
-            if (agendaBelumTerlaksana.length === 0) {
-                agendaKosongEl.style.display = 'block';
-            } else {
-                agendaBelumTerlaksana.forEach(function(acara) {
-                    agendaListEl.appendChild(buatItemAgenda(acara));
-                });
-            }
+            agendaBelumTerlaksana.forEach(function(acara) {
+                agendaListEl.appendChild(buatItemAgenda(acara));
+            });
         });
     </script>
 @endpush
