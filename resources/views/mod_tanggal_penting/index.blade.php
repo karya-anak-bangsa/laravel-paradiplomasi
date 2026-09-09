@@ -28,14 +28,21 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Agenda Mendatang</h3>
+                    <h3 class="card-title">
+                        <i class="fa-solid fa-calendar-days me-1"></i>
+                        Agenda Mendatang
+                    </h3>
                 </div>
-                <div id="agenda-mendatang-list" class="list-group list-group-flush">
-                    {{-- diisi otomatis lewat JS berdasarkan data acara yang belum terlaksana --}}
+                <div class="card-body">
+                    <div id="agenda-mendatang-list" class="list-group list-group-flush">
+                        {{-- diisi otomatis lewat JS berdasarkan data acara yang belum terlaksana --}}
+                    </div>
                 </div>
-                <div class="card-body" id="agenda-mendatang-kosong" style="display: none;">
+
+                {{-- <div class="card-body text-center py-5" id="agenda-mendatang-kosong" style="display: none;">
+                    <i class="fa-regular fa-calendar-check fs-1 text-secondary d-block mb-2"></i>
                     <p class="text-secondary mb-0">Tidak ada agenda yang akan datang.</p>
-                </div>
+                </div> --}}
             </div>
             {{-- card --}}
         </div>
@@ -153,13 +160,6 @@
                 locale: 'id',
                 firstDay: 1,
                 events: acaraDkiEvents,
-            });
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'id',
-                firstDay: 1,
-                events: acaraDkiEvents,
 
                 // hanya tampilkan judul acara, tanpa jam mulai
                 displayEventTime: false,
@@ -167,7 +167,7 @@
                 // batasi jumlah baris acara per kotak tanggal, sisanya
                 // dilipat jadi link "+N lainnya" (popover) supaya tinggi
                 // kotak tanggal tetap presisi/rata, baik ada acara maupun tidak
-                dayMaxEventRows: 1,
+                dayMaxEventRows: 3,
                 moreLinkText: function(n) {
                     return '+' + n + ' lainnya';
                 },
@@ -192,23 +192,89 @@
                 return formatTanggalSingkat(mulai) + ' - ' + formatTanggalSingkat(selesai);
             }
 
+            function mulaiHariIni(tanggal) {
+                return new Date(tanggal.getFullYear(), tanggal.getMonth(), tanggal.getDate());
+            }
+
+            // hitung status waktu acara relatif terhadap hari ini: sedang
+            // berlangsung, hari ini, besok, atau H-berapa
+            function hitungStatusAgenda(acara) {
+                var hariIni = mulaiHariIni(new Date());
+                var mulai = mulaiHariIni(acara.start);
+                var selesai = mulaiHariIni(acara.end || acara.start);
+                var selisihHari = Math.round((mulai - hariIni) / 86400000);
+
+                if (hariIni > mulai && hariIni <= selesai) {
+                    return {
+                        label: 'Berlangsung',
+                        badgeClass: 'bg-green-lt text-green'
+                    };
+                }
+                if (selisihHari === 0) {
+                    return {
+                        label: 'Hari ini',
+                        badgeClass: 'bg-red-lt text-red'
+                    };
+                }
+                if (selisihHari === 1) {
+                    return {
+                        label: 'Besok',
+                        badgeClass: 'bg-orange-lt text-orange'
+                    };
+                }
+                if (selisihHari <= 3) {
+                    return {
+                        label: 'H-' + selisihHari,
+                        badgeClass: 'bg-azure-lt text-azure'
+                    };
+                }
+                return {
+                    label: 'H-' + selisihHari,
+                    badgeClass: 'bg-blue-lt text-blue'
+                };
+            }
+
             function buatItemAgenda(acara) {
+                var acaraBeberapaHari = mulaiHariIni(acara.start).getTime() !==
+                    mulaiHariIni(acara.end || acara.start).getTime();
+                var status = hitungStatusAgenda(acara);
+
                 var item = document.createElement('div');
                 item.className = 'list-group-item';
 
                 var wrapper = document.createElement('div');
-                wrapper.className = 'd-flex align-items-center justify-content-between';
+                wrapper.className = 'd-flex align-items-center';
 
-                var judul = document.createElement('span');
-                judul.className = 'text-body text-truncate flex-fill';
+                // avatar ikon, warna mengikuti jenis acara (beberapa hari = merah,
+                // selaras dengan banner di kalender; 1 hari = biru)
+                var avatar = document.createElement('span');
+                avatar.className = 'avatar me-3 ' + (acaraBeberapaHari ? 'bg-red-lt' : 'bg-blue-lt');
+                avatar.innerHTML = '<i class="fa-solid ' +
+                    (acaraBeberapaHari ? 'fa-calendar-week' : 'fa-calendar-day') + '"></i>';
+
+                // judul + rentang tanggal
+                var infoWrapper = document.createElement('div');
+                infoWrapper.className = 'flex-fill text-truncate';
+
+                var judul = document.createElement('div');
+                judul.className = 'fw-semibold text-truncate';
                 judul.textContent = acara.title;
 
-                var tanggal = document.createElement('span');
-                tanggal.className = 'badge bg-primary-lt text-nowrap';
-                tanggal.textContent = formatRentangTanggal(acara);
+                var tanggal = document.createElement('div');
+                tanggal.className = 'text-secondary text-truncate';
+                tanggal.innerHTML = '<i class="fa-regular fa-clock me-1"></i>' + formatRentangTanggal(acara);
 
-                wrapper.appendChild(judul);
-                wrapper.appendChild(tanggal);
+                infoWrapper.appendChild(judul);
+                infoWrapper.appendChild(tanggal);
+
+                // badge status (H-x / Hari ini / Besok / Berlangsung)
+                var badge = document.createElement('span');
+                badge.className = 'badge ' + status.badgeClass + ' text-nowrap ms-2';
+                badge.textContent = status.label;
+
+                wrapper.appendChild(avatar);
+                wrapper.appendChild(infoWrapper);
+                wrapper.appendChild(badge);
                 item.appendChild(wrapper);
 
                 return item;
@@ -223,7 +289,7 @@
                 .sort(function(a, b) {
                     return a.start - b.start;
                 })
-                .slice(0, 6); // batasi 6 agenda terdekat
+                .slice(0, 5); // batasi 6 agenda terdekat
 
             if (agendaBelumTerlaksana.length === 0) {
                 agendaKosongEl.style.display = 'block';
