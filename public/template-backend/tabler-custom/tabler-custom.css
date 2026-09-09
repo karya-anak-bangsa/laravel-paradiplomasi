@@ -1,0 +1,8 @@
+:root {
+    --background-color: #f9fafc;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: "Inter", "Roboto", "Quicksand", sans-serif;
+}
