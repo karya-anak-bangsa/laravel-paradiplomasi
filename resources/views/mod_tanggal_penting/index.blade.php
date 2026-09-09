@@ -155,6 +155,24 @@
                 events: acaraDkiEvents,
             });
 
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'id',
+                firstDay: 1,
+                events: acaraDkiEvents,
+
+                // hanya tampilkan judul acara, tanpa jam mulai
+                displayEventTime: false,
+
+                // batasi jumlah baris acara per kotak tanggal, sisanya
+                // dilipat jadi link "+N lainnya" (popover) supaya tinggi
+                // kotak tanggal tetap presisi/rata, baik ada acara maupun tidak
+                dayMaxEventRows: 1,
+                moreLinkText: function(n) {
+                    return '+' + n + ' lainnya';
+                },
+            });
+
             calendar.render();
 
             // ---------- render daftar agenda yang belum terlaksana ----------
