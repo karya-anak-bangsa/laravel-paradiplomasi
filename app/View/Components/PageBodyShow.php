@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class PageBodyTable extends Component
+class PageBodyShow extends Component
 {
     public $title       = '';
 
@@ -17,6 +17,6 @@ class PageBodyTable extends Component
 
     public function render(): View|Closure|string
     {
-        return view('components.page-body-table');
+        return view('components.page-body-show');
     }
 }

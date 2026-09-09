@@ -12,21 +12,16 @@
 {{-- content --}}
 @section('page-content')
 
-    <div class="row row-cards mb-4">
-        <div class="col-lg-12">
-            @include('mod_kedutaan_besar.show-rincian-data')
-        </div>
-        {{-- col --}}
-    </div>
-    {{-- row --}}
+    <x-page-body-show title="Rincian Data - {{ $kedutaanBesar->nama_negara }}">
+        @include('mod_kedutaan_besar.show-rincian-data')
+    </x-page-body-show>
 
-    {{--  Riwayat Diplomasi --}}
-    <div class="row row-cards mb-4">
-        <div class="col-lg-12">
-            @include('mod_kedutaan_besar.show-riwayat-diplomasi')
-        </div>
-        {{-- col --}}
-    </div>
-    {{-- row --}}
+    <x-page-body-show title="Riwayat Diplomasi">
+        <x-slot:header-right>
+            <span class="flag flag-md flag-country-{{ $kedutaanBesar->kode_negara }} me-2"></span>
+            <span class="fw-bold">{{ $kedutaanBesar->nama_negara }}</span>
+        </x-slot:header-right>
 
+        @include('mod_kedutaan_besar.show-riwayat-diplomasi')
+    </x-page-body-show>
 @endsection

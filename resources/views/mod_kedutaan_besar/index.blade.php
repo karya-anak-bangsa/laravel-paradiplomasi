@@ -31,11 +31,11 @@
                     </td>
                     <td>
                         <p class="fst-normal mb-0">{{ $item->nama_kedutaan_besar_id ?? '-' }}</p>
-                        <small class="fst-italic mb-0">{{ $item->nama_kedutaan_besar_en ?? '-' }}</small>
+                        <small class="fst-italic text-primary mb-0">{{ $item->nama_kedutaan_besar_en ?? '-' }}</small>
                     </td>
                     <td>
                         <p class="fst-normal mb-0">{{ $item->nama_diplomat ?? '-' }}</p>
-                        <small class="fst-italic mb-0">{{ $item->jabatan_diplomat ?? '-' }}</small>
+                        <small class="fst-italic text-primary mb-0">{{ $item->jabatan_diplomat ?? '-' }}</small>
                     </td>
                     <td>
                         <div class="btn-list justify-content-center">
