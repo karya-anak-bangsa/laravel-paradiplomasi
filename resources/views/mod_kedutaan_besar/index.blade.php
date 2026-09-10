@@ -43,7 +43,7 @@
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                             @if (session('auth_role') === 'admin')
-                                <a href="" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
+                                <a href="{{ route('kedutaan-besar.edit', $item) }}" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
                                 <a href="" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></a>
                             @endif
                         </div>

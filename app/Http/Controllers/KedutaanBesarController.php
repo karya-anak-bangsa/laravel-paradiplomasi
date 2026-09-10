@@ -40,9 +40,9 @@ class KedutaanBesarController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(KedutaanBesar $kedutaanBesar)
     {
-        //
+        return view('mod_kedutaan_besar.edit', compact('kedutaanBesar'));
     }
 
     public function update(Request $request, string $id)

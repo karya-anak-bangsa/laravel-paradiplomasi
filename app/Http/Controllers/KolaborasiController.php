@@ -34,9 +34,11 @@ class KolaborasiController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Kolaborasi $kolaborasi)
     {
-        //
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
+        $kolaborasi->load('kedutaanBesar');
+        return view('mod_kolaborasi.edit', compact('kolaborasi', 'kedutaanBesar'));
     }
 
     public function update(Request $request, string $id)

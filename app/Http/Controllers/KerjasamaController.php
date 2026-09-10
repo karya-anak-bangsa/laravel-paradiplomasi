@@ -23,11 +23,6 @@ class KerjasamaController extends Controller
         return view('mod_kerjasama.show', compact('kerjasama'));
     }
 
-    public function edit(string $id)
-    {
-        //
-    }
-
     public function create()
     {
         $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
@@ -37,6 +32,13 @@ class KerjasamaController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function edit(Kerjasama $kerjasama)
+    {
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
+        $kerjasama->load('kedutaanBesar');
+        return view('mod_kerjasama.edit', compact('kerjasama', 'kedutaanBesar'));
     }
 
     public function update(Request $request, string $id)
