@@ -4,27 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Concerns\HasParadiplomasiFields;
 
 class Kerjasama extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasParadiplomasiFields;
 
-    public const TRIWULAN_OPTIONS = [
-        'TW I'   => 'TW I',
-        'TW II'  => 'TW II',
-        'TW III' => 'TW III',
-        'TW IV'  => 'TW IV',
-    ];
-
-    public const STATUS_OPTIONS = [
-        'Berjalan' => 'Berjalan',
-        'Selesai'  => 'Selesai',
-        'Tunda'    => 'Tunda',
-        'Batal'    => 'Batal',
-        'Regret'   => 'Regret',
-    ];
+    protected string $judulColumn  = 'kerjasama';
+    protected string $statusColumn = 'status_kerjasama';
 
     protected $table        = 'tb_kerjasama';
     protected $primaryKey   = 'id_kerjasama';
@@ -49,20 +37,6 @@ class Kerjasama extends Model
         'tanggal_selesai'  => 'date',
         'is_active'        => 'boolean',
     ];
-
-    protected function statusBadgeColor(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => match ($this->status_kerjasama) {
-                'Berjalan' => 'bg-blue-lt',
-                'Selesai'  => 'bg-success-lt',
-                'Tunda'    => 'bg-warning-lt',
-                'Batal'    => 'bg-danger-lt',
-                'Regret'   => 'bg-secondary-lt',
-                default    => 'bg-secondary-lt',
-            },
-        );
-    }
 
     public function kedutaanBesar(): BelongsTo
     {

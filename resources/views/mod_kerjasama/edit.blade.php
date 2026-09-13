@@ -9,7 +9,7 @@
 {{-- content --}}
 @section('page-content')
     <x-page-body-form title="Form Ubah Kerjasama">
-        <form action="{{-- ke controller update --}}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('kerjasama.update', $kerjasama) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             @include('mod_kerjasama._form')

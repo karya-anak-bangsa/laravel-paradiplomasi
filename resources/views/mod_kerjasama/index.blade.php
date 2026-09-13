@@ -14,30 +14,38 @@
     <x-page-body-table title="Daftar kerjasama dengan perwakilan negara asing">
         <x-slot name="thead">
             <tr>
-                <th data-orderable="true" style="width: 15%">Negara</th>
-                <th data-orderable="false" style="width: 25%">Kerjasama</th>
-                <th data-orderable="false" style="width: 35%">Rangkuman</th>
-                <th data-orderable="true" style="width: 10%">Status Kerjasama</th>
-                <th data-orderable="false" class="text-center" style="width: 1%; white-space: nowrap;">Aksi</th>
+                <th data-orderable="true" style="width:20%" class="text-start">Negara</th>
+                <th data-orderable="true" style="width:35%" class="text-start">Kerjasama</th>
+                <th data-orderable="true" style="width:15%" class="text-center">Tanggal Diterima</th>
+                <th data-orderable="true" style="width:15%" class="text-center">Tanggal Selesai</th>
+                <th data-orderable="true" style="width:15%" class="text-center">Status</th>
+                <th data-orderable="true" style="width:10%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
             @foreach ($kerjasama as $item)
                 <tr>
-                    <td>
+                    <td class="text-start">
                         <div class="d-flex align-items-center">
                             <span class="flag flag-sm flag-country-{{ $item->kedutaanBesar->kode_negara }} me-2"></span>
                             <span class="fw-bold">{{ $item->kedutaanBesar->nama_negara }}</span>
                         </div>
                     </td>
-                    <td>{{ str($item->kerjasama)->stripTags() }}</td>
-                    <td>{{ str($item->rangkuman)->stripTags()->limit(100) }}</td>
-                    <td>
+                    <td class="text-start">
+                        {{ $item->kerjasama_ringkasan }}
+                    </td>
+                    <td class="text-center">
+                        {{ $item->tanggal_diterima_display }}
+                    </td>
+                    <td class="text-center">
+                        {{ $item->tanggal_selesai_display }}
+                    </td>
+                    <td class="text-center">
                         <span class="badge {{ $item->status_badge_color }}">
                             {{ $item->status_kerjasama }}
                         </span>
                     </td>
-                    <td style="white-space: nowrap;">
+                    <td class="text-center">
                         <div class="btn-list flex-nowrap justify-content-center">
                             <a href="{{ route('kerjasama.show', $item) }}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
                             @if (session('auth_role') === 'admin')

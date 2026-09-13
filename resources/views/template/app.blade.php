@@ -88,6 +88,7 @@
                     });
                     new DataTable(table, {
                         columnDefs,
+                        order: [],
                         pageLength: 25,
                         language: {
                             search: 'Cari:',
@@ -103,7 +104,6 @@
                 });
             });
         </script>
-
         @stack('scripts')
     </body>
 
