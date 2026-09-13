@@ -35,9 +35,11 @@ class AudiensiController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Audiensi $audiensi)
     {
-        //
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
+        $audiensi->load('kedutaanBesar');
+        return view('mod_audiensi.edit', compact('audiensi', 'kedutaanBesar'));
     }
 
     public function update(Request $request, string $id)

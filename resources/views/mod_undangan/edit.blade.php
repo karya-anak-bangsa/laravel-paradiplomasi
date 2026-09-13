@@ -1,0 +1,130 @@
+@extends('template.app')
+
+{{-- content --}}
+@section('nav-undangan', 'active')
+@section('page-header')
+    <x-page-header
+        title="Modul Undangan">
+    </x-page-header>
+@endsection
+
+{{-- content --}}
+@section('page-content')
+
+    <div class="row row-cards mb-4">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Form Edit Undangan</h3>
+                </div>
+                <div class="card-body">
+
+                    <form action="{{ route('undangan.update', $undangan->id_undangan) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        {{-- kedutaan besar --}}
+                        <div class="hr-text hr-text-start">Kedutaan Besar</div>
+                        <div class="mb-3">
+                            <label class="form-label">Negara</label>
+                            <select name="id_kedutaan_besar" class="form-select">
+                                <option value="" disabled>-- Pilih Kedutaan Besar --</option>
+                                @foreach ($kedutaanBesar as $item)
+                                    <option value="{{ $item->id_kedutaan_besar }}" {{ old('id_kedutaan_besar', $undangan->id_kedutaan_besar) == $item->id_kedutaan_besar ? 'selected' : '' }}>{{ $item->nama_negara }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- kedutaan besar --}}
+
+                        {{-- status & jadwal --}}
+                        <div class="hr-text hr-text-start">Status & Jadwal</div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Triwulan</label>
+                                <select name="triwulan_undangan" class="form-select">
+                                    <option value="TW I" {{ old('triwulan_undangan', $undangan->triwulan_undangan) == 'TW I' ? 'selected' : '' }}>TW I</option>
+                                    <option value="TW II" {{ old('triwulan_undangan', $undangan->triwulan_undangan) == 'TW II' ? 'selected' : '' }}>TW II</option>
+                                    <option value="TW III" {{ old('triwulan_undangan', $undangan->triwulan_undangan) == 'TW III' ? 'selected' : '' }}>TW III</option>
+                                    <option value="TW IV" {{ old('triwulan_undangan', $undangan->triwulan_undangan) == 'TW IV' ? 'selected' : '' }}>TW IV</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tanggal Diterima</label>
+                                <input type="date" name="tanggal_diterima" class="form-control" value="{{ old('tanggal_diterima', optional($undangan->tanggal_diterima)->format('Y-m-d')) }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tanggal Selesai</label>
+                                <input type="date" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai', optional($undangan->tanggal_selesai)->format('Y-m-d')) }}">
+                                <small class="form-hint text-danger">Kosongkan jika undangan masih berjalan.</small>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Status Undangan</label>
+                                <select name="status_undangan" class="form-select">
+                                    <option value="Berjalan" {{ old('status_undangan', $undangan->status_undangan) == 'Berjalan' ? 'selected' : '' }}>Berjalan</option>
+                                    <option value="Selesai" {{ old('status_undangan', $undangan->status_undangan) == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="Tunda" {{ old('status_undangan', $undangan->status_undangan) == 'Tunda' ? 'selected' : '' }}>Tunda</option>
+                                    <option value="Batal" {{ old('status_undangan', $undangan->status_undangan) == 'Batal' ? 'selected' : '' }}>Batal</option>
+                                    <option value="Regret" {{ old('status_undangan', $undangan->status_undangan) == 'Regret' ? 'selected' : '' }}>Regret</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{-- status & jadwal --}}
+
+                        {{-- detail undangan --}}
+                        <div class="hr-text hr-text-start">Detail Undangan</div>
+                        <div class="mb-3">
+                            <label class="form-label">Acara</label>
+                            <textarea name="acara" class="form-control" rows="5" placeholder="Tuliskan acara undangan">{{ old('acara', $undangan->acara) }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rangkuman</label>
+                            <textarea name="rangkuman" class="form-control" rows="12" placeholder="Rangkuman singkat undangan">{{ old('rangkuman', $undangan->rangkuman) }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Catatan</label>
+                            <textarea name="catatan" class="form-control" rows="12" placeholder="Catatan tambahan (opsional)">{{ old('catatan', $undangan->catatan) }}</textarea>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label">File Dokumen</label>
+                            <input type="file" name="file_dokumen" class="form-control">
+                            <small class="form-hint text-danger">Ukuran file maksimal 25MB.</small>
+                            @if ($undangan->file_dokumen)
+                                <small class="form-hint d-block">File saat ini: {{ basename($undangan->file_dokumen) }}</small>
+                            @endif
+                        </div>
+                        {{-- detail undangan --}}
+
+                        {{-- kontak pic --}}
+                        <div class="hr-text hr-text-start">Kontak PIC</div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama PIC</label>
+                                <input type="text" name="nama_pic" class="form-control" placeholder="Nama penanggung jawab" value="{{ old('nama_pic', $undangan->nama_pic) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nomor PIC</label>
+                                <input type="text" name="nomor_pic" class="form-control" placeholder="Nomor kontak penanggung jawab" value="{{ old('nomor_pic', $undangan->nomor_pic) }}">
+                            </div>
+                        </div>
+                        {{-- kontak pic --}}
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{{ route('undangan.index') }}" class="btn btn-secondary">
+                                <i class="fa-solid fa-rotate-left me-1"></i>Batal
+                            </a>
+                            <a href="{{ route('undangan.index') }}" class="btn btn-success">
+                                <i class="fa-solid fa-save me-1"></i>Simpan
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+            {{-- card --}}
+        </div>
+        {{-- col --}}
+    </div>
+    {{-- row --}}
+
+@endsection

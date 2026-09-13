@@ -35,9 +35,11 @@ class UndanganController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Undangan $undangan)
     {
-        //
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
+        $undangan->load('kedutaanBesar');
+        return view('mod_undangan.edit', compact('undangan', 'kedutaanBesar'));
     }
 
     public function update(Request $request, string $id)

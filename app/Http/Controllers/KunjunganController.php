@@ -35,9 +35,11 @@ class KunjunganController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Kunjungan $kunjungan)
     {
-        //
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
+        $kunjungan->load('kedutaanBesar');
+        return view('mod_kunjungan.edit', compact('kunjungan', 'kedutaanBesar'));
     }
 
     public function update(Request $request, string $id)
