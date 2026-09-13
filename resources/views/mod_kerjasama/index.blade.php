@@ -31,15 +31,9 @@
                             <span class="fw-bold">{{ $item->kedutaanBesar->nama_negara }}</span>
                         </div>
                     </td>
-                    <td class="text-start">
-                        {{ $item->judul_ringkas }}
-                    </td>
-                    <td class="text-center">
-                        {{ $item->tanggal_diterima_display }}
-                    </td>
-                    <td class="text-center">
-                        {{ $item->tanggal_selesai_display }}
-                    </td>
+                    <td class="text-start">{{ $item->judul_ringkas }}</td>
+                    <td class="text-center">{{ $item->tanggal_diterima_display }}</td>
+                    <td class="text-center">{!! $item->tanggal_selesai_display !!}</td>
                     <td class="text-center">
                         <span class="badge {{ $item->status_badge_color }}">
                             {{ $item->status_kerjasama }}
