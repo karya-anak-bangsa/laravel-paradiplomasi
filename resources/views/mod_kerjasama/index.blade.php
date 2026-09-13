@@ -32,7 +32,7 @@
                         </div>
                     </td>
                     <td class="text-start">
-                        {{ $item->kerjasama_ringkasan }}
+                        {{ $item->judul_ringkas }}
                     </td>
                     <td class="text-center">
                         {{ $item->tanggal_diterima_display }}
