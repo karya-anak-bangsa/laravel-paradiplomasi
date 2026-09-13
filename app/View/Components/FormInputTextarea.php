@@ -13,8 +13,8 @@ class FormInputTextarea extends Component
     public ?string $value;
     public ?string $placeholder;
     public ?string $hint;
-    public int $rows;
-    public bool $required;
+    public ?int $rows;
+    public ?bool $required;
 
     public function __construct(
         $label          = null,

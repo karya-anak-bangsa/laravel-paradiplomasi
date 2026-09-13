@@ -3,8 +3,8 @@
         <x-form-input-textarea
             label="Kerjasama"
             name="kerjasama"
-            rows="10">
-        </x-form-input-textarea>
+            rows="10"
+            :value="$kerjasama->kerjasama ?? null" />
     </div>
 </div>
 

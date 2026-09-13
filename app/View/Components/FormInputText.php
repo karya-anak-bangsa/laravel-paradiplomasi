@@ -13,7 +13,7 @@ class FormInputText extends Component
     public ?string $value;
     public ?string $placeholder;
     public ?string $hint;
-    public bool $required;
+    public ?bool $required;
 
     public function __construct(
         $label                  = null,
