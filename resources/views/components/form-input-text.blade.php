@@ -8,6 +8,6 @@
     @enderror
 
     @if ($hint)
-        <small class="form-text text-danger">{{ $hint }}</small>
+        <small class="form-text">{{ $hint }}</small>
     @endif
 </div>
