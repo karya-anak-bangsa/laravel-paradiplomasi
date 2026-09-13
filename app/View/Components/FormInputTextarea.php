@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class FormTextarea extends Component
+class FormInputTextarea extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class FormTextarea extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.form-textarea');
+        return view('components.form-input-textarea');
     }
 }

@@ -10,7 +10,7 @@
 @section('page-content')
 
     <x-page-body-form title="Form Tambah Kerjasama">
-        <form action="{{ route('kerjasama.store') }}" method="post" enctype="multipart/form-data">
+        <form action="{{-- ke controller store --}}" method="post" enctype="multipart/form-data">
             @csrf
             @include('mod_kerjasama._form')
         </form>
