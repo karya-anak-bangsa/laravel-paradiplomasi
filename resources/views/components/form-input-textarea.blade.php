@@ -1,3 +1,12 @@
-<div>
-    <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
+<div class="mb-3">
+    <label class="form-label" for="{{ $name }}">{{ $label }}</label>
+    <textarea class="form-control border-dark" name="{{ $name }}" id="{{ $name }}" rows="{{ $rows }}" placeholder="{{ $placeholder }}">{{ old($name, $value) }}</textarea>
+
+    @error($name)
+        <div class="invalid-feedback d-block">{{ $message }}</div>
+    @enderror
+
+    @if ($hint)
+        <small class="form-hint text-danger">{{ $hint }}</small>
+    @endif
 </div>
