@@ -11,6 +11,7 @@
     <x-page-body-form title="Form Ubah Kerjasama">
         <form action="{{-- ke controller update --}}" method="post" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             @include('mod_kerjasama._form')
         </form>
     </x-page-body-form>
