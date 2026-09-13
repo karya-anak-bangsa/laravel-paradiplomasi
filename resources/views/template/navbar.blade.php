@@ -13,14 +13,19 @@
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-chart-pie me-2"></i>Dashboard</span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown @yield('nav-mitra-kami')">
+                            {{-- <li class="nav-item dropdown @yield('nav-mitra-kami')">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-graduation-cap me-2"></i>Mitra Kami</span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('kedutaan-besar.index') }}">Mitra PNA</a>
-                                    <a class="dropdown-item" href="{{-- route('kedutaan-besar.index') --}}">Mitra Non PNA</a>
+                                    <a class="dropdown-item" href="#">Mitra Non PNA</a>
                                 </div>
+                            </li> --}}
+                            <li class="nav-item @yield('nav-mitra-kami')">
+                                <a class="nav-link" href="{{ route('kedutaan-besar.index') }}">
+                                    <span class="nav-link-title text-dark"><i class="fa-solid fa-graduation-cap me-2"></i>Mitra PNA</span>
+                                </a>
                             </li>
                             <li class="nav-item @yield('nav-kerjasama')">
                                 <a class="nav-link" href="{{ route('kerjasama.index') }}">
@@ -47,7 +52,7 @@
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-user-graduate me-2"></i>Kunjungan </span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown @yield('nav-kegiatan')">
+                            {{-- <li class="nav-item dropdown @yield('nav-kegiatan')">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-calendar-days me-2"></i>Kegiatan</span>
                                 </a>
@@ -55,7 +60,7 @@
                                     <a class="dropdown-item" href="{{ route('acara-dki.index') }}">Acara DKI</a>
                                     <a class="dropdown-item" href="{{ route('tanggal-penting.index') }}">Tanggal Penting</a>
                                 </div>
-                            </li>
+                            </li> --}}
                             @if (session('auth_role') === 'admin')
                                 {{-- <li class="nav-item dropdown @yield('nav-administrasi')">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">

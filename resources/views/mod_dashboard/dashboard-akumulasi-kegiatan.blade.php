@@ -165,7 +165,7 @@
 
                     {{-- 6. Jumlah Acara DKI --}}
                     <div class="col-lg-4">
-                        <div class="card card-sm">
+                        {{-- <div class="card card-sm">
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-auto">
@@ -187,9 +187,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- card-body --}}
-                        </div>
-                        {{-- card --}}
+                        </div> --}}
                     </div>
                     {{-- col --}}
                 </div>
