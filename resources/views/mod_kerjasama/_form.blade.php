@@ -53,8 +53,8 @@
         <x-form-input-select
             label="Triwulan Kerjasama"
             name="triwulan_kerjasama"
-            :options="['TW I' => 'TW I', 'TW II' => 'TW II', 'TW III' => 'TW III', 'TW IV' => 'TW IV']"
             hint="Periode triwulan saat kerjasama ini diterima/dicatat."
+            :options="\App\Models\Kerjasama::TRIWULAN_OPTIONS"
             :value="$kerjasama->triwulan_kerjasama ?? null" />
     </div>
 
@@ -62,7 +62,7 @@
         <x-form-input-select
             label="Status Kerjasama"
             name="status_kerjasama"
-            :options="['Berjalan' => 'Berjalan', 'Selesai' => 'Selesai', 'Tunda' => 'Tunda', 'Batal' => 'Batal', 'Regret' => 'Regret']"
+            :options="\App\Models\Kerjasama::STATUS_OPTIONS"
             :value="$kerjasama->status_kerjasama ?? null" />
     </div>
 

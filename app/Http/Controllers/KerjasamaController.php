@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KedutaanBesar;
 use App\Models\Kerjasama;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreKerjasamaRequest;
 
 class KerjasamaController extends Controller
 {
@@ -29,9 +30,10 @@ class KerjasamaController extends Controller
         return view('mod_kerjasama.create', compact('kedutaanBesar'));
     }
 
-    public function store(Request $request)
+    public function store(StoreKerjasamaRequest $request)
     {
-        //
+        Kerjasama::create($request->validated());
+        return redirect()->route('kerjasama.index');
     }
 
     public function edit(Kerjasama $kerjasama)

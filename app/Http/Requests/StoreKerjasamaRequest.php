@@ -16,9 +16,9 @@ class StoreKerjasamaRequest extends FormRequest
         return [
             'id_kedutaan_besar'  => ['required', 'integer', 'exists:tb_kedutaan_besar,id_kedutaan_besar'],
             'kerjasama'          => ['required', 'string'],
-            'rangkuman'          => ['nullable', 'string'],
-            'catatan'            => ['nullable', 'string'],
-            'tanggal_diterima'   => ['nullable', 'date'],
+            'rangkuman'          => ['required', 'string'],
+            'catatan'            => ['required', 'string'],
+            'tanggal_diterima'   => ['required', 'date'],
             'tanggal_selesai'    => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
             'triwulan_kerjasama' => ['required', 'in:TW I,TW II,TW III,TW IV'],
             'status_kerjasama'   => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
