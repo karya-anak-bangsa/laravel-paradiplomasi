@@ -8,14 +8,31 @@ use Illuminate\View\Component;
 
 class FormInputSelect extends Component
 {
+    public ?string $label;
+    public ?string $name;
+    public ?array $options;
+    public ?string $value;
+    public ?string $placeholder;
+    public ?string $hint;
+    public ?bool $required;
+
     public function __construct(
-        public string $label,
-        public string $name,
-        public array $options = [],
-        public ?string $value = null,
-        public ?string $placeholder = null,
-        public ?string $hint = null,
-    ) {}
+        $label                  = null,
+        $name                   = null,
+        $options                = [],
+        $value                  = null,
+        $placeholder            = null,
+        $hint                   = null,
+        $required               = false,
+    ) {
+        $this->label            = $label;
+        $this->name             = $name;
+        $this->options          = $options;
+        $this->value            = $value;
+        $this->placeholder      = $placeholder;
+        $this->hint             = $hint;
+        $this->required         = $required;
+    }
 
     public function render(): View|Closure|string
     {

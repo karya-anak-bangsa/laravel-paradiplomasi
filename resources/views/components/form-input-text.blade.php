@@ -1,6 +1,6 @@
 <div class="mb-3">
     <label class="form-label" for="{{ $name }}">{{ $label }}</label>
-    <input class="form-control border-dark" type="text" name="{{ $name }}" id="{{ $name }}"
+    <input class="form-control border-dark" type="{{ $type }}" name="{{ $name }}" id="{{ $name }}"
         value="{{ old($name, $value) }}" placeholder="{{ $placeholder }}">
 
     @error($name)
@@ -8,6 +8,6 @@
     @enderror
 
     @if ($hint)
-        <small class="form-hint text-danger">{{ $hint }}</small>
+        <small class="form-text text-danger">{{ $hint }}</small>
     @endif
 </div>

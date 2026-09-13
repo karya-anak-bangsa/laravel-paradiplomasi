@@ -10,6 +10,7 @@ class FormInputText extends Component
 {
     public ?string $label;
     public ?string $name;
+    public ?string $type;
     public ?string $value;
     public ?string $placeholder;
     public ?string $hint;
@@ -18,6 +19,7 @@ class FormInputText extends Component
     public function __construct(
         $label                  = null,
         $name                   = null,
+        $type                   = 'text',
         $value                  = null,
         $placeholder            = null,
         $hint                   = null,
@@ -25,6 +27,7 @@ class FormInputText extends Component
     ) {
         $this->label            = $label;
         $this->name             = $name;
+        $this->type             = $type;
         $this->value            = $value;
         $this->placeholder      = $placeholder;
         $this->hint             = $hint;
