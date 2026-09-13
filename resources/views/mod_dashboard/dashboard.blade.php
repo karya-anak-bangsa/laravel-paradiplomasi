@@ -2,6 +2,17 @@
 
 @section('nav-dashboard', 'active')
 @section('page-header')
+
+    {{-- Session Login --}}
+    <div class="row row-cards">
+        <div class="col-lg-12">
+            <div class="alert alert-primary alert-dismissible" role="alert">
+                <span>Selamat Datang, Anda login sebagai Administrator</span>
+                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+            </div>
+        </div>
+    </div>
+
     <x-page-header title="Dashboard" />
 @endsection
 

@@ -10,13 +10,12 @@
 @endsection
 
 @section('page-content')
-    <x-page-body-table
-        title="Daftar kerjasama dengan perwakilan negara asing">
 
+    <x-page-body-table title="Daftar kerjasama dengan perwakilan negara asing">
         <x-slot name="thead">
             <tr>
                 <th data-orderable="true" style="width: 15%">Negara</th>
-                <th data-orderable="false" style="width: 23%">Kerjasama</th>
+                <th data-orderable="false" style="width: 25%">Kerjasama</th>
                 <th data-orderable="false" style="width: 35%">Rangkuman</th>
                 <th data-orderable="true" style="width: 10%">Status Kerjasama</th>
                 <th data-orderable="false" class="text-center" style="width: 1%; white-space: nowrap;">Aksi</th>
@@ -31,12 +30,8 @@
                             <span class="fw-bold">{{ $item->kedutaanBesar->nama_negara }}</span>
                         </div>
                     </td>
-                    <td>
-                        {{ str($item->kerjasama)->stripTags() }}
-                    </td>
-                    <td>
-                        {{ str($item->rangkuman)->stripTags()->limit(100) }}
-                    </td>
+                    <td>{{ str($item->kerjasama)->stripTags() }}</td>
+                    <td>{{ str($item->rangkuman)->stripTags()->limit(100) }}</td>
                     <td>
                         <span class="badge {{ $item->status_badge_color }}">
                             {{ $item->status_kerjasama }}
