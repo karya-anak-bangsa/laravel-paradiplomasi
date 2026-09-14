@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Undangan;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUndanganRequest;
 
 class UndanganController extends Controller
 {
@@ -29,10 +29,10 @@ class UndanganController extends Controller
         return view('mod_undangan.create', compact('kedutaanBesar')); // sesuaikan nama view per modul
     }
 
-
-    public function store(Request $request)
+    public function store(StoreUndanganRequest $request)
     {
-        //
+        Undangan::create($request->validated());
+        return redirect()->route('undangan.index');
     }
 
     public function edit(Undangan $undangan)
@@ -42,13 +42,15 @@ class UndanganController extends Controller
         return view('mod_undangan.edit', compact('undangan', 'kedutaanBesar'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(StoreUndanganRequest $request, Undangan $undangan)
     {
-        //
+        $undangan->update($request->validated());
+        return redirect()->route('undangan.index');
     }
 
-    public function destroy(string $id)
+    public function destroy(Undangan $undangan)
     {
-        //
+        $undangan->update(['is_active' => false]);
+        return redirect()->route('undangan.index');
     }
 }
