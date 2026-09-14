@@ -29,6 +29,7 @@
         {{-- Plugin Stylesheets (FontAwesome & DataTables) --}}
         <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
+        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/css/tom-select.min.css') }}" />
 
         {{-- Custom Stylesheet --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
@@ -74,8 +75,16 @@
         {{-- Plugins JS --}}
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('select.tom-select').forEach(function(select) {
+                    new TomSelect(select, {
+                        create: false,
+                        allowEmptyOption: false,
+                        plugins: ['dropdown_input'],
+                    });
+                });
                 document.querySelectorAll('table.datatable').forEach(function(table) {
                     const columnDefs = [];
                     table.querySelectorAll('thead th').forEach(function(th, index) {

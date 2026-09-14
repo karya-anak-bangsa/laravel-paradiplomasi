@@ -21,3 +21,17 @@ label.required::before {
     content: "* ";
     color: red;
 } */
+
+.ts-wrapper .form-select,
+.ts-wrapper.form-select {
+    box-shadow: var(--tblr-shadow-input);
+}
+.ts-dropdown {
+    background: var(--tblr-bg-surface);
+    color: var(--tblr-body-color);
+    box-shadow: var(--tblr-shadow-dropdown);
+    z-index: 1000;
+}
+.focus .ts-control {
+    border-radius: var(--tblr-border-radius);
+}
