@@ -13,7 +13,8 @@
             label="Kerjasama"
             name="kerjasama"
             rows="10"
-            :value="$kerjasama->kerjasama ?? null" />
+            :value="$kerjasama->kerjasama ?? null"
+            :wysiwyg="true" />
     </div>
 
     <div class="col-lg-12 mb-3">
@@ -21,7 +22,8 @@
             label="Rangkuman"
             name="rangkuman"
             rows="10"
-            :value="$kerjasama->rangkuman ?? null" />
+            :value="$kerjasama->rangkuman ?? null"
+            :wysiwyg="true" />
     </div>
 
     <div class="col-lg-12 mb-3">
@@ -30,7 +32,8 @@
             name="catatan"
             rows="10"
             hint="Harap masukan link dokumen dibagian catatan."
-            :value="$kerjasama->catatan ?? null" />
+            :value="$kerjasama->catatan ?? null"
+            :wysiwyg="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
