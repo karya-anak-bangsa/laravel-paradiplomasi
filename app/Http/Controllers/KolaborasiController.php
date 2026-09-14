@@ -32,7 +32,10 @@ class KolaborasiController extends Controller
     public function store(StoreKolaborasiRequest $request)
     {
         Kolaborasi::create($request->validated());
-        return redirect()->route('kolaborasi.index');
+        return redirect()->route('kolaborasi.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kolaborasi berhasil disimpan.',
+        ]);
     }
 
     public function edit(Kolaborasi $kolaborasi)
@@ -45,12 +48,18 @@ class KolaborasiController extends Controller
     public function update(StoreKolaborasiRequest $request, Kolaborasi $kolaborasi)
     {
         $kolaborasi->update($request->validated());
-        return redirect()->route('kolaborasi.index');
+        return redirect()->route('kolaborasi.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kolaborasi berhasil diubah.',
+        ]);
     }
 
     public function destroy(Kolaborasi $kolaborasi)
     {
         $kolaborasi->update(['is_active' => false]);
-        return redirect()->route('kolaborasi.index');
+        return redirect()->route('kolaborasi.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kolaborasi berhasil dinonaktifkan.',
+        ]);
     }
 }

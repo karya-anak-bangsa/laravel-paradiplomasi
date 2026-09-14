@@ -190,19 +190,19 @@
                     save: {
                         text: 'Apakah Anda yakin ingin menyimpan data ini?',
                         icon: 'success',
-                        confirmButtonColor: '#2fb344',
+                        confirmButtonColor: '#28a745',
                         confirmButtonText: 'Ya, Simpan!',
                     },
                     update: {
                         text: 'Apakah Anda yakin ingin mengubah data ini?',
                         icon: 'warning',
-                        confirmButtonColor: '#f76707',
+                        confirmButtonColor: '#e6ae06',
                         confirmButtonText: 'Ya, Ubah!',
                     },
                     delete: {
                         text: 'Apakah Anda yakin ingin menghapus data ini?',
                         icon: 'error',
-                        confirmButtonColor: '#d63939',
+                        confirmButtonColor: '#dc3545',
                         confirmButtonText: 'Ya, Hapus!',
                     },
                 };
