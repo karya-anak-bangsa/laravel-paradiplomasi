@@ -42,6 +42,8 @@ Route::middleware('cek.auth')->group(function () {
         Route::resource('kunjungan', KunjunganController::class)->except(['index', 'show']);
         Route::resource('acara-dki', AcaraDKIController::class)->except(['index', 'show']);
         Route::resource('tanggal-penting', TanggalPentingController::class)->except(['index', 'show']);
+        Route::view('akun-pengguna', 'mod_akun_pengguna.index')->name('akun-pengguna.index');
+        Route::view('riwayat-aktivitas', 'mod_riwayat_aktivitas.index')->name('riwayat-aktivitas.index');
     });
 
     // admin & guest, cuma boleh lihat

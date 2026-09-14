@@ -78,8 +78,8 @@
                                         <span class="nav-link-title text-dark"><i class="fa-solid fa-gear me-2"></i>Pengaturan Sistem</span>
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Akun Pengguna</a>
-                                        <a class="dropdown-item" href="#">Riwayat Aktivitas</a>
+                                        <a class="dropdown-item" href="{{ route('akun-pengguna.index') }}">Akun Pengguna</a>
+                                        <a class="dropdown-item" href="{{ route('riwayat-aktivitas.index') }}">Riwayat Aktivitas</a>
                                     </div>
                                 </li>
                             @endif
