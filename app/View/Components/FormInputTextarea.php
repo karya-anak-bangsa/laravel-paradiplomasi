@@ -15,6 +15,7 @@ class FormInputTextarea extends Component
     public ?string $hint;
     public ?int $rows;
     public ?bool $required;
+    public ?bool $wysiwyg;
 
     public function __construct(
         $label          = null,
@@ -23,7 +24,8 @@ class FormInputTextarea extends Component
         $placeholder    = null,
         $hint           = null,
         $rows           = 5,
-        $required       = false
+        $required       = false,
+        $wysiwyg        = false,
     ) {
         $this->label            = $label;
         $this->name             = $name;
@@ -32,6 +34,7 @@ class FormInputTextarea extends Component
         $this->hint             = $hint;
         $this->rows             = $rows;
         $this->required         = $required;
+        $this->wysiwyg          = $wysiwyg;
     }
 
     public function render(): View|Closure|string

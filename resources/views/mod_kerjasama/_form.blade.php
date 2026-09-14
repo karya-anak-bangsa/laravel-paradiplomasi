@@ -4,7 +4,8 @@
             label="Nama Negara"
             name="id_kedutaan_besar"
             :options="$kedutaanBesar->pluck('nama_negara', 'id_kedutaan_besar')->toArray()"
-            :value="$kerjasama->id_kedutaan_besar ?? null" />
+            :value="$kerjasama->id_kedutaan_besar ?? null"
+            :searchable="true" />
     </div>
 
     <div class="col-lg-12 mb-3">

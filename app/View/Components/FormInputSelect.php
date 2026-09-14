@@ -15,6 +15,7 @@ class FormInputSelect extends Component
     public ?string $placeholder;
     public ?string $hint;
     public ?bool $required;
+    public ?bool $searchable;
 
     public function __construct(
         $label                  = null,
@@ -24,6 +25,7 @@ class FormInputSelect extends Component
         $placeholder            = null,
         $hint                   = null,
         $required               = false,
+        $searchable             = false,
     ) {
         $this->label            = $label;
         $this->name             = $name;
@@ -32,6 +34,7 @@ class FormInputSelect extends Component
         $this->placeholder      = $placeholder;
         $this->hint             = $hint;
         $this->required         = $required;
+        $this->searchable       = $searchable;
     }
 
     public function render(): View|Closure|string

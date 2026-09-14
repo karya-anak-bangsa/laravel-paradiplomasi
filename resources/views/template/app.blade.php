@@ -18,20 +18,25 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
 
-        {{-- Tabler Core & Vendor Stylesheets --}}
+        {{-- Tabler Core --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler.min.css') }}" />
+
+        {{-- Vendor library base CSS (loaded BEFORE tabler-vendors.min.css, since tabler-vendors provides
+             Tabler-themed overrides on top of these libraries' own structural CSS) --}}
+        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.css') }}" />
+        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/css/tom-select.min.css') }}" />
+
+        {{-- Tabler theme layers (must load AFTER the vendor libs above so Tabler's overrides win) --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-vendors.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-flags.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-socials.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-payments.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.css') }}" />
-        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/css/tom-select.min.css') }}" />
 
-        {{-- Plugin Stylesheets (FontAwesome & DataTables) --}}
+        {{-- Plugin Stylesheets (FontAwesome & DataTables, not themed by tabler-vendors) --}}
         <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
 
-        {{-- Custom Stylesheet --}}
+        {{-- Custom Stylesheet (always last, so it can override anything above) --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
 
         @stack('styles')
@@ -71,18 +76,29 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
-        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/hugerte/hugerte.min.js') }}"></script>
 
-        {{-- Plugins JS --}}
-        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+        {{-- Tom Select: library JS immediately followed by its own init block --}}
+        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('select.tom-select').forEach(function(select) {
+                    new TomSelect(select, {
+                        create: false,
+                        allowEmptyOption: false,
+                        plugins: ['dropdown_input'],
+                    });
+                });
+            });
+        </script>
+
+        {{-- HugeRTE (WYSIWYG): library JS immediately followed by its own init block --}}
+        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/hugerte/hugerte.min.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 if (document.querySelector('textarea.wysiwyg')) {
                     hugeRTE.init({
                         selector: 'textarea.wysiwyg',
-                        height: 300,
+                        height: 400,
                         menubar: false,
                         statusbar: false,
                         plugins: [
@@ -97,13 +113,14 @@
                         content_style: 'body { font-family: "Inter", "Roboto", "Quicksand", sans-serif; font-size: 14px; }',
                     });
                 }
-                document.querySelectorAll('select.tom-select').forEach(function(select) {
-                    new TomSelect(select, {
-                        create: false,
-                        allowEmptyOption: false,
-                        plugins: ['dropdown_input'],
-                    });
-                });
+            });
+        </script>
+
+        {{-- DataTables: library JS immediately followed by its own init block --}}
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('table.datatable').forEach(function(table) {
                     const columnDefs = [];
                     table.querySelectorAll('thead th').forEach(function(th, index) {
@@ -132,6 +149,7 @@
                 });
             });
         </script>
+
         @stack('scripts')
     </body>
 
