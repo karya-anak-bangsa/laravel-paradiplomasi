@@ -32,7 +32,10 @@ class KerjasamaController extends Controller
     public function store(StoreKerjasamaRequest $request)
     {
         Kerjasama::create($request->validated());
-        return redirect()->route('kerjasama.index');
+        return redirect()->route('kerjasama.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kerjasama berhasil disimpan.',
+        ]);
     }
 
     public function edit(Kerjasama $kerjasama)
@@ -45,12 +48,18 @@ class KerjasamaController extends Controller
     public function update(StoreKerjasamaRequest $request, Kerjasama $kerjasama)
     {
         $kerjasama->update($request->validated());
-        return redirect()->route('kerjasama.index');
+        return redirect()->route('kerjasama.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kerjasama berhasil diubah.',
+        ]);
     }
 
     public function destroy(Kerjasama $kerjasama)
     {
         $kerjasama->update(['is_active' => false]);
-        return redirect()->route('kerjasama.index');
+        return redirect()->route('kerjasama.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kerjasama berhasil dinonaktifkan.',
+        ]);
     }
 }

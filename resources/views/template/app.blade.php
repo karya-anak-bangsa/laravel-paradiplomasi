@@ -32,9 +32,10 @@
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-socials.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-payments.min.css') }}" />
 
-        {{-- Plugin Stylesheets (FontAwesome & DataTables, not themed by tabler-vendors) --}}
+        {{-- Plugin Stylesheets (FontAwesome, DataTables, Simple Notify — not themed by tabler-vendors) --}}
         <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify/dist/simple-notify.css" />
 
         {{-- Custom Stylesheet (always last, so it can override anything above) --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
@@ -43,6 +44,14 @@
     </head>
 
     <body class="antialiased">
+
+        @if (session('notify'))
+            <div id="notify-data"
+                data-status="{{ session('notify.type') }}"
+                data-text="{{ session('notify.message') }}">
+            </div>
+        @endif
+
         <div class="page">
 
             @include('template.header')
@@ -145,6 +154,79 @@
                                 next: 'Berikutnya',
                             },
                         },
+                    });
+                });
+            });
+        </script>
+
+        {{-- Simple Notify: library JS immediately followed by its own init block --}}
+        <script src="https://cdn.jsdelivr.net/npm/simple-notify/dist/simple-notify.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const el = document.getElementById('notify-data');
+                if (!el) return;
+
+                new Notify({
+                    status: el.dataset.status || 'success',
+                    text: el.dataset.text || 'Operation completed',
+                    effect: 'slide',
+                    speed: 500,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 5000,
+                    gap: 20,
+                    distance: 20,
+                    position: 'right top',
+                });
+            });
+        </script>
+
+        {{-- SweetAlert2: library JS immediately followed by its own init block --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const confirmConfig = {
+                    save: {
+                        text: 'Apakah Anda yakin ingin menyimpan data ini?',
+                        icon: 'success',
+                        confirmButtonColor: '#2fb344',
+                        confirmButtonText: 'Ya, Simpan!',
+                    },
+                    update: {
+                        text: 'Apakah Anda yakin ingin mengubah data ini?',
+                        icon: 'warning',
+                        confirmButtonColor: '#f76707',
+                        confirmButtonText: 'Ya, Ubah!',
+                    },
+                    delete: {
+                        text: 'Apakah Anda yakin ingin menghapus data ini?',
+                        icon: 'error',
+                        confirmButtonColor: '#d63939',
+                        confirmButtonText: 'Ya, Hapus!',
+                    },
+                };
+
+                document.querySelectorAll('.confirm-submit').forEach(function(form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const config = confirmConfig[form.dataset.confirm] || confirmConfig.save;
+
+                        Swal.fire({
+                            title: 'Konfirmasi',
+                            text: config.text,
+                            icon: config.icon,
+                            showCancelButton: true,
+                            confirmButtonColor: config.confirmButtonColor,
+                            cancelButtonColor: '#6c757e',
+                            confirmButtonText: config.confirmButtonText,
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                HTMLFormElement.prototype.submit.call(form);
+                            }
+                        });
                     });
                 });
             });
