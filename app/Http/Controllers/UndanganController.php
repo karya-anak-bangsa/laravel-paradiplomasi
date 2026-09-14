@@ -32,7 +32,10 @@ class UndanganController extends Controller
     public function store(StoreUndanganRequest $request)
     {
         Undangan::create($request->validated());
-        return redirect()->route('undangan.index');
+        return redirect()->route('undangan.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data undangan berhasil disimpan.',
+        ]);
     }
 
     public function edit(Undangan $undangan)
@@ -45,12 +48,18 @@ class UndanganController extends Controller
     public function update(StoreUndanganRequest $request, Undangan $undangan)
     {
         $undangan->update($request->validated());
-        return redirect()->route('undangan.index');
+        return redirect()->route('undangan.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data undangan berhasil diubah.',
+        ]);
     }
 
     public function destroy(Undangan $undangan)
     {
         $undangan->update(['is_active' => false]);
-        return redirect()->route('undangan.index');
+        return redirect()->route('undangan.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data undangan berhasil dinonaktifkan.',
+        ]);
     }
 }
