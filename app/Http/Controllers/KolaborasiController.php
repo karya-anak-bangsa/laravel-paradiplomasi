@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Kolaborasi;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreKolaborasiRequest;
 
 class KolaborasiController extends Controller

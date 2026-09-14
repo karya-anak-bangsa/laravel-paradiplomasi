@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Kerjasama;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreKerjasamaRequest;
 
 class KerjasamaController extends Controller
