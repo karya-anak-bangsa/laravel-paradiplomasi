@@ -34,7 +34,10 @@ class KedutaanBesarController extends Controller
     public function update(UpdateKedutaanBesarRequest $request, KedutaanBesar $kedutaanBesar)
     {
         $kedutaanBesar->update($request->validated());
-        return redirect()->route('kedutaan-besar.index');
+        return redirect()->route('kedutaan-besar.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kedutaan besar berhasil diubah.',
+        ]);
     }
 
     // --------------------------------------------------------------------------------------------------
