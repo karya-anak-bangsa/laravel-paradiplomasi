@@ -3,10 +3,7 @@
 {{-- content --}}
 @section('nav-mitra-kami', 'active')
 @section('page-header')
-    <x-page-header
-        title="Modul Mitra Perwakilan Negara Asing"
-        action="kedutaan-besar.create">
-    </x-page-header>
+    <x-page-header title="Modul Mitra Perwakilan Negara Asing" />
 @endsection
 
 {{-- content --}}
@@ -43,8 +40,9 @@
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                             @if (session('auth_role') === 'admin')
-                                <a href="{{ route('kedutaan-besar.edit', $item) }}" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
-                                <a href="" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a href="{{ route('kedutaan-besar.edit', $item) }}" class="btn btn-icon btn-warning">
+                                    <i class="fa-solid fa-edit"></i>
+                                </a>
                             @endif
                         </div>
                     </td>

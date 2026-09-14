@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KedutaanBesar;
 use Illuminate\Http\Request;
+use App\Models\KedutaanBesar;
+use App\Http\Requests\UpdateKedutaanBesarRequest;
 
 class KedutaanBesarController extends Controller
 {
@@ -22,22 +23,7 @@ class KedutaanBesarController extends Controller
             'audiensi'      => fn($query) => $query->latest('tanggal_diterima'),
             'kunjungan'     => fn($query) => $query->latest('tanggal_diterima'),
         ]);
-
         return view('mod_kedutaan_besar.show', compact('kedutaanBesar'));
-    }
-
-    // --------------------------------------------------------------------------------------------------
-    // BELUM 
-    // --------------------------------------------------------------------------------------------------
-
-    public function create()
-    {
-        return view('mod_kedutaan_besar.create');
-    }
-
-    public function store(Request $request)
-    {
-        //
     }
 
     public function edit(KedutaanBesar $kedutaanBesar)
@@ -45,7 +31,21 @@ class KedutaanBesarController extends Controller
         return view('mod_kedutaan_besar.edit', compact('kedutaanBesar'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateKedutaanBesarRequest $request, KedutaanBesar $kedutaanBesar)
+    {
+        $kedutaanBesar->update($request->validated());
+        return redirect()->route('kedutaan-besar.index');
+    }
+
+    // --------------------------------------------------------------------------------------------------
+    // SENAGAJA TIDAK DIBUAT. Karena tidak sesuai proses bisnis.
+    // --------------------------------------------------------------------------------------------------
+    public function create()
+    {
+        //
+    }
+
+    public function store(Request $request)
     {
         //
     }
