@@ -32,7 +32,10 @@ class KunjunganController extends Controller
     public function store(StoreKunjunganRequest $request)
     {
         Kunjungan::create($request->validated());
-        return redirect()->route('kunjungan.index');
+        return redirect()->route('kunjungan.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kunjungan berhasil disimpan.',
+        ]);
     }
 
     public function edit(Kunjungan $kunjungan)
@@ -45,12 +48,18 @@ class KunjunganController extends Controller
     public function update(StoreKunjunganRequest $request, Kunjungan $kunjungan)
     {
         $kunjungan->update($request->validated());
-        return redirect()->route('kunjungan.index');
+        return redirect()->route('kunjungan.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kunjungan berhasil diubah.',
+        ]);
     }
 
     public function destroy(Kunjungan $kunjungan)
     {
         $kunjungan->update(['is_active' => false]);
-        return redirect()->route('kunjungan.index');
+        return redirect()->route('kunjungan.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kunjungan berhasil dinonaktifkan.',
+        ]);
     }
 }

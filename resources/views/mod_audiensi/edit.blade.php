@@ -9,7 +9,7 @@
 {{-- content --}}
 @section('page-content')
     <x-page-body-form title="Form Ubah Audiensi">
-        <form action="{{ route('audiensi.update', $audiensi) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('audiensi.update', $audiensi) }}" method="post" enctype="multipart/form-data" class="confirm-submit" data-confirm="update">
             @csrf
             @method('PUT')
             @include('mod_audiensi._form')

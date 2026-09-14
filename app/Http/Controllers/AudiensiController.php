@@ -32,7 +32,10 @@ class AudiensiController extends Controller
     public function store(StoreAudiensiRequest $request)
     {
         Audiensi::create($request->validated());
-        return redirect()->route('audiensi.index');
+        return redirect()->route('audiensi.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data audiensi berhasil disimpan.',
+        ]);
     }
 
     public function edit(Audiensi $audiensi)
@@ -45,12 +48,18 @@ class AudiensiController extends Controller
     public function update(StoreAudiensiRequest $request, Audiensi $audiensi)
     {
         $audiensi->update($request->validated());
-        return redirect()->route('audiensi.index');
+        return redirect()->route('audiensi.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data audiensi berhasil diubah.',
+        ]);
     }
 
     public function destroy(Audiensi $audiensi)
     {
         $audiensi->update(['is_active' => false]);
-        return redirect()->route('audiensi.index');
+        return redirect()->route('audiensi.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data audiensi berhasil dinonaktifkan.',
+        ]);
     }
 }

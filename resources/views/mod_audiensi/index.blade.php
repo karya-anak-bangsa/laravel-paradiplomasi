@@ -43,8 +43,7 @@
                             <a href="{{ route('audiensi.show', $item) }}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
                             @if (session('auth_role') === 'admin')
                                 <a href="{{ route('audiensi.edit', $item) }}" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
-                                <form action="{{ route('audiensi.destroy', $item) }}" method="post" class="d-inline"
-                                    onsubmit="return confirm('Nonaktifkan audiensi ini?')">
+                                <form action="{{ route('audiensi.destroy', $item) }}" method="post" class="confirm-submit d-inline" data-confirm="delete">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></button>
                                 </form>
