@@ -31,7 +31,6 @@ class UpdateKedutaanBesarRequest extends FormRequest
             'website'                => ['nullable', 'string'],
             'latitude'               => ['nullable', 'numeric'],
             'longitude'              => ['nullable', 'numeric'],
-            'is_active'              => ['required', 'in:0,1'],
         ];
     }
 
@@ -55,7 +54,6 @@ class UpdateKedutaanBesarRequest extends FormRequest
             'website'                => 'Website',
             'latitude'               => 'Latitude',
             'longitude'              => 'Longitude',
-            'is_active'              => 'Status Data',
         ];
     }
 }
