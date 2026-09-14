@@ -25,11 +25,11 @@
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-socials.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-payments.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.css') }}" />
+        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/css/tom-select.min.css') }}" />
 
         {{-- Plugin Stylesheets (FontAwesome & DataTables) --}}
         <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
-        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/css/tom-select.min.css') }}" />
 
         {{-- Custom Stylesheet --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
@@ -71,13 +71,32 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
+        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/hugerte/hugerte.min.js') }}"></script>
 
         {{-- Plugins JS --}}
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
-        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                if (document.querySelector('textarea.wysiwyg')) {
+                    hugeRTE.init({
+                        selector: 'textarea.wysiwyg',
+                        height: 300,
+                        menubar: false,
+                        statusbar: false,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'charmap',
+                            'preview', 'anchor', 'searchreplace', 'visualblocks',
+                            'code', 'fullscreen', 'wordcount',
+                        ],
+                        toolbar: 'undo redo | formatselect | ' +
+                            'bold italic backcolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                            'removeformat',
+                        content_style: 'body { font-family: "Inter", "Roboto", "Quicksand", sans-serif; font-size: 14px; }',
+                    });
+                }
                 document.querySelectorAll('select.tom-select').forEach(function(select) {
                     new TomSelect(select, {
                         create: false,

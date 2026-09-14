@@ -1,6 +1,7 @@
 <div class="mb-3">
     <label class="form-label" for="{{ $name }}">{{ $label }}</label>
-    <textarea class="form-control border-dark" name="{{ $name }}" id="{{ $name }}" rows="{{ $rows }}" placeholder="{{ $placeholder }}">{{ old($name, $value) }}</textarea>
+    <textarea class="form-control border-dark wysiwyg" name="{{ $name }}" id="{{ $name }}" rows="{{ $rows }}"
+        placeholder="{{ $placeholder }}">{{ old($name, $value) }}</textarea>
 
     @error($name)
         <div class="invalid-feedback d-block">{{ $message }}</div>
