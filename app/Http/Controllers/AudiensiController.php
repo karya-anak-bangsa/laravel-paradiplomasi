@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Audiensi;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreAudiensiRequest;
 
 class AudiensiController extends Controller
 {
@@ -29,10 +29,10 @@ class AudiensiController extends Controller
         return view('mod_audiensi.create', compact('kedutaanBesar'));
     }
 
-
-    public function store(Request $request)
+    public function store(StoreAudiensiRequest $request)
     {
-        //
+        Audiensi::create($request->validated());
+        return redirect()->route('audiensi.index');
     }
 
     public function edit(Audiensi $audiensi)
@@ -42,13 +42,15 @@ class AudiensiController extends Controller
         return view('mod_audiensi.edit', compact('audiensi', 'kedutaanBesar'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(StoreAudiensiRequest $request, Audiensi $audiensi)
     {
-        //
+        $audiensi->update($request->validated());
+        return redirect()->route('audiensi.index');
     }
 
-    public function destroy(string $id)
+    public function destroy(Audiensi $audiensi)
     {
-        //
+        $audiensi->update(['is_active' => false]);
+        return redirect()->route('audiensi.index');
     }
 }
