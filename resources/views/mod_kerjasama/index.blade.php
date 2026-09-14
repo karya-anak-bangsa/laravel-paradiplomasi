@@ -44,7 +44,11 @@
                             <a href="{{ route('kerjasama.show', $item) }}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
                             @if (session('auth_role') === 'admin')
                                 <a href="{{ route('kerjasama.edit', $item) }}" class="btn btn-icon btn-warning"><i class="fa-solid fa-edit"></i></a>
-                                <a href="" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <form action="{{ route('kerjasama.destroy', $item) }}" method="post" class="d-inline"
+                                    onsubmit="return confirm('Nonaktifkan kerjasama ini?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </form>
                             @endif
                         </div>
                     </td>

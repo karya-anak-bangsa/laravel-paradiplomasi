@@ -43,13 +43,15 @@ class KerjasamaController extends Controller
         return view('mod_kerjasama.edit', compact('kerjasama', 'kedutaanBesar'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(StoreKerjasamaRequest $request, Kerjasama $kerjasama)
     {
-        //
+        $kerjasama->update($request->validated());
+        return redirect()->route('kerjasama.index');
     }
 
-    public function destroy(string $id)
+    public function destroy(Kerjasama $kerjasama)
     {
-        //
+        $kerjasama->update(['is_active' => false]);
+        return redirect()->route('kerjasama.index');
     }
 }
