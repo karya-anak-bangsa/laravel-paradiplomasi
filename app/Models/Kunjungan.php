@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Concerns\HasParadiplomasiFields;
 
 class Kunjungan extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasParadiplomasiFields;
+
+    protected string $judulColumn  = 'perihal';
+    protected string $statusColumn = 'status_kunjungan';
 
     protected $table        = 'tb_kunjungan';
     protected $primaryKey   = 'id_kunjungan';
@@ -34,20 +37,6 @@ class Kunjungan extends Model
         'tanggal_selesai'  => 'date',
         'is_active'        => 'boolean',
     ];
-
-    protected function statusBadgeColor(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => match ($this->status_kunjungan) {
-                'Berjalan' => 'bg-blue-lt',
-                'Selesai'  => 'bg-success-lt',
-                'Tunda'    => 'bg-warning-lt',
-                'Batal'    => 'bg-danger-lt',
-                'Regret'   => 'bg-secondary-lt',
-                default    => 'bg-secondary-lt',
-            },
-        );
-    }
 
     public function kedutaanBesar(): BelongsTo
     {

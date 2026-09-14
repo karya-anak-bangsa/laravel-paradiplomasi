@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Kunjungan;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreKunjunganRequest;
 
 class KunjunganController extends Controller
 {
@@ -29,10 +29,10 @@ class KunjunganController extends Controller
         return view('mod_kunjungan.create', compact('kedutaanBesar'));
     }
 
-
-    public function store(Request $request)
+    public function store(StoreKunjunganRequest $request)
     {
-        //
+        Kunjungan::create($request->validated());
+        return redirect()->route('kunjungan.index');
     }
 
     public function edit(Kunjungan $kunjungan)
@@ -42,13 +42,15 @@ class KunjunganController extends Controller
         return view('mod_kunjungan.edit', compact('kunjungan', 'kedutaanBesar'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(StoreKunjunganRequest $request, Kunjungan $kunjungan)
     {
-        //
+        $kunjungan->update($request->validated());
+        return redirect()->route('kunjungan.index');
     }
 
-    public function destroy(string $id)
+    public function destroy(Kunjungan $kunjungan)
     {
-        //
+        $kunjungan->update(['is_active' => false]);
+        return redirect()->route('kunjungan.index');
     }
 }
