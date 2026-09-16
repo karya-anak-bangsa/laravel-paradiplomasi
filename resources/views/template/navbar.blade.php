@@ -18,10 +18,10 @@
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('kedutaan-besar.index') }}">Kedutaan Besar</a>
-                                    <a class="dropdown-item" href="#">Mitra Misi Asing untuk ASEAN</a>
-                                    <a class="dropdown-item" href="#">Mitra Misi Permanen Negara ASEAN</a>
+                                    <a class="dropdown-item" href="#">Misi Asing untuk ASEAN</a>
+                                    <a class="dropdown-item" href="#">Misi Permanen Negara ASEAN</a>
 
-                                    <a class="dropdown-item" href="#">Mitra Non PNA</a>
+                                    <a class="dropdown-item" href="#">Non Perwakilan Negara Asing</a>
                                 </div>
                             </li>
                             <li class="nav-item @yield('nav-kerjasama')">
