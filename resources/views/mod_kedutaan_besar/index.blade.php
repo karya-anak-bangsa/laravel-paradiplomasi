@@ -3,7 +3,7 @@
 {{-- content --}}
 @section('nav-mitra-kami', 'active')
 @section('page-header')
-    <x-page-header title="Modul Mitra Perwakilan Negara Asing" />
+    <x-page-header title="Modul Mitra Kedutaan Besar" />
 @endsection
 
 {{-- content --}}
