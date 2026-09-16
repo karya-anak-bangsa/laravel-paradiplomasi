@@ -8,13 +8,13 @@
 
 {{-- content --}}
 @section('page-content')
-    <x-page-body-table title="Catatan Mitra Aktif di Biro KSD">
+    <x-page-body-table>
         <x-slot name="thead">
             <tr>
-                <th>Negara</th>
-                <th>Nama Kedutaan</th>
-                <th>Nama Diplomat</th>
-                <th data-orderable="false" class="text-center">Aksi</th>
+                <th style="width: 20%">Negara</th>
+                <th style="width: 35%">Nama Kedutaan</th>
+                <th style="width: 35%">Nama Diplomat</th>
+                <th data-orderable="false" class="text-center" style="width: 10%">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">

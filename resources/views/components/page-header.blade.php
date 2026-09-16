@@ -2,7 +2,7 @@
     <div class="card-body py-4">
         <div class="row align-items-center">
             <div class="col">
-                <h2 class="page-title">{{ $title }}</h2>
+                <h3 class="page-title text-green">{{ $title }}</h3>
             </div>
             <div class="col-auto">
                 @if ($action)
