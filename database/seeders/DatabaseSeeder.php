@@ -12,7 +12,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            MitraSeeder::class,
+
+            # Cara Seeder Baru.
+            // KedutaanBesarSeeder::class,     // akan diaktifkan di langkah 2
+            // MisiAsingAseanSeeder::class,    // langkah 3
+            // MisiPermanenNegaraAseanSeeder::class, // langkah 4
+
+            # Cara Seeder Lama
             // KedutaanBesarPart1Seeder::class,
             // KedutaanBesarPart2Seeder::class,
             // KedutaanBesarPart3Seeder::class,

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string $statusColumn Nama kolom status pada model ini, mis. 'status_kerjasama'
  * @property string $judulColumn  Nama kolom judul pada model ini, mis. 'kerjasama'
  */
+
 trait HasParadiplomasiFields
 {
     public const TRIWULAN_OPTIONS = [
