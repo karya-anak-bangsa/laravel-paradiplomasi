@@ -10,8 +10,13 @@ class Mitra extends Model
 {
     use SoftDeletes;
 
-    protected $table        = 'tb_mitra';
-    protected $primaryKey   = 'id_mitra';
+    protected $table      = 'tb_mitra';
+    protected $primaryKey = 'id_mitra';
+
+    protected $fillable = [
+        'tipe_mitra',
+        'is_active',
+    ];
 
     protected $casts = [
         'tipe_mitra' => TipeMitra::class,
