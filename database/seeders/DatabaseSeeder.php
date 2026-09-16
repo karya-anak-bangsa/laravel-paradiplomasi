@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
 
             # Cara Seeder Baru.
             KedutaanBesarSeeder::class,     // akan diaktifkan di langkah 2
-            // MisiAsingAseanSeeder::class,    // langkah 3
-            // MisiPermanenNegaraAseanSeeder::class, // langkah 4
+            MisiAsingAseanSeeder::class,    // langkah 3
+            MisiPermanenNegaraAseanSeeder::class, // langkah 4
 
             # Cara Seeder Lama
             // KedutaanBesarPart1Seeder::class,
