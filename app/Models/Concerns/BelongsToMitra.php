@@ -4,6 +4,12 @@ namespace App\Models\Concerns;
 
 use App\Models\Mitra;
 
+/**
+ * @method static void creating(\Closure|string $callback)
+ * @method static void deleted(\Closure|string $callback)
+ * @method static void restored(\Closure|string $callback)
+ * @method static void forceDeleted(\Closure|string $callback)
+ */
 trait BelongsToMitra
 {
     public static function bootBelongsToMitra(): void

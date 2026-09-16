@@ -45,6 +45,13 @@ trait HasParadiplomasiFields
         );
     }
 
+    protected function judulRingkas(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => str($this->{$this->judulColumn})->stripTags()->limit(100)->toString(),
+        );
+    }
+
     protected function tanggalDiterimaDisplay(): Attribute
     {
         return Attribute::make(
@@ -58,13 +65,6 @@ trait HasParadiplomasiFields
             get: fn() => $this->tanggal_selesai
                 ? $this->tanggal_selesai->format('d M Y')
                 : '<span class="text-danger">Masih Berjalan</span>',
-        );
-    }
-
-    protected function judulRingkas(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => str($this->{$this->judulColumn})->stripTags()->limit(100)->toString(),
         );
     }
 }
