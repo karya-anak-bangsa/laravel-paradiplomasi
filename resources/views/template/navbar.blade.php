@@ -3,7 +3,6 @@
 
         <div class="navbar navbar-light">
             <div class="container-fluid">
-
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
                     <div class="col">
 
@@ -13,19 +12,17 @@
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-chart-pie me-2"></i>Dashboard</span>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item dropdown @yield('nav-mitra-kami')">
+                            <li class="nav-item dropdown @yield('nav-mitra-kami')">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                    <span class="nav-link-title text-dark"><i class="fa-solid fa-graduation-cap me-2"></i>Mitra Kami</span>
+                                    <span class="nav-link-title text-dark"><i class="fa-solid fa-graduation-cap me-2"></i>Mitra Biro KSD</span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('kedutaan-besar.index') }}">Mitra PNA</a>
+                                    <a class="dropdown-item" href="{{ route('kedutaan-besar.index') }}">Kedutaan Besar</a>
+                                    <a class="dropdown-item" href="#">Mitra Misi Asing untuk ASEAN</a>
+                                    <a class="dropdown-item" href="#">Mitra Misi Permanen Negara ASEAN</a>
+
                                     <a class="dropdown-item" href="#">Mitra Non PNA</a>
                                 </div>
-                            </li> --}}
-                            <li class="nav-item @yield('nav-mitra-kami')">
-                                <a class="nav-link" href="{{ route('kedutaan-besar.index') }}">
-                                    <span class="nav-link-title text-dark"><i class="fa-solid fa-graduation-cap me-2"></i>Mitra PNA</span>
-                                </a>
                             </li>
                             <li class="nav-item @yield('nav-kerjasama')">
                                 <a class="nav-link" href="{{ route('kerjasama.index') }}">
@@ -89,7 +86,6 @@
                     {{-- col --}}
                 </div>
                 {{-- row --}}
-
             </div>
             {{-- container --}}
         </div>
