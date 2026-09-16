@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
 
             # Cara Seeder Baru.
-            // KedutaanBesarSeeder::class,     // akan diaktifkan di langkah 2
+            KedutaanBesarSeeder::class,     // akan diaktifkan di langkah 2
             // MisiAsingAseanSeeder::class,    // langkah 3
             // MisiPermanenNegaraAseanSeeder::class, // langkah 4
 

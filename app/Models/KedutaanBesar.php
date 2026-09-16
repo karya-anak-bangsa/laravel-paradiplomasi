@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\TipeMitra;
+use App\Models\Concerns\BelongsToMitra;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class KedutaanBesar extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToMitra;
 
     protected $table        = 'tb_kedutaan_besar';
     protected $primaryKey   = 'id_kedutaan_besar';
@@ -40,6 +42,11 @@ class KedutaanBesar extends Model
         'latitude'      => 'decimal:7',
         'longitude'     => 'decimal:7',
     ];
+
+    public static function tipeMitra(): string
+    {
+        return TipeMitra::KedutaanBesar->value;
+    }
 
     #--------------------------------------------------------------------------
     # ACCESSOR (FOR UI)
