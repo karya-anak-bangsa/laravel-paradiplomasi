@@ -19,7 +19,7 @@ class Kerjasama extends Model
     protected $primaryKey   = 'id_kerjasama';
 
     protected $fillable = [
-        'id_kedutaan_besar',
+        'id_mitra',
         'kerjasama',
         'rangkuman',
         'catatan',
@@ -39,8 +39,8 @@ class Kerjasama extends Model
         'is_active'        => 'boolean',
     ];
 
-    public function kedutaanBesar(): BelongsTo
+    public function mitra(): BelongsTo
     {
-        return $this->belongsTo(KedutaanBesar::class, 'id_kedutaan_besar');
+        return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra');
     }
 }

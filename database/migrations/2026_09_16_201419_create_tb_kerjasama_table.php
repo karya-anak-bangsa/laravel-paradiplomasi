@@ -12,8 +12,7 @@ return new class extends Migration
 
             # primary key dan foreign key
             $table->id('id_kerjasama');
-            $table->unsignedBigInteger('id_kedutaan_besar');
-            $table->foreign('id_kedutaan_besar')->references('id_kedutaan_besar')->on('tb_kedutaan_besar')->restrictOnDelete();
+            $table->foreignId('id_mitra')->constrained('tb_mitra', 'id_mitra')->restrictOnDelete();
 
             # columns-columns
             $table->text('kerjasama')->nullable();
