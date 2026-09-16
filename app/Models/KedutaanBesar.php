@@ -52,7 +52,6 @@ class KedutaanBesar extends Model
     # ACCESSOR (FOR UI)
     #--------------------------------------------------------------------------
 
-    # accessor - pecah telepon_kantor jadi array
     protected function teleponKantorArray(): Attribute
     {
         return Attribute::make(
@@ -62,7 +61,6 @@ class KedutaanBesar extends Model
         );
     }
 
-    # accessor - pecah email_kantor jadi array
     protected function emailKantorArray(): Attribute
     {
         return Attribute::make(
@@ -72,7 +70,6 @@ class KedutaanBesar extends Model
         );
     }
 
-    # accessor - label status aktif/nonaktif
     protected function activeLabel(): Attribute
     {
         return Attribute::make(
@@ -80,7 +77,6 @@ class KedutaanBesar extends Model
         );
     }
 
-    # accessor - warna badge status aktif/nonaktif
     protected function activeBadgeColor(): Attribute
     {
         return Attribute::make(
@@ -89,31 +85,31 @@ class KedutaanBesar extends Model
     }
 
     #--------------------------------------------------------------------------
-    # RELASI ANTAR TABLE
+    # RELASI ANTAR TABLE — via id_mitra (bukan lagi id_kedutaan_besar)
     #--------------------------------------------------------------------------
 
     public function kerjasama(): HasMany
     {
-        return $this->hasMany(Kerjasama::class, 'id_kedutaan_besar');
+        return $this->hasMany(Kerjasama::class, 'id_mitra', 'id_mitra');
     }
 
-    public function kolaborasi()
+    public function kolaborasi(): HasMany
     {
-        return $this->hasMany(Kolaborasi::class, 'id_kedutaan_besar');
+        return $this->hasMany(Kolaborasi::class, 'id_mitra', 'id_mitra');
     }
 
     public function undangan(): HasMany
     {
-        return $this->hasMany(Undangan::class, 'id_kedutaan_besar');
+        return $this->hasMany(Undangan::class, 'id_mitra', 'id_mitra');
     }
 
     public function audiensi(): HasMany
     {
-        return $this->hasMany(Audiensi::class, 'id_kedutaan_besar');
+        return $this->hasMany(Audiensi::class, 'id_mitra', 'id_mitra');
     }
 
     public function kunjungan(): HasMany
     {
-        return $this->hasMany(Kunjungan::class, 'id_kedutaan_besar');
+        return $this->hasMany(Kunjungan::class, 'id_mitra', 'id_mitra');
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Concerns\BelongsToMitra;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MisiAsingAsean extends Model
 {
@@ -44,6 +45,7 @@ class MisiAsingAsean extends Model
     #--------------------------------------------------------------------------
     # ACCESSOR (FOR UI) — mengikuti pola KedutaanBesar
     #--------------------------------------------------------------------------
+
     protected function teleponKantorArray(): Attribute
     {
         return Attribute::make(
@@ -74,5 +76,34 @@ class MisiAsingAsean extends Model
         return Attribute::make(
             get: fn() => $this->is_active ? 'bg-success-lt' : 'bg-warning-lt',
         );
+    }
+
+    #--------------------------------------------------------------------------
+    # RELASI ANTAR TABLE — via id_mitra
+    #--------------------------------------------------------------------------
+
+    public function kerjasama(): HasMany
+    {
+        return $this->hasMany(Kerjasama::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function kolaborasi(): HasMany
+    {
+        return $this->hasMany(Kolaborasi::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function undangan(): HasMany
+    {
+        return $this->hasMany(Undangan::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function audiensi(): HasMany
+    {
+        return $this->hasMany(Audiensi::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function kunjungan(): HasMany
+    {
+        return $this->hasMany(Kunjungan::class, 'id_mitra', 'id_mitra');
     }
 }
