@@ -24,7 +24,10 @@
                             <span class="fw-bold">{{ $item->nama_negara }}</span>
                         </div>
                     </td>
-                    <td>{{ $item->nama_misi_resmi ?? '-' }}</td>
+                    <td>
+                        <p class="fst-normal mb-0">{{ $item->nama_misi_permanen_asean_id ?? '-' }}</p>
+                        <small class="fst-italic text-primary mb-0">{{ $item->nama_misi_permanen_asean_en ?? '-' }}</small>
+                    </td>
                     <td>{{ $item->nama_diplomat ?? '-' }}</td>
                     <td>
                         <div class="btn-list justify-content-center">

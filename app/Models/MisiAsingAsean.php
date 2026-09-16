@@ -19,7 +19,8 @@ class MisiAsingAsean extends Model
     protected $fillable = [
         'kode_negara',
         'nama_negara',
-        'nama_misi_resmi',
+        'nama_misi_asing_asean_id',
+        'nama_misi_asing_asean_en',
         'format_undangan',
         'nama_diplomat',
         'telepon_kantor',

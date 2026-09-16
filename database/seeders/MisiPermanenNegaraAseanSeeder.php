@@ -13,7 +13,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'bn',
                 'nama_negara' => 'Brunei Darussalam',
-                'nama_misi_resmi' => 'Permanent Mission of the Brunei Darussalam to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Brunei Darussalam untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Brunei Darussalam to ASEAN',
                 'format_undangan' => 'Permanent Representative of Brunei Darussalam to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Latifah Zaini',
                 'telepon_kantor' => '(62) 21 7279 8330',
@@ -27,7 +28,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'kh',
                 'nama_negara' => 'Cambodia',
-                'nama_misi_resmi' => 'Permanent Mission of the Kingdom of Cambodia to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Kerajaan Kamboja untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Kingdom of Cambodia to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Kingdom of Cambodia to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Noy Choumneanh',
                 'telepon_kantor' => '(62) 21 2277 7931',
@@ -41,7 +43,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'ph',
                 'nama_negara' => 'Philippines',
-                'nama_misi_resmi' => 'Permanent Mission of the Republic of Philippines to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Filipina untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Republic of Philippines to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Republic of the Philippines to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Evangeline T. Ong Jimenez-Ducrocq',
                 'telepon_kantor' => '(62) 21 7278 9030',
@@ -55,7 +58,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'id',
                 'nama_negara' => 'Indonesia',
-                'nama_misi_resmi' => 'Permanent Mission of the Republic of Indonesia to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Indonesia untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Republic of Indonesia to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Republic of Indonesia to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. M.I. Derry Aman',
                 'telepon_kantor' => '(62) 2127510600',
@@ -69,7 +73,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'la',
                 'nama_negara' => 'Laos',
-                'nama_misi_resmi' => 'Permanent Mission of the Lao People\'s Democratic Republic to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Demokratik Rakyat Laos untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Lao People\'s Democratic Republic to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Lao People\'s Democratic Republic to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Sitsangkhom Sisaketh',
                 'telepon_kantor' => '(62) 21 720 1838/7279 4810',
@@ -83,7 +88,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'my',
                 'nama_negara' => 'Malaysia',
-                'nama_misi_resmi' => 'Permanent Mission of Malaysia to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Malaysia untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of Malaysia to ASEAN',
                 'format_undangan' => 'Permanent Representative of Malaysia to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Sarah Al Bakri Devadason',
                 'telepon_kantor' => '(62) 21 5290 5634',
@@ -97,7 +103,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'mm',
                 'nama_negara' => 'Myanmar',
-                'nama_misi_resmi' => 'Permanent Mission of the Republic of the Union of Myanmar to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Persatuan Myanmar untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Republic of the Union of Myanmar to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Republic of the Union of Myanmar to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Aung Myo Myint',
                 'telepon_kantor' => '(62) 22127097707',
@@ -111,7 +118,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'sg',
                 'nama_negara' => 'Singapore',
-                'nama_misi_resmi' => 'Permanent Mission of the Republic of Singapore to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Singapura untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Republic of Singapore to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Republic of Singapore to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Gerard Ho',
                 'telepon_kantor' => '(62) 21 2995 0400',
@@ -125,7 +133,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'th',
                 'nama_negara' => 'Thailand',
-                'nama_misi_resmi' => 'Permanent Mission of the Kingdom of Thailand to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Kerajaan Thailand untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Kingdom of Thailand to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Kingdom of Thailand to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Prinat Apirat',
                 'telepon_kantor' => '(62) 21 572 5767',
@@ -139,7 +148,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'vn',
                 'nama_negara' => 'Vietnam',
-                'nama_misi_resmi' => 'Permanent Mission of the Socialist Republic of Viet Nam to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Sosialis Vietnam untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Socialist Republic of Viet Nam to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Socialist Republic of Viet Nam to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Dr. Ton Thi Ngoc Huong',
                 'telepon_kantor' => '(62) 2131907255',
@@ -153,7 +163,8 @@ class MisiPermanenNegaraAseanSeeder extends Seeder
             [
                 'kode_negara' => 'tl',
                 'nama_negara' => 'Timor Leste',
-                'nama_misi_resmi' => 'Permanent Mission of the Democratic Republic of Timor-Leste to ASEAN',
+                'nama_misi_permanen_asean_id' => 'Misi Permanen Republik Demokratik Timor-Leste untuk ASEAN',
+                'nama_misi_permanen_asean_en' => 'Permanent Mission of the Democratic Republic of Timor-Leste to ASEAN',
                 'format_undangan' => 'Permanent Representative of the Democratic Republic of Timor-Leste to ASEAN',
                 'nama_diplomat' => 'H.E. Amb. Natércia Cipriano Coelho da Silva',
                 'telepon_kantor' => '(62) 21 2903 9513',

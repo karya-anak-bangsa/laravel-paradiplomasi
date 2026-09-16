@@ -13,7 +13,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'au',
                 'nama_negara' => 'Australia',
-                'nama_misi_resmi' => 'Mission of Australia to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Australia untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of Australia to ASEAN',
                 'format_undangan' => 'Head of Mission of Australia to ASEAN',
                 'nama_diplomat' => 'H.E. Ms. Tiffany Anne McDonald',
                 'telepon_kantor' => '62 21 25505 555',
@@ -27,7 +28,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'br',
                 'nama_negara' => 'Brazil',
-                'nama_misi_resmi' => 'Mission of the Federative Republic of Brazil to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Republik Federasi Brasil untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of the Federative Republic of Brazil to ASEAN',
                 'format_undangan' => 'Head of Mission of the Federative Republic of Brazil to ASEAN',
                 'nama_diplomat' => 'H.E. Mr. Henrique Archanjo Ferraro',
                 'telepon_kantor' => '62-21 270 88 887',
@@ -41,7 +43,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'ca',
                 'nama_negara' => 'Canada',
-                'nama_misi_resmi' => 'Mission of Canada to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Kanada untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of Canada to ASEAN',
                 'format_undangan' => 'Head of Mission of Canada to ASEAN',
                 'nama_diplomat' => 'H.E. Ms. Ambra Dickie',
                 'telepon_kantor' => '62-21 2550 7800',
@@ -55,7 +58,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'cn',
                 'nama_negara' => 'China',
-                'nama_misi_resmi' => 'Mission of the People\'s Republic of China to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Republik Rakyat Tiongkok untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of the People\'s Republic of China to ASEAN',
                 'format_undangan' => 'Head of Mission of the People\'s Republic of China to ASEAN',
                 'nama_diplomat' => 'H.E. Wang Qing',
                 'telepon_kantor' => '62-21 29527098 / 2952 7092',
@@ -69,7 +73,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'eu',
                 'nama_negara' => 'European Union',
-                'nama_misi_resmi' => 'Mission of the European Union to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Uni Eropa untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of the European Union to ASEAN',
                 'format_undangan' => 'Head of Mission of the European Union to ASEAN',
                 'nama_diplomat' => 'H.E. Mr. Sujiro Seam',
                 'telepon_kantor' => '62-21 2554 6290 / 2554 6200',
@@ -83,7 +88,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'in',
                 'nama_negara' => 'India',
-                'nama_misi_resmi' => 'Mission of India to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi India untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of India to ASEAN',
                 'format_undangan' => 'Head of Mission of India to ASEAN',
                 'nama_diplomat' => 'H.E. Mr. Srinivas Gotru',
                 'telepon_kantor' => '62-21-5221430',
@@ -97,7 +103,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'jp',
                 'nama_negara' => 'Japan',
-                'nama_misi_resmi' => 'Mission of Japan to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Jepang untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of Japan to ASEAN',
                 'format_undangan' => 'Head of Mission of Japan to ASEAN',
                 'nama_diplomat' => 'H.E. Mr. Yonetani Koji',
                 'telepon_kantor' => '62-21 3190 4901',
@@ -111,7 +118,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'kr',
                 'nama_negara' => 'Republic of Korea (ROK)',
-                'nama_misi_resmi' => 'Mission of the Republic of Korea to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Republik Korea untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'Mission of the Republic of Korea to ASEAN',
                 'format_undangan' => 'Head of Mission of the Republic of Korea to ASEAN',
                 'nama_diplomat' => 'Vacant',
                 'telepon_kantor' => '(62 21) 5795 1830',
@@ -125,7 +133,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'nz',
                 'nama_negara' => 'New Zealand',
-                'nama_misi_resmi' => 'New Zealand Mission to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Selandia Baru untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'New Zealand Mission to ASEAN',
                 'format_undangan' => 'Head of New Zealand Mission to ASEAN',
                 'nama_diplomat' => 'H.E. Ms. Joanna Anderson',
                 'telepon_kantor' => '62-21 2995 5800',
@@ -139,7 +148,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'ru',
                 'nama_negara' => 'Russia',
-                'nama_misi_resmi' => 'Mission of the Russian Federation',
+                'nama_misi_asing_asean_id' => 'Misi Federasi Rusia',
+                'nama_misi_asing_asean_en' => 'Mission of the Russian Federation',
                 'format_undangan' => 'Head of Mission of the Russian Federation',
                 'nama_diplomat' => 'H.E. Mr. Evgeny Zagaynov',
                 'telepon_kantor' => '62-21-5222912',
@@ -153,7 +163,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'gb',
                 'nama_negara' => 'United Kingdom',
-                'nama_misi_resmi' => 'UK Mission to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Inggris untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'UK Mission to ASEAN',
                 'format_undangan' => 'Head of UK Mission to ASEAN',
                 'nama_diplomat' => 'H.E. Ms. Helen Fazey',
                 'telepon_kantor' => '62-21-23565334',
@@ -167,7 +178,8 @@ class MisiAsingAseanSeeder extends Seeder
             [
                 'kode_negara' => 'us',
                 'nama_negara' => 'United States of America',
-                'nama_misi_resmi' => 'United States Mission to ASEAN',
+                'nama_misi_asing_asean_id' => 'Misi Amerika Serikat untuk ASEAN',
+                'nama_misi_asing_asean_en' => 'United States Mission to ASEAN',
                 'format_undangan' => 'Head of United States Mission to ASEAN',
                 'nama_diplomat' => 'Vacant',
                 'telepon_kantor' => '62-21-50831000',

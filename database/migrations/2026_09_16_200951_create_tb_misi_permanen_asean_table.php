@@ -19,7 +19,8 @@ return new class extends Migration
             # columns-columns (sumber: sheet "Misi Permanen Negara ASEAN")
             $table->string('kode_negara');
             $table->string('nama_negara');
-            $table->string('nama_misi_resmi');
+            $table->string('nama_misi_permanen_asean_id');
+            $table->string('nama_misi_permanen_asean_en');
             $table->text('format_undangan')->nullable();
             $table->string('nama_diplomat')->nullable();
             $table->text('telepon_kantor')->nullable();
