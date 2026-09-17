@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\KedutaanBesar;
+use App\Http\Requests\StoreKedutaanBesarRequest;
 use App\Http\Requests\UpdateKedutaanBesarRequest;
 
 class KedutaanBesarController extends Controller
@@ -26,6 +26,26 @@ class KedutaanBesarController extends Controller
         return view('mod_kedutaan_besar.show', compact('kedutaanBesar'));
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
+    public function create()
+    {
+        return view('mod_kedutaan_besar.create');
+    }
+
+    public function store(StoreKedutaanBesarRequest $request)
+    {
+        KedutaanBesar::create($request->validated());
+        return redirect()->route('kedutaan-besar.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kedutaan besar berhasil disimpan.',
+        ]);
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
     public function edit(KedutaanBesar $kedutaanBesar)
     {
         return view('mod_kedutaan_besar.edit', compact('kedutaanBesar'));
@@ -40,21 +60,15 @@ class KedutaanBesarController extends Controller
         ]);
     }
 
-    // --------------------------------------------------------------------------------------------------
-    // SENAGAJA TIDAK DIBUAT. Karena tidak sesuai proses bisnis.
-    // --------------------------------------------------------------------------------------------------
-    public function create()
-    {
-        //
-    }
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
 
-    public function store(Request $request)
+    public function destroy(KedutaanBesar $kedutaanBesar)
     {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
+        $kedutaanBesar->update(['is_active' => false]);
+        return redirect()->route('kedutaan-besar.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data kedutaan besar berhasil dinonaktifkan.',
+        ]);
     }
 }

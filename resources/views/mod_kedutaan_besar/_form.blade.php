@@ -12,6 +12,7 @@
         <x-form-input-text
             label="Nama Negara"
             name="nama_negara"
+            placeholder="Contoh: Indonesia"
             :value="$kedutaanBesar->nama_negara ?? null" />
     </div>
 
@@ -47,7 +48,7 @@
         <x-form-input-textarea
             label="Format Undangan"
             name="format_undangan"
-            rows="4"
+            rows="5"
             :value="$kedutaanBesar->format_undangan ?? null" />
     </div>
 
@@ -91,6 +92,7 @@
             label="Latitude"
             name="latitude"
             placeholder="Contoh: -6.1751"
+            hint="Pastikan nilai latitude memiliki empat angka dibelakang koma"
             :value="$kedutaanBesar->latitude ?? null" />
     </div>
 
@@ -99,6 +101,7 @@
             label="Longitude"
             name="longitude"
             placeholder="Contoh: 106.8650"
+            hint="Pastikan nilai longitude memiliki empat angka dibelakang koma"
             :value="$kedutaanBesar->longitude ?? null" />
     </div>
 
