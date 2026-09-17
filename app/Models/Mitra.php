@@ -74,4 +74,25 @@ class Mitra extends Model
             get: fn() => $this->subtype()?->kode_negara,
         );
     }
+
+    /**
+     * Nama resmi (Bahasa Indonesia) mitra sesuai tipenya — kolom nama
+     * resmi berbeda nama per tabel subtype (nama_kedutaan_besar_id,
+     * nama_misi_asing_asean_id, nama_misi_permanen_asean_id), sehingga
+     * tidak bisa diakses lewat properti generik seperti namaMitra.
+     */
+    protected function namaResmiMitra(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $subtype = $this->subtype();
+                return match (true) {
+                    $subtype instanceof KedutaanBesar       => $subtype->nama_kedutaan_besar_id,
+                    $subtype instanceof MisiAsingAsean      => $subtype->nama_misi_asing_asean_id,
+                    $subtype instanceof MisiPermanenAsean   => $subtype->nama_misi_permanen_asean_id,
+                    default                                 => null,
+                };
+            },
+        );
+    }
 }

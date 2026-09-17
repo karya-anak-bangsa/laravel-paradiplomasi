@@ -11,9 +11,33 @@
     </div>
 
     <div class="col-lg-6 mb-3">
-        <label class="form-label" for="id_mitra">Nama Negara</label>
-        <select class="form-select border-dark tom-select" name="id_mitra" id="id_mitra">
+        <label class="form-label" for="id_mitra">Nama Mitra</label>
+        <select class="form-select border-dark" name="id_mitra" id="id_mitra" disabled>
             <option value="" selected>Pilih tipe mitra terlebih dahulu</option>
+
+            <optgroup label="Kedutaan Besar" data-tipe-mitra="kedutaan_besar" hidden>
+                @foreach ($kedutaanBesar as $mitra)
+                    <option value="{{ $mitra->id_mitra }}" @selected(old('id_mitra', $kerjasama->id_mitra ?? null) == $mitra->id_mitra)>
+                        {{ $mitra->nama_negara }}
+                    </option>
+                @endforeach
+            </optgroup>
+
+            <optgroup label="Misi Asing untuk ASEAN" data-tipe-mitra="misi_asing_asean" hidden>
+                @foreach ($misiAsingAsean as $mitra)
+                    <option value="{{ $mitra->id_mitra }}" @selected(old('id_mitra', $kerjasama->id_mitra ?? null) == $mitra->id_mitra)>
+                        {{ $mitra->nama_negara }}
+                    </option>
+                @endforeach
+            </optgroup>
+
+            <optgroup label="Misi Permanen Negara ASEAN" data-tipe-mitra="misi_permanen_asean" hidden>
+                @foreach ($misiPermanenAsean as $mitra)
+                    <option value="{{ $mitra->id_mitra }}" @selected(old('id_mitra', $kerjasama->id_mitra ?? null) == $mitra->id_mitra)>
+                        {{ $mitra->nama_negara }}
+                    </option>
+                @endforeach
+            </optgroup>
         </select>
         @error('id_mitra')
             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -96,12 +120,10 @@
 </div>
 
 @php
-    // Saat edit: id_mitra + tipe mitra yang sudah tersimpan (dari relasi
-    // mitra yang sudah di-eager-load di controller), untuk pre-select
-    // kedua dropdown. @json() tidak reliable untuk ekspresi match()
-    // multi-baris, jadi dihitung dulu di sini lalu di-@json() sebagai
-    // variabel biasa.
-    $tipeMitraAwalPhp = match (true) {
+    // Saat edit: tipe mitra yang sudah tersimpan (dari relasi mitra yang
+    // sudah di-eager-load di controller), untuk pre-select dropdown tipe
+    // dan otomatis membuka optgroup yang sesuai.
+    $tipeMitraAwal = match (true) {
         isset($kerjasama) && $kerjasama->mitra?->kedutaanBesar => 'kedutaan_besar',
         isset($kerjasama) && $kerjasama->mitra?->misiAsingAsean => 'misi_asing_asean',
         isset($kerjasama) && $kerjasama->mitra?->misiPermanenAsean => 'misi_permanen_asean',
@@ -112,69 +134,33 @@
 @push('scripts')
     <script>
         (function() {
-            // Data mitra per tipe, dikirim controller lewat $kedutaanBesar /
-            // $misiAsingAsean / $misiPermanenAsean (masing-masing berisi
-            // id_mitra dan nama_negara).
-            const daftarMitraPerTipe = {
-                kedutaan_besar: @json($kedutaanBesar->map(fn($m) => ['value' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                misi_asing_asean: @json($misiAsingAsean->map(fn($m) => ['value' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                misi_permanen_asean: @json($misiPermanenAsean->map(fn($m) => ['value' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-            };
-
-            // Saat edit: id_mitra + tipe mitra yang sudah tersimpan, untuk
-            // pre-select kedua dropdown.
-            const idMitraTerpilih = @json($kerjasama->id_mitra ?? null);
-            const tipeMitraAwal = @json($tipeMitraAwalPhp);
-
             const selectTipe = document.getElementById('tipe_mitra_pilihan');
             const selectMitra = document.getElementById('id_mitra');
-            let tomSelectMitra = null;
+            const optgroups = selectMitra.querySelectorAll('optgroup');
 
-            function isiDropdownMitra(tipe, preselectValue) {
-                if (!tomSelectMitra) return;
-
-                tomSelectMitra.clear(true);
-                tomSelectMitra.clearOptions();
-
-                if (!tipe || !daftarMitraPerTipe[tipe]) {
-                    tomSelectMitra.disable();
-                    return;
-                }
-
-                tomSelectMitra.enable();
-                daftarMitraPerTipe[tipe].forEach(function(mitra) {
-                    tomSelectMitra.addOption(mitra);
+            function tampilkanOptgroupSesuaiTipe(tipe) {
+                optgroups.forEach(function(optgroup) {
+                    optgroup.hidden = optgroup.dataset.tipeMitra !== tipe;
                 });
-                tomSelectMitra.refreshOptions(false);
 
-                if (preselectValue) {
-                    tomSelectMitra.setValue(preselectValue, true);
+                if (tipe) {
+                    selectMitra.disabled = false;
+                } else {
+                    selectMitra.disabled = true;
+                    selectMitra.value = '';
                 }
             }
 
             selectTipe.addEventListener('change', function() {
-                isiDropdownMitra(this.value, null);
+                selectMitra.value = '';
+                tampilkanOptgroupSesuaiTipe(this.value);
             });
 
-            function tungguTomSelect() {
-                // Tom Select di-init global via DOMContentLoaded (lihat
-                // template/app.blade.php); tunggu sampai instance-nya siap
-                // sebelum kita kendalikan opsinya dari sini.
-                if (selectMitra.tomselect) {
-                    tomSelectMitra = selectMitra.tomselect;
-
-                    if (tipeMitraAwal) {
-                        selectTipe.value = tipeMitraAwal;
-                        isiDropdownMitra(tipeMitraAwal, idMitraTerpilih);
-                    } else {
-                        isiDropdownMitra(null, null);
-                    }
-                } else {
-                    setTimeout(tungguTomSelect, 50);
-                }
+            const tipeMitraAwal = @json($tipeMitraAwal);
+            if (tipeMitraAwal) {
+                selectTipe.value = tipeMitraAwal;
+                tampilkanOptgroupSesuaiTipe(tipeMitraAwal);
             }
-
-            tungguTomSelect();
         })();
     </script>
 @endpush

@@ -13,7 +13,7 @@ class KerjasamaController extends Controller
 {
     /**
      * Eager-load relasi mitra + ketiga subtype-nya, dipakai bareng oleh
-     * index/show supaya accessor $mitra->nama_mitra / kode_mitra tidak N+1.
+     * index/show supaya accessor $mitra->nama_mitra / kode_mitra / nama_resmi_mitra tidak N+1.
      */
     private const MITRA_RELATIONS = [
         'mitra.kedutaanBesar',
@@ -79,21 +79,22 @@ class KerjasamaController extends Controller
     /**
      * Daftar mitra aktif per tipe, untuk dropdown tipe->detail di form.
      * Masing-masing sudah include `id_mitra` (bukan PK subtype-nya)
-     * sebagai value yang akan disimpan di tb_kerjasama.id_mitra.
+     * sebagai value yang akan disimpan di tb_kerjasama.id_mitra, plus
+     * kolom nama resmi ID masing-masing untuk label opsi dropdown.
      */
     private function daftarMitraAktif(): array
     {
         $kedutaanBesar = KedutaanBesar::where('is_active', true)
             ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara']);
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id']);
 
         $misiAsingAsean = MisiAsingAsean::where('is_active', true)
             ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara']);
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_asing_asean_id']);
 
         $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)
             ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara']);
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
 
         return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean];
     }

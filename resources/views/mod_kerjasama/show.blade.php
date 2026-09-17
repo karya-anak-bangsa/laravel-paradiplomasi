@@ -20,10 +20,9 @@
                 </div>
                 <div class="card-body">
 
-                    {{-- mitra --}}
-                    {{-- Nama Negara, Tipe Mitra --}}
+                    {{-- id_mitra --}}
                     <div class="hr-text hr-text-start">Mitra</div>
-                    <div class="datagrid align-items-center">
+                    <div class="datagrid align-items-center mb-3">
                         <div class="datagrid-item">
                             <div class="datagrid-content d-flex align-items-center">
                                 <span class="flag flag-md flag-country-{{ $kerjasama->mitra->kode_mitra }} me-2"></span>
@@ -34,17 +33,47 @@
                             <div class="datagrid-title">Tipe Mitra</div>
                             <div class="datagrid-content">{{ $kerjasama->mitra->tipe_mitra->value }}</div>
                         </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Nama Resmi</div>
+                            <div class="datagrid-content">{{ $kerjasama->mitra->nama_resmi_mitra ?? '-' }}</div>
+                        </div>
                     </div>
-                    {{-- mitra --}}
+                    {{-- id_mitra --}}
 
-                    {{-- status & jadwal --}}
-                    {{-- Triwulan, Tanggal Diterima, Tanggal Selesai, Status Kerjasama --}}
+                    {{-- kerjasama --}}
+                    <div class="hr-text hr-text-start">Kerjasama</div>
+                    <div class="mb-3">
+                        <div class="border rounded p-3">
+                            @if ($kerjasama->kerjasama)
+                                {!! $kerjasama->kerjasama !!}
+                            @else
+                                <p class="text-secondary mb-0">Belum ada catatan kerjasama.</p>
+                            @endif
+                        </div>
+                    </div>
+                    {{-- kerjasama --}}
+
+                    {{-- rangkuman --}}
+                    <div class="hr-text hr-text-start">Rangkuman</div>
+                    <div class="mb-3">
+                        <div class="border rounded p-3">
+                            {!! $kerjasama->rangkuman !!}
+                        </div>
+                    </div>
+                    {{-- rangkuman --}}
+
+                    {{-- catatan --}}
+                    <div class="hr-text hr-text-start">Catatan</div>
+                    <div class="mb-3">
+                        <div class="border rounded p-3">
+                            {!! $kerjasama->catatan !!}
+                        </div>
+                    </div>
+                    {{-- catatan --}}
+
+                    {{-- tanggal_diterima, tanggal_selesai, triwulan_kerjasama, status_kerjasama --}}
                     <div class="hr-text hr-text-start">Status & Jadwal</div>
                     <div class="datagrid align-items-center">
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Triwulan</div>
-                            <div class="datagrid-content">{{ $kerjasama->triwulan_kerjasama }}</div>
-                        </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">Tanggal Diterima</div>
                             <div class="datagrid-content">{{ $kerjasama->tanggal_diterima?->format('d M Y') ?? '-' }}</div>
@@ -54,42 +83,19 @@
                             <div class="datagrid-content">{{ $kerjasama->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Status Kerjasama</div>
-                            <div class="datagrid-content">{{ $kerjasama->status_kerjasama }}</div>
+                            <div class="datagrid-title">Triwulan</div>
+                            <div class="datagrid-content">{{ $kerjasama->triwulan_kerjasama }}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title"></div>
-                            <div class="datagrid-content"></div>
+                            <div class="datagrid-title">Status Kerjasama</div>
+                            <div class="datagrid-content">
+                                <span class="badge {{ $kerjasama->status_badge_color }}">
+                                    {{ $kerjasama->status_kerjasama }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    {{-- status & jadwal --}}
-
-                    {{-- detail kerjasama --}}
-                    {{-- Kerjasama, Rangkuman, Catatan --}}
-                    <div class="hr-text hr-text-start">Detail Kerjasama</div>
-                    <div class="mb-3">
-                        <div class="text-secondary mb-2">Judul</div>
-                        <div class="border rounded p-3">
-                            @if ($kerjasama->kerjasama)
-                                {!! $kerjasama->kerjasama !!}
-                            @else
-                                <p class="text-secondary mb-0">Belum ada catatan kerjasama.</p>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="text-secondary mb-2">Rangkuman</div>
-                        <div class="border rounded p-3">
-                            {!! $kerjasama->rangkuman !!}
-                        </div>
-                    </div>
-                    <div class="mb-0">
-                        <div class="text-secondary mb-2">Catatan</div>
-                        <div class="border rounded p-3">
-                            {!! $kerjasama->catatan !!}
-                        </div>
-                    </div>
-                    {{-- detail kerjasama --}}
+                    {{-- tanggal_diterima, tanggal_selesai, triwulan_kerjasama, status_kerjasama --}}
 
                 </div>
                 <div class="card-footer">
