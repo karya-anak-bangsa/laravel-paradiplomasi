@@ -2,14 +2,25 @@
 
 @section('nav-mitra-kami', 'active')
 @section('page-header')
-    <x-page-header
-        title="Modul Misi Permanen Negara ASEAN"
-        back-route="misi-permanen-asean.index">
-    </x-page-header>
+    <x-page-header title="Modul Misi Permanen Negara ASEAN" back-route="misi-permanen-asean.index" />
 @endsection
 
 @section('page-content')
-    <x-page-body-show title="Rincian Data - {{ $misiPermanenAsean->nama_negara }}">
-        @include('mod_misi_permanen_asean.show-rincian-data')
-    </x-page-body-show>
+    <div class="row row-cards mb-4">
+        <div class="col-lg-8">
+            <x-page-body-show title="Rincian Data">
+                @include('mod_misi_permanen_asean.show-rincian')
+            </x-page-body-show>
+
+            <x-page-body-show title="Riwayat Diplomasi">
+                @include('mod_misi_permanen_asean.show-riwayat')
+            </x-page-body-show>
+        </div>
+
+        <div class="col-lg-4">
+            <x-page-body-show title="Lokasi di Peta">
+                @include('mod_misi_permanen_asean.show-peta')
+            </x-page-body-show>
+        </div>
+    </div>
 @endsection

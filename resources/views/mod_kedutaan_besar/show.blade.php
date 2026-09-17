@@ -24,7 +24,7 @@
         {{-- col --}}
 
         <div class="col-lg-4">
-            <x-page-body-show title="Lokasi di Peta">
+            <x-page-body-show title="Peta Lokasi">
                 @include('mod_kedutaan_besar.show-peta')
             </x-page-body-show>
         </div>
