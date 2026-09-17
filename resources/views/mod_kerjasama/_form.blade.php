@@ -95,6 +95,20 @@
     </div>
 </div>
 
+@php
+    // Saat edit: id_mitra + tipe mitra yang sudah tersimpan (dari relasi
+    // mitra yang sudah di-eager-load di controller), untuk pre-select
+    // kedua dropdown. @json() tidak reliable untuk ekspresi match()
+    // multi-baris, jadi dihitung dulu di sini lalu di-@json() sebagai
+    // variabel biasa.
+    $tipeMitraAwalPhp = match (true) {
+        isset($kerjasama) && $kerjasama->mitra?->kedutaanBesar => 'kedutaan_besar',
+        isset($kerjasama) && $kerjasama->mitra?->misiAsingAsean => 'misi_asing_asean',
+        isset($kerjasama) && $kerjasama->mitra?->misiPermanenAsean => 'misi_permanen_asean',
+        default => null,
+    };
+@endphp
+
 @push('scripts')
     <script>
         (function() {
@@ -107,16 +121,10 @@
                 misi_permanen_asean: @json($misiPermanenAsean->map(fn($m) => ['value' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
             };
 
-            // Saat edit: id_mitra + tipe mitra yang sudah tersimpan (dari
-            // relasi mitra yang sudah di-eager-load di controller), untuk
+            // Saat edit: id_mitra + tipe mitra yang sudah tersimpan, untuk
             // pre-select kedua dropdown.
             const idMitraTerpilih = @json($kerjasama->id_mitra ?? null);
-            const tipeMitraAwal = @json(match (true) {
-                    isset($kerjasama) && $kerjasama->mitra?->kedutaanBesar => 'kedutaan_besar',
-                    isset($kerjasama) && $kerjasama->mitra?->misiAsingAsean => 'misi_asing_asean',
-                    isset($kerjasama) && $kerjasama->mitra?->misiPermanenAsean => 'misi_permanen_asean',
-                    default => null,
-                });
+            const tipeMitraAwal = @json($tipeMitraAwalPhp);
 
             const selectTipe = document.getElementById('tipe_mitra_pilihan');
             const selectMitra = document.getElementById('id_mitra');
