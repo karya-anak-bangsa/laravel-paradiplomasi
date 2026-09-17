@@ -16,38 +16,26 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Rincian Kerjasama - {{ $kerjasama->kedutaanBesar->nama_negara }}</h3>
+                    <h3 class="card-title">Rincian Kerjasama - {{ $kerjasama->mitra->nama_mitra }}</h3>
                 </div>
                 <div class="card-body">
 
-                    {{-- kedutaan besar --}}
-                    {{-- Nama Negara, Nama Kedutaan ID, Nama Kedutaan EN, Nama Diplomat, Jabatan Diplomat. --}}
-                    <div class="hr-text hr-text-start">Kedutaan Besar</div>
+                    {{-- mitra --}}
+                    {{-- Nama Negara, Tipe Mitra --}}
+                    <div class="hr-text hr-text-start">Mitra</div>
                     <div class="datagrid align-items-center">
                         <div class="datagrid-item">
                             <div class="datagrid-content d-flex align-items-center">
-                                <span class="flag flag-md flag-country-{{ $kerjasama->kedutaanBesar->kode_negara }} me-2"></span>
-                                <span class="fw-bold">{{ $kerjasama->kedutaanBesar->nama_negara }}</span>
+                                <span class="flag flag-md flag-country-{{ $kerjasama->mitra->kode_mitra }} me-2"></span>
+                                <span class="fw-bold">{{ $kerjasama->mitra->nama_mitra }}</span>
                             </div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Kedutaan (ID)</div>
-                            <div class="datagrid-content">{{ $kerjasama->kedutaanBesar->nama_kedutaan_besar_id ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Kedutaan (EN)</div>
-                            <div class="datagrid-content">{{ $kerjasama->kedutaanBesar->nama_kedutaan_besar_en ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Diplomat</div>
-                            <div class="datagrid-content">{{ $kerjasama->kedutaanBesar->nama_diplomat ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Jabatan Diplomat</div>
-                            <div class="datagrid-content">{{ $kerjasama->kedutaanBesar->jabatan_diplomat ?? '-' }}</div>
+                            <div class="datagrid-title">Tipe Mitra</div>
+                            <div class="datagrid-content">{{ $kerjasama->mitra->tipe_mitra->value }}</div>
                         </div>
                     </div>
-                    {{-- kedutaan besar --}}
+                    {{-- mitra --}}
 
                     {{-- status & jadwal --}}
                     {{-- Triwulan, Tanggal Diterima, Tanggal Selesai, Status Kerjasama --}}

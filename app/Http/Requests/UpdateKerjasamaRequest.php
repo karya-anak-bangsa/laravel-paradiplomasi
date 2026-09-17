@@ -14,7 +14,7 @@ class UpdateKerjasamaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_kedutaan_besar'  => ['required', 'integer', 'exists:tb_kedutaan_besar,id_kedutaan_besar'],
+            'id_mitra'           => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
             'kerjasama'          => ['required', 'string'],
             'rangkuman'          => ['nullable', 'string'],
             'catatan'            => ['nullable', 'string'],
@@ -28,7 +28,7 @@ class UpdateKerjasamaRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'id_kedutaan_besar'  => 'Nama Negara',
+            'id_mitra'           => 'Nama Negara',
             'kerjasama'          => 'Judul Kerjasama',
             'rangkuman'          => 'Rangkuman',
             'catatan'            => 'Catatan',

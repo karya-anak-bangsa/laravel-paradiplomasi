@@ -27,8 +27,8 @@
                 <tr>
                     <td class="text-start">
                         <div class="d-flex align-items-center">
-                            <span class="flag flag-sm flag-country-{{ $item->kedutaanBesar->kode_negara }} me-2"></span>
-                            <span class="fw-bold">{{ $item->kedutaanBesar->nama_negara }}</span>
+                            <span class="flag flag-sm flag-country-{{ $item->mitra->kode_mitra }} me-2"></span>
+                            <span class="fw-bold">{{ $item->mitra->nama_mitra }}</span>
                         </div>
                     </td>
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
