@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Undangan;
+use App\Models\MisiAsingAsean;
+use App\Models\MisiPermanenAsean;
 use App\Http\Requests\StoreUndanganRequest;
+use App\Http\Requests\UpdateUndanganRequest;
 
 class UndanganController extends Controller
 {
+    private const MITRA_RELATIONS = [
+        'mitra.kedutaanBesar',
+        'mitra.misiAsingAsean',
+        'mitra.misiPermanenAsean',
+    ];
+
     public function index()
     {
-        $undangan = Undangan::with('kedutaanBesar')
+        $undangan = Undangan::with(self::MITRA_RELATIONS)
             ->where('is_active', true)
             ->latest('tanggal_diterima')
             ->get();
@@ -19,14 +28,14 @@ class UndanganController extends Controller
 
     public function show(Undangan $undangan)
     {
-        $undangan->load('kedutaanBesar');
+        $undangan->load(self::MITRA_RELATIONS);
         return view('mod_undangan.show', compact('undangan'));
     }
 
     public function create()
     {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
-        return view('mod_undangan.create', compact('kedutaanBesar')); // sesuaikan nama view per modul
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
+        return view('mod_undangan.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
     }
 
     public function store(StoreUndanganRequest $request)
@@ -40,12 +49,12 @@ class UndanganController extends Controller
 
     public function edit(Undangan $undangan)
     {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
-        $undangan->load('kedutaanBesar');
-        return view('mod_undangan.edit', compact('undangan', 'kedutaanBesar'));
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
+        $undangan->load(self::MITRA_RELATIONS);
+        return view('mod_undangan.edit', compact('undangan', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
     }
 
-    public function update(StoreUndanganRequest $request, Undangan $undangan)
+    public function update(UpdateUndanganRequest $request, Undangan $undangan)
     {
         $undangan->update($request->validated());
         return redirect()->route('undangan.index')->with('notify', [
@@ -61,5 +70,22 @@ class UndanganController extends Controller
             'type'    => 'success',
             'message' => 'Data undangan berhasil dinonaktifkan.',
         ]);
+    }
+
+    private function daftarMitraAktif(): array
+    {
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)
+            ->orderBy('nama_negara')
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id']);
+
+        $misiAsingAsean = MisiAsingAsean::where('is_active', true)
+            ->orderBy('nama_negara')
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_asing_asean_id']);
+
+        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)
+            ->orderBy('nama_negara')
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
+
+        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean];
     }
 }

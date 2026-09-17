@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUndanganRequest extends FormRequest
+class UpdateAudiensiRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,13 +15,13 @@ class StoreUndanganRequest extends FormRequest
     {
         return [
             'id_mitra'          => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
-            'acara'             => ['required', 'string'],
-            'rangkuman'         => ['required', 'string'],
-            'catatan'           => ['required', 'string'],
-            'tanggal_diterima'  => ['required', 'date'],
+            'topik'             => ['required', 'string'],
+            'rangkuman'         => ['nullable', 'string'],
+            'catatan'           => ['nullable', 'string'],
+            'tanggal_diterima'  => ['nullable', 'date'],
             'tanggal_selesai'   => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
-            'triwulan_undangan' => ['required', 'in:TW I,TW II,TW III,TW IV'],
-            'status_undangan'   => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
+            'triwulan_audiensi' => ['required', 'in:TW I,TW II,TW III,TW IV'],
+            'status_audiensi'   => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
         ];
     }
 
@@ -29,13 +29,13 @@ class StoreUndanganRequest extends FormRequest
     {
         return [
             'id_mitra'          => 'Nama Negara',
-            'acara'             => 'Acara',
+            'topik'             => 'Topik',
             'rangkuman'         => 'Rangkuman',
             'catatan'           => 'Catatan',
             'tanggal_diterima'  => 'Tanggal Diterima',
             'tanggal_selesai'   => 'Tanggal Selesai',
-            'triwulan_undangan' => 'Triwulan',
-            'status_undangan'   => 'Status Undangan',
+            'status_audiensi'   => 'Status Audiensi',
+            'triwulan_audiensi' => 'Triwulan',
         ];
     }
 }

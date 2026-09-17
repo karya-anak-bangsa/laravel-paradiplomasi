@@ -16,45 +16,64 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Rincian Undangan - {{ $undangan->kedutaanBesar->nama_negara }}</h3>
+                    <h3 class="card-title">Rincian Undangan - {{ $undangan->mitra->nama_mitra }}</h3>
                 </div>
                 <div class="card-body">
 
-                    {{-- kedutaan besar --}}
-                    <div class="hr-text hr-text-start">Kedutaan Besar</div>
-                    <div class="datagrid align-items-center">
+                    {{-- id_mitra --}}
+                    <div class="hr-text hr-text-start">Mitra</div>
+                    <div class="datagrid align-items-center mb-3">
                         <div class="datagrid-item">
                             <div class="datagrid-content d-flex align-items-center">
-                                <span class="flag flag-md flag-country-{{ $undangan->kedutaanBesar->kode_negara }} me-2"></span>
-                                <span class="fw-bold">{{ $undangan->kedutaanBesar->nama_negara }}</span>
+                                <span class="flag flag-md flag-country-{{ $undangan->mitra->kode_mitra }} me-2"></span>
+                                <span class="fw-bold">{{ $undangan->mitra->nama_mitra }}</span>
                             </div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Kedutaan (ID)</div>
-                            <div class="datagrid-content">{{ $undangan->kedutaanBesar->nama_kedutaan_besar_id ?? '-' }}</div>
+                            <div class="datagrid-title">Tipe Mitra</div>
+                            <div class="datagrid-content">{{ $undangan->mitra->tipe_mitra->value }}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Kedutaan (EN)</div>
-                            <div class="datagrid-content">{{ $undangan->kedutaanBesar->nama_kedutaan_besar_en ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Diplomat</div>
-                            <div class="datagrid-content">{{ $undangan->kedutaanBesar->nama_diplomat ?? '-' }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Jabatan Diplomat</div>
-                            <div class="datagrid-content">{{ $undangan->kedutaanBesar->jabatan_diplomat ?? '-' }}</div>
+                            <div class="datagrid-title">Nama Resmi</div>
+                            <div class="datagrid-content">{{ $undangan->mitra->nama_resmi_mitra ?? '-' }}</div>
                         </div>
                     </div>
-                    {{-- kedutaan besar --}}
+                    {{-- id_mitra --}}
 
-                    {{-- status & jadwal --}}
+                    {{-- acara --}}
+                    <div class="hr-text hr-text-start">Acara</div>
+                    <div class="mb-3">
+                        <div class="border rounded p-3">
+                            @if ($undangan->acara)
+                                {!! $undangan->acara !!}
+                            @else
+                                <p class="text-secondary mb-0">Belum ada catatan acara.</p>
+                            @endif
+                        </div>
+                    </div>
+                    {{-- acara --}}
+
+                    {{-- rangkuman --}}
+                    <div class="hr-text hr-text-start">Rangkuman</div>
+                    <div class="mb-3">
+                        <div class="border rounded p-3">
+                            {!! $undangan->rangkuman !!}
+                        </div>
+                    </div>
+                    {{-- rangkuman --}}
+
+                    {{-- catatan --}}
+                    <div class="hr-text hr-text-start">Catatan</div>
+                    <div class="mb-3">
+                        <div class="border rounded p-3">
+                            {!! $undangan->catatan !!}
+                        </div>
+                    </div>
+                    {{-- catatan --}}
+
+                    {{-- tanggal_diterima, tanggal_selesai, triwulan_undangan, status_undangan --}}
                     <div class="hr-text hr-text-start">Status & Jadwal</div>
                     <div class="datagrid align-items-center">
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Triwulan</div>
-                            <div class="datagrid-content">{{ $undangan->triwulan_undangan }}</div>
-                        </div>
                         <div class="datagrid-item">
                             <div class="datagrid-title">Tanggal Diterima</div>
                             <div class="datagrid-content">{{ $undangan->tanggal_diterima?->format('d M Y') ?? '-' }}</div>
@@ -64,41 +83,19 @@
                             <div class="datagrid-content">{{ $undangan->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Status Undangan</div>
-                            <div class="datagrid-content">{{ $undangan->status_undangan }}</div>
+                            <div class="datagrid-title">Triwulan</div>
+                            <div class="datagrid-content">{{ $undangan->triwulan_undangan }}</div>
                         </div>
                         <div class="datagrid-item">
-                            <div class="datagrid-title"></div>
-                            <div class="datagrid-content"></div>
+                            <div class="datagrid-title">Status Undangan</div>
+                            <div class="datagrid-content">
+                                <span class="badge {{ $undangan->status_badge_color }}">
+                                    {{ $undangan->status_undangan }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    {{-- status & jadwal --}}
-
-                    {{-- detail undangan --}}
-                    <div class="hr-text hr-text-start">Detail Undangan</div>
-                    <div class="mb-3">
-                        <div class="text-secondary mb-2">Acara</div>
-                        <div class="border rounded p-3">
-                            @if ($undangan->acara)
-                                {!! $undangan->acara !!}
-                            @else
-                                <p class="text-secondary mb-0">Belum ada catatan acara.</p>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="text-secondary mb-2">Rangkuman</div>
-                        <div class="border rounded p-3">
-                            {!! $undangan->rangkuman !!}
-                        </div>
-                    </div>
-                    <div class="mb-0">
-                        <div class="text-secondary mb-2">Catatan</div>
-                        <div class="border rounded p-3">
-                            {!! $undangan->catatan !!}
-                        </div>
-                    </div>
-                    {{-- detail undangan --}}
+                    {{-- tanggal_diterima, tanggal_selesai, triwulan_undangan, status_undangan --}}
 
                 </div>
                 <div class="card-footer">

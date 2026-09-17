@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
 use App\Models\Audiensi;
+use App\Models\MisiAsingAsean;
+use App\Models\MisiPermanenAsean;
 use App\Http\Requests\StoreAudiensiRequest;
+use App\Http\Requests\UpdateAudiensiRequest;
 
 class AudiensiController extends Controller
 {
+    private const MITRA_RELATIONS = [
+        'mitra.kedutaanBesar',
+        'mitra.misiAsingAsean',
+        'mitra.misiPermanenAsean',
+    ];
+
     public function index()
     {
-        $audiensi = Audiensi::with('kedutaanBesar')
+        $audiensi = Audiensi::with(self::MITRA_RELATIONS)
             ->where('is_active', true)
             ->latest('tanggal_diterima')
             ->get();
@@ -19,14 +28,14 @@ class AudiensiController extends Controller
 
     public function show(Audiensi $audiensi)
     {
-        $audiensi->load('kedutaanBesar');
+        $audiensi->load(self::MITRA_RELATIONS);
         return view('mod_audiensi.show', compact('audiensi'));
     }
 
     public function create()
     {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
-        return view('mod_audiensi.create', compact('kedutaanBesar'));
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
+        return view('mod_audiensi.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
     }
 
     public function store(StoreAudiensiRequest $request)
@@ -40,12 +49,12 @@ class AudiensiController extends Controller
 
     public function edit(Audiensi $audiensi)
     {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
-        $audiensi->load('kedutaanBesar');
-        return view('mod_audiensi.edit', compact('audiensi', 'kedutaanBesar'));
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
+        $audiensi->load(self::MITRA_RELATIONS);
+        return view('mod_audiensi.edit', compact('audiensi', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
     }
 
-    public function update(StoreAudiensiRequest $request, Audiensi $audiensi)
+    public function update(UpdateAudiensiRequest $request, Audiensi $audiensi)
     {
         $audiensi->update($request->validated());
         return redirect()->route('audiensi.index')->with('notify', [
@@ -61,5 +70,22 @@ class AudiensiController extends Controller
             'type'    => 'success',
             'message' => 'Data audiensi berhasil dinonaktifkan.',
         ]);
+    }
+
+    private function daftarMitraAktif(): array
+    {
+        $kedutaanBesar = KedutaanBesar::where('is_active', true)
+            ->orderBy('nama_negara')
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id']);
+
+        $misiAsingAsean = MisiAsingAsean::where('is_active', true)
+            ->orderBy('nama_negara')
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_asing_asean_id']);
+
+        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)
+            ->orderBy('nama_negara')
+            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
+
+        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean];
     }
 }
