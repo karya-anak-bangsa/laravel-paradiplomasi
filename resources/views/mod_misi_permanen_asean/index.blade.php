@@ -38,9 +38,10 @@
                                 <a href="{{ route('misi-permanen-asean.edit', $item) }}" class="btn btn-icon btn-warning">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
-                                <a href="" class="btn btn-icon btn-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+                                <form action="{{ route('misi-permanen-asean.destroy', $item) }}" method="post" class="confirm-submit d-inline" data-confirm="delete">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-icon btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </form>
                             @endif
                         </div>
                     </td>
