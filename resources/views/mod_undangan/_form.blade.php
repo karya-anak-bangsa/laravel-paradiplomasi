@@ -11,7 +11,7 @@
     </div>
 
     <div class="col-lg-6 mb-3">
-        <label class="form-label" for="id_mitra">Nama Negara</label>
+        <label class="form-label" for="id_mitra">Nama Mitra</label>
         <select class="form-select border-dark" name="id_mitra" id="id_mitra" disabled>
             <option value="" selected>Pilih tipe mitra terlebih dahulu</option>
 

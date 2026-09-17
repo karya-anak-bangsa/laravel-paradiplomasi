@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover border-top datatable"> {{-- table-vcenter  --}}
+                    <table class="table table-hover table-vcenter border-top datatable">
                         <thead>{{ $thead }}</thead>
                         <tbody>{{ $tbody }}</tbody>
                     </table>
