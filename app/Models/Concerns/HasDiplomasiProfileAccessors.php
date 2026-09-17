@@ -1,36 +1,24 @@
 <?php
+// app/Models/Concerns/HasDiplomasiProfileAccessors.php
 
 namespace App\Models\Concerns;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
- * Trait ini mengasumsikan dipakai pada model Eloquent (tb_kerjasama, tb_kolaborasi,
- * tb_undangan, tb_audiensi, tb_kunjungan) dengan kolom dan property berikut:
+ * Accessor tampilan yang dipakai bersama oleh 5 modul Riwayat Diplomasi
+ * (Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan). Pasangan trait
+ * ini di sisi Mitra adalah HasMitraProfileAccessors.
+ *
+ * Model yang memakai trait ini WAJIB punya kolom/property berikut:
  *
  * @property-read \Illuminate\Support\Carbon|null $tanggal_diterima
  * @property-read \Illuminate\Support\Carbon|null $tanggal_selesai
  * @property string $statusColumn Nama kolom status pada model ini, mis. 'status_kerjasama'
  * @property string $judulColumn  Nama kolom judul pada model ini, mis. 'kerjasama'
  */
-
-trait HasParadiplomasiFields
+trait HasDiplomasiProfileAccessors
 {
-    public const TRIWULAN_OPTIONS = [
-        'TW I'      => 'TW I',
-        'TW II'     => 'TW II',
-        'TW III'    => 'TW III',
-        'TW IV'     => 'TW IV',
-    ];
-
-    public const STATUS_OPTIONS = [
-        'Berjalan'  => 'Berjalan',
-        'Selesai'   => 'Selesai',
-        'Tunda'     => 'Tunda',
-        'Batal'     => 'Batal',
-        'Regret'    => 'Regret',
-    ];
-
     protected function statusBadgeColor(): Attribute
     {
         return Attribute::make(

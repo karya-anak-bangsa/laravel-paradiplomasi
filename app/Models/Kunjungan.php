@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Concerns\HasParadiplomasiFields;
+use App\Models\Concerns\HasDiplomasiFieldOptions;
+use App\Models\Concerns\HasDiplomasiProfileAccessors;
+use App\Models\Concerns\ReferencesMitra;
 
 class Kunjungan extends Model
 {
-    use SoftDeletes, HasParadiplomasiFields;
+    use SoftDeletes, HasDiplomasiFieldOptions, HasDiplomasiProfileAccessors, ReferencesMitra;
 
     protected string $judulColumn  = 'perihal';
     protected string $statusColumn = 'status_kunjungan';
@@ -37,9 +38,4 @@ class Kunjungan extends Model
         'tanggal_selesai'  => 'date',
         'is_active'        => 'boolean',
     ];
-
-    public function mitra(): BelongsTo
-    {
-        return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra');
-    }
 }
