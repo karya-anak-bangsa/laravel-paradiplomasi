@@ -59,6 +59,7 @@ class MisiPermanenAseanController extends Controller
     public function destroy(MisiPermanenAsean $misiPermanenAsean)
     {
         $misiPermanenAsean->update(['is_active' => false]);
+        $misiPermanenAsean->mitra->update(['is_active' => false]);
         return redirect()->route('misi-permanen-asean.index')->with('notify', [
             'type'    => 'success',
             'message' => 'Data misi permanen negara ASEAN berhasil dinonaktifkan.',

@@ -66,6 +66,7 @@ class KedutaanBesarController extends Controller
     public function destroy(KedutaanBesar $kedutaanBesar)
     {
         $kedutaanBesar->update(['is_active' => false]);
+        $kedutaanBesar->mitra->update(['is_active' => false]);
         return redirect()->route('kedutaan-besar.index')->with('notify', [
             'type'    => 'success',
             'message' => 'Data kedutaan besar berhasil dinonaktifkan.',

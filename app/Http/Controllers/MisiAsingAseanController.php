@@ -59,6 +59,7 @@ class MisiAsingAseanController extends Controller
     public function destroy(MisiAsingAsean $misiAsingAsean)
     {
         $misiAsingAsean->update(['is_active' => false]);
+        $misiAsingAsean->mitra->update(['is_active' => false]);
         return redirect()->route('misi-asing-asean.index')->with('notify', [
             'type'    => 'success',
             'message' => 'Data misi asing untuk ASEAN berhasil dinonaktifkan.',

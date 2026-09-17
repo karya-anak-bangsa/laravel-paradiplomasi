@@ -13,6 +13,15 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * `email_kantor` (string/text, boleh berisi beberapa nilai dipisah
  * koma), dan `is_active` (boolean).
  */
+
+/**
+ * Accessor untuk UI yang dipakai bersama oleh setiap subtype Mitra
+ * (KedutaanBesar, MisiAsingAsean, MisiPermanenAsean, dst).
+ *
+ * @property string|null $telepon_kantor Boleh berisi beberapa nomor dipisah koma
+ * @property string|null $email_kantor   Boleh berisi beberapa email dipisah koma
+ * @property bool        $is_active
+ */
 trait HasMitraProfileAccessors
 {
     protected function teleponKantorArray(): Attribute
