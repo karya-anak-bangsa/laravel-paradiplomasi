@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Enums\TipeMitra;
+use App\Models\Concerns\HasRiwayatDiplomasi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mitra extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasRiwayatDiplomasi;
 
     protected $table      = 'tb_mitra';
     protected $primaryKey = 'id_mitra';
@@ -42,34 +42,5 @@ class Mitra extends Model
     public function misiPermanenAsean(): HasOne
     {
         return $this->hasOne(MisiPermanenAsean::class, 'id_mitra', 'id_mitra');
-    }
-
-    #--------------------------------------------------------------------------
-    # RELASI KE MODUL RIWAYAT — berlaku untuk mitra jenis apapun
-    #--------------------------------------------------------------------------
-
-    public function kerjasama(): HasMany
-    {
-        return $this->hasMany(Kerjasama::class, 'id_mitra', 'id_mitra');
-    }
-
-    public function kolaborasi(): HasMany
-    {
-        return $this->hasMany(Kolaborasi::class, 'id_mitra', 'id_mitra');
-    }
-
-    public function undangan(): HasMany
-    {
-        return $this->hasMany(Undangan::class, 'id_mitra', 'id_mitra');
-    }
-
-    public function audiensi(): HasMany
-    {
-        return $this->hasMany(Audiensi::class, 'id_mitra', 'id_mitra');
-    }
-
-    public function kunjungan(): HasMany
-    {
-        return $this->hasMany(Kunjungan::class, 'id_mitra', 'id_mitra');
     }
 }
