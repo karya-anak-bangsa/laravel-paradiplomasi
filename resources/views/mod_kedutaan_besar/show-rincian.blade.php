@@ -12,26 +12,6 @@
         </div>
     </div>
 </div>
-{{-- <div class="datagrid align-items-center mb-5">
-    <div class="datagrid-item">
-        <div class="datagrid-title">Kedutaan Besar (ID)</div>
-        <div class="datagrid-content">{{ $kedutaanBesar->nama_kedutaan_besar_id ?? '-' }}</div>
-    </div>
-    <div class="datagrid-item">
-        <div class="datagrid-title">Kedutaan Besar (EN)</div>
-        <div class="datagrid-content">{{ $kedutaanBesar->nama_kedutaan_besar_en ?? '-' }}</div>
-    </div>
-</div> --}}
-{{-- <div class="datagrid align-items-center mb-5">
-    <div class="datagrid-item">
-        <div class="datagrid-title">Nama Diplomat</div>
-        <div class="datagrid-content">{{ $kedutaanBesar->nama_diplomat ?? '-' }}</div>
-    </div>
-    <div class="datagrid-item">
-        <div class="datagrid-title">Jabatan Diplomat</div>
-        <div class="datagrid-content">{{ $kedutaanBesar->jabatan_diplomat ?? '-' }}</div>
-    </div>
-</div> --}}
 <div class="datagrid align-items-center mb-5">
     <div class="datagrid-item">
         <div class="datagrid-title">Kedutaan Besar</div>

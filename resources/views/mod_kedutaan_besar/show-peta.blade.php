@@ -4,6 +4,11 @@
     <p class="text-secondary mb-0">Koordinat lokasi belum tersedia.</p>
 @endif
 
+<div class="text-dark mt-3">
+    <p class="fw-semibold mb-auto">Alamat kedutaan Besar</p>
+    <p class="fst-normal mb-auto">{{ collect([$kedutaanBesar->alamat, $kedutaanBesar->kelurahan, $kedutaanBesar->kecamatan, $kedutaanBesar->kota, $kedutaanBesar->kode_pos])->filter()->implode(', ') ?:'-' }}</p>
+</div>
+
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 @endpush

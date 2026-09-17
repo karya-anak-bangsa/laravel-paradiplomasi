@@ -2,7 +2,7 @@
 
 @section('nav-mitra-kami', 'active')
 @section('page-header')
-    <x-page-header title="Modul Misi Asing untuk ASEAN" />
+    <x-page-header title="Modul Misi Asing untuk ASEAN" action="misi-asing-asean.create" />
 @endsection
 
 @section('page-content')
@@ -30,13 +30,16 @@
                     </td>
                     <td>{{ $item->nama_diplomat ?? '-' }}</td>
                     <td>
-                        <div class="btn-list justify-content-center">
+                        <div class="btn-list flex-nowrap justify-content-center">
                             <a href="{{ route('misi-asing-asean.show', $item) }}" class="btn btn-icon btn-primary">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                             @if (session('auth_role') === 'admin')
                                 <a href="{{ route('misi-asing-asean.edit', $item) }}" class="btn btn-icon btn-warning">
                                     <i class="fa-solid fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-icon btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                             @endif
                         </div>

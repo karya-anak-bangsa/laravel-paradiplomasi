@@ -3,7 +3,7 @@
 {{-- content --}}
 @section('nav-mitra-kami', 'active')
 @section('page-header')
-    <x-page-header title="Modul Mitra Kedutaan Besar" />
+    <x-page-header title="Modul Mitra Kedutaan Besar" action="kedutaan-besar.create" />
 @endsection
 
 {{-- content --}}
@@ -14,7 +14,7 @@
                 <th style="width: 20%">Negara</th>
                 <th style="width: 35%">Nama Kedutaan</th>
                 <th style="width: 35%">Nama Diplomat</th>
-                <th data-orderable="false" class="text-center" style="width: 10%">Aksi</th>
+                <th data-orderable="false" style="width: 10%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
@@ -35,13 +35,16 @@
                         <small class="fst-italic text-primary mb-0">{{ $item->jabatan_diplomat ?? '-' }}</small>
                     </td>
                     <td>
-                        <div class="btn-list justify-content-center">
+                        <div class="btn-list flex-nowrap justify-content-center">
                             <a href="{{ route('kedutaan-besar.show', $item) }}" class="btn btn-icon btn-primary">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                             @if (session('auth_role') === 'admin')
                                 <a href="{{ route('kedutaan-besar.edit', $item) }}" class="btn btn-icon btn-warning">
                                     <i class="fa-solid fa-edit"></i>
+                                </a>
+                                <a href="" class="btn btn-icon btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                             @endif
                         </div>
