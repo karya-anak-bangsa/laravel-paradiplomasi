@@ -1,12 +1,12 @@
 @if ($kedutaanBesar->latitude && $kedutaanBesar->longitude)
-    <div id="peta-lokasi" style="height: 450px; width: 100%; border-radius: 4px;"></div>
+    <div id="peta-lokasi" style="height: 450px; width: 100%; border-radius: 5px;"></div>
 @else
     <p class="text-secondary mb-0">Koordinat lokasi belum tersedia.</p>
 @endif
 
 <div class="text-dark mt-3">
     <p class="fw-semibold mb-auto">Alamat kedutaan Besar</p>
-    <p class="fst-normal mb-auto">{{ collect([$kedutaanBesar->alamat, $kedutaanBesar->kelurahan, $kedutaanBesar->kecamatan, $kedutaanBesar->kota, $kedutaanBesar->kode_pos])->filter()->implode(', ') ?:'-' }}</p>
+    <p class="fw-normal mb-auto">{{ collect([$kedutaanBesar->alamat, $kedutaanBesar->kelurahan, $kedutaanBesar->kecamatan, $kedutaanBesar->kota, $kedutaanBesar->kode_pos])->filter()->implode(', ') ?:'-' }}</p>
 </div>
 
 @push('styles')
