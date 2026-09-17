@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MisiAsingAsean;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreMisiAsingAseanRequest;
+use App\Http\Requests\UpdateMisiAsingAseanRequest;
 
 class MisiAsingAseanController extends Controller
 {
@@ -18,28 +19,49 @@ class MisiAsingAseanController extends Controller
         return view('mod_misi_asing_asean.show', compact('misiAsingAsean'));
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
     public function create()
     {
-        //
+        return view('mod_misi_asing_asean.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreMisiAsingAseanRequest $request)
     {
-        //
+        MisiAsingAsean::create($request->validated());
+        return redirect()->route('misi-asing-asean.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data misi asing untuk ASEAN berhasil disimpan.',
+        ]);
     }
 
-    public function edit(string $id)
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
+    public function edit(MisiAsingAsean $misiAsingAsean)
     {
-        //
+        return view('mod_misi_asing_asean.edit', compact('misiAsingAsean'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateMisiAsingAseanRequest $request, MisiAsingAsean $misiAsingAsean)
     {
-        //
+        $misiAsingAsean->update($request->validated());
+        return redirect()->route('misi-asing-asean.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data misi asing untuk ASEAN berhasil diubah.',
+        ]);
     }
 
-    public function destroy(string $id)
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
+    public function destroy(MisiAsingAsean $misiAsingAsean)
     {
-        //
+        $misiAsingAsean->update(['is_active' => false]);
+        return redirect()->route('misi-asing-asean.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data misi asing untuk ASEAN berhasil dinonaktifkan.',
+        ]);
     }
 }
