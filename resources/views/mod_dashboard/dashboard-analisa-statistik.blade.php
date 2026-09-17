@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">
             <i class="fa-solid fa-chart-simple"></i>
-            Analisa Statistik Pelayanan Perwakilan Negara Asing
+            Analisa Statistik Diplomasi di Biro KSD Setda DKI Jakarta
         </h3>
     </div>
     <div class="card-body">

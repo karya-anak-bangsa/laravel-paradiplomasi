@@ -42,7 +42,7 @@
                                 </span>
                             </div>
                             <div class="col-auto">
-                                <div class="fw-semibold">9999 Data</div>
+                                <div class="fw-semibold">{{ $dash_akumulasi['misi_asing_asean'] }} Data</div>
                                 <div class="text-secondary">Misi Asing untuk ASEAN</div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                 </span>
                             </div>
                             <div class="col-auto">
-                                <div class="fw-semibold">9999 Data</div>
+                                <div class="fw-semibold">{{ $dash_akumulasi['misi_permanen_asean'] }} Data</div>
                                 <div class="text-secondary">Misi Permanen Negara ASEAN</div>
                             </div>
                         </div>
@@ -186,7 +186,7 @@
             {{-- col --}}
 
             {{-- 6. Jumlah Acara DKI --}}
-            <div class="col-lg-4">
+            {{-- <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <div class="row align-items-center">
@@ -202,7 +202,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {{-- col --}}
         </div>
         {{-- row --}}

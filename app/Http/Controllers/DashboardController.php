@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\KedutaanBesar;
+use App\Models\MisiAsingAsean;
+use App\Models\MisiPermanenAsean;
 use App\Models\Kerjasama;
 use App\Models\Kolaborasi;
 use App\Models\Undangan;
@@ -18,7 +20,9 @@ class DashboardController extends Controller
     {
         //  Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta
         $dash_akumulasi = [
-            'kedutaan_besar'    => KedutaanBesar::where('is_active', true)->count(),
+            'kedutaan_besar'        => KedutaanBesar::where('is_active', true)->count(),
+            'misi_asing_asean'      => MisiAsingAsean::where('is_active', true)->count(),
+            'misi_permanen_asean'   => MisiPermanenAsean::where('is_active', true)->count(),
             'kerjasama'         => Kerjasama::where('is_active', true)->count(),
             'kolaborasi'        => Kolaborasi::where('is_active', true)->count(),
             'undangan'          => Undangan::where('is_active', true)->count(),
@@ -67,21 +71,27 @@ class DashboardController extends Controller
             ->map(fn($counts) => collect($statusList)->map(fn($status) => $counts[$status] ?? 0)->values())
             ->values();
 
-        // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi)
-        $mitraAktif = KedutaanBesar::where('is_active', true)
-            ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan'])
-            ->get()
-            ->map(function ($kedutaan) {
-                $kedutaan->total_aktivitas = $kedutaan->kerjasama_count
-                    + $kedutaan->kolaborasi_count
-                    + $kedutaan->undangan_count
-                    + $kedutaan->audiensi_count
-                    + $kedutaan->kunjungan_count;
-                return $kedutaan;
-            })
-            ->sortByDesc('total_aktivitas')
-            ->take(20)
-            ->values();
+        // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi), per tipe mitra
+        $hitungAktivitas = function ($query) {
+            return $query
+                ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan'])
+                ->get()
+                ->map(function ($mitra) {
+                    $mitra->total_aktivitas = $mitra->kerjasama_count
+                        + $mitra->kolaborasi_count
+                        + $mitra->undangan_count
+                        + $mitra->audiensi_count
+                        + $mitra->kunjungan_count;
+                    return $mitra;
+                })
+                ->sortByDesc('total_aktivitas')
+                ->take(20)
+                ->values();
+        };
+
+        $mitraAktifKedutaanBesar = $hitungAktivitas(KedutaanBesar::where('is_active', true));
+        $mitraAktifMisiAsingAsean = $hitungAktivitas(MisiAsingAsean::where('is_active', true));
+        $mitraAktifMisiPermanenAsean = $hitungAktivitas(MisiPermanenAsean::where('is_active', true));
 
 
         return view('mod_dashboard.dashboard', compact(
@@ -93,7 +103,9 @@ class DashboardController extends Controller
             'statusList',
             'moduleLabels',
             'pieSeriesPerModul',
-            'mitraAktif',
+            'mitraAktifKedutaanBesar',
+            'mitraAktifMisiAsingAsean',
+            'mitraAktifMisiPermanenAsean',
         ));
     }
 

@@ -39,33 +39,6 @@
         </div>
     </div>
 
-    <div class="row row-cards mb-4">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fa-solid fa-flag me-1"></i>
-                        Riwayat Data untuk Mitra Misi Asing untk ASEAN
-                    </h3>
-                </div>
-                <div class="card-body"> </div>
-                <div class="card-footer"> </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fa-solid fa-flag me-1"></i>
-                        Riwayat Data untuk Mitra Misi Permanen Negara ASEAN
-                    </h3>
-                </div>
-                <div class="card-body"> </div>
-                <div class="card-footer"> </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Peta Sebaran & Pencarian Lokasi Kedutaan Besar --}}
     <div class="row row-cards mb-4">
         <div class="col-12">
