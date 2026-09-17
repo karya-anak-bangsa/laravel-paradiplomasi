@@ -6,14 +6,12 @@
 --}}
 <div class="row row-cards">
     @forelse ($daftarMitra as $mitra)
-        <div class="col-lg-3">
-            <div class="card">
+        <div class="col-lg-3 d-flex align-items-stretch">
+            <div class="card w-100">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="flag flag-md flag-country-{{ $mitra->kode_negara }}"></span>
-                        </div>
-                        <div class="col-auto">
+                    <div class="d-flex align-items-start">
+                        <span class="flag flag-md flag-country-{{ $mitra->kode_negara }} flex-shrink-0 me-2"></span>
+                        <div>
                             <div class="fw-semibold">{{ $mitra->total_aktivitas }} Catatan Data</div>
                             <div class="text-secondary">{{ $mitra->{$labelNamaResmi} }}</div>
                         </div>

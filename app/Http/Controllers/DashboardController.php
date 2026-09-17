@@ -72,8 +72,8 @@ class DashboardController extends Controller
             ->values();
 
         // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi), per tipe mitra
-        $hitungAktivitas = function ($query) {
-            return $query
+        $hitungAktivitas = function ($query, ?int $batas = null) {
+            $hasil = $query
                 ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan'])
                 ->get()
                 ->map(function ($mitra) {
@@ -84,13 +84,19 @@ class DashboardController extends Controller
                         + $mitra->kunjungan_count;
                     return $mitra;
                 })
-                ->sortByDesc('total_aktivitas')
-                ->take(20)
-                ->values();
+                ->sortByDesc('total_aktivitas');
+
+            if ($batas !== null) {
+                $hasil = $hasil->take($batas);
+            }
+
+            return $hasil->values();
         };
 
-        $mitraAktifKedutaanBesar = $hitungAktivitas(KedutaanBesar::where('is_active', true));
-        $mitraAktifMisiAsingAsean = $hitungAktivitas(MisiAsingAsean::where('is_active', true));
+        // Kedutaan Besar & Misi Asing ASEAN: tampilkan 8 mitra paling aktif.
+        // Misi Permanen Negara ASEAN: tampilkan semua (jumlahnya sedikit, cukup 1 halaman).
+        $mitraAktifKedutaanBesar = $hitungAktivitas(KedutaanBesar::where('is_active', true), 8);
+        $mitraAktifMisiAsingAsean = $hitungAktivitas(MisiAsingAsean::where('is_active', true), 8);
         $mitraAktifMisiPermanenAsean = $hitungAktivitas(MisiPermanenAsean::where('is_active', true));
 
 
