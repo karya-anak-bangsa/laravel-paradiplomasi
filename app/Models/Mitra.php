@@ -41,7 +41,7 @@ class Mitra extends Model
 
     public function misiPermanenAsean(): HasOne
     {
-        return $this->hasOne(MisiPermanenNegaraAsean::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(MisiPermanenAsean::class, 'id_mitra', 'id_mitra');
     }
 
     #--------------------------------------------------------------------------

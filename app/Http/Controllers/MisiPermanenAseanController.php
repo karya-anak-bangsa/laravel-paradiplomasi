@@ -2,63 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\MisiPermanenAsean;
+use App\Http\Requests\StoreMisiPermanenAseanRequest;
+use App\Http\Requests\UpdateMisiPermanenAseanRequest;
 
 class MisiPermanenAseanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)->orderBy('nama_negara')->get();
+        return view('mod_misi_permanen_asean.index', compact('misiPermanenAsean'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function show(MisiPermanenAsean $misiPermanenAsean)
+    {
+        return view('mod_misi_permanen_asean.show', compact('misiPermanenAsean'));
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
     public function create()
     {
-        //
+        return view('mod_misi_permanen_asean.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreMisiPermanenAseanRequest $request)
     {
-        //
+        MisiPermanenAsean::create($request->validated());
+        return redirect()->route('misi-permanen-asean.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data misi permanen negara ASEAN berhasil disimpan.',
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
+
+    public function edit(MisiPermanenAsean $misiPermanenAsean)
     {
-        //
+        return view('mod_misi_permanen_asean.edit', compact('misiPermanenAsean'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(UpdateMisiPermanenAseanRequest $request, MisiPermanenAsean $misiPermanenAsean)
     {
-        //
+        $misiPermanenAsean->update($request->validated());
+        return redirect()->route('misi-permanen-asean.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data misi permanen negara ASEAN berhasil diubah.',
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // ---------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(MisiPermanenAsean $misiPermanenAsean)
     {
-        //
+        $misiPermanenAsean->update(['is_active' => false]);
+        return redirect()->route('misi-permanen-asean.index')->with('notify', [
+            'type'    => 'success',
+            'message' => 'Data misi permanen negara ASEAN berhasil dinonaktifkan.',
+        ]);
     }
 }
