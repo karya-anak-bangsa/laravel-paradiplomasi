@@ -10,11 +10,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 
-            # Cara Seeder Baru.
-            // KedutaanBesarSeeder::class,
-            MisiAsingAseanSeeder::class,
-            MisiPermanenAseanSeeder::class,
-
             # Modul Kedutaan Besar
             KedutaanBesarPart1Seeder::class,
             KedutaanBesarPart2Seeder::class,
@@ -28,6 +23,13 @@ class DatabaseSeeder extends Seeder
             KedutaanBesarPart10Seeder::class,
             KedutaanBesarPart11Seeder::class,
 
+            # Modul Misi Asing
+            MisiAsingAseanSeeder::class,
+
+            # Modul Misi Permanen
+            MisiPermanenAseanSeeder::class,
+
+            # Modul Diplomasi (Kerjasama - Kunjungan)
             // KerjasamaSeeder::class,
             // KolaborasiSeeder::class,
             // UndanganSeeder::class,
