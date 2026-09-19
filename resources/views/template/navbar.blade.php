@@ -48,7 +48,7 @@
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-user-graduate me-2"></i>Kunjungan </span>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item dropdown @yield('nav-kegiatan')">
+                            <li class="nav-item dropdown @yield('nav-kegiatan')">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                     <span class="nav-link-title text-dark"><i class="fa-solid fa-calendar-days me-2"></i>Kegiatan</span>
                                 </a>
@@ -56,7 +56,7 @@
                                     <a class="dropdown-item" href="{{ route('acara-dki.index') }}">Acara DKI</a>
                                     <a class="dropdown-item" href="{{ route('tanggal-penting.index') }}">Tanggal Penting</a>
                                 </div>
-                            </li> --}}
+                            </li>
                             @if (session('auth_role') === 'admin')
                                 {{-- <li class="nav-item dropdown @yield('nav-administrasi')">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
