@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             MisiPermanenAseanSeeder::class,
 
             # Modul Diplomasi (Kerjasama - Kunjungan)
-            // KerjasamaSeeder::class,
+            KerjasamaSeeder::class,
             // KolaborasiSeeder::class,
             // UndanganSeeder::class,
             // AudiensiSeeder::class,
