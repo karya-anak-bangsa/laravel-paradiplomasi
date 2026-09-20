@@ -42,7 +42,7 @@
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td class="text-center">
-                                        <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
+                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kerjasama }}</span>
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ route('kerjasama.edit', $item->id_kerjasama) }}" class="btn btn-icon btn-warning">
@@ -172,7 +172,7 @@
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
-                                        <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
+                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kolaborasi }}</span>
                                     </td>
                                     <td>
                                         <a href="{{ route('kolaborasi.edit', $item->id_kolaborasi) }}" class="btn btn-icon btn-warning">
@@ -302,7 +302,7 @@
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
-                                        <span class="badge {{ $item->status_badge_color }}">{{ $item->status_undangan }}</span>
+                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_undangan }}</span>
                                     </td>
                                     <td>
                                         <a href="{{ route('undangan.edit', $item->id_undangan) }}" class="btn btn-icon btn-warning">
@@ -432,7 +432,7 @@
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
-                                        <span class="badge {{ $item->status_badge_color }}">{{ $item->status_audiensi }}</span>
+                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_audiensi }}</span>
                                     </td>
                                     <td>
                                         <a href="{{ route('audiensi.edit', $item->id_audiensi) }}" class="btn btn-icon btn-warning">
@@ -562,7 +562,7 @@
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
-                                        <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kunjungan }}</span>
+                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kunjungan }}</span>
                                     </td>
                                     <td>
                                         <a href="{{ route('kunjungan.edit', $item->id_kunjungan) }}" class="btn btn-icon btn-warning">
