@@ -8,7 +8,10 @@
     </x-show-field>
 </div>
 <div class="datagrid align-items-center mb-5">
-    <x-show-field label="Misi Resmi">{{ $misiAsingAsean->nama_misi_asing_asean_id ?? '-' }}</x-show-field>
+    <x-show-field label="Misi Resmi">
+        <p class="fst-normal mb-auto">{{ $misiAsingAsean->nama_misi_asing_asean_id ?? '-' }}</p>
+        <small class="fst-italic text-primary mb-auto">{{ $misiAsingAsean->nama_misi_asing_asean_en ?? '-' }}</small>
+    </x-show-field>
     <x-show-field label="Diplomat">{{ $misiAsingAsean->nama_diplomat ?? '-' }}</x-show-field>
 </div>
 <div class="datagrid align-items-center mb-0">

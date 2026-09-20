@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MisiAsingAsean;
 use App\Http\Requests\StoreMisiAsingAseanRequest;
 use App\Http\Requests\UpdateMisiAsingAseanRequest;
+use App\Models\MisiAsingAsean;
 
 class MisiAsingAseanController extends Controller
 {
     public function index()
     {
         $misiAsingAsean = MisiAsingAsean::where('is_active', true)->orderBy('nama_negara')->get();
+
         return view('mod_misi_asing_asean.index', compact('misiAsingAsean'));
     }
 
     public function show(MisiAsingAsean $misiAsingAsean)
     {
+        $misiAsingAsean->load([
+            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
+            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
+            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
+            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
+            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
+        ]);
+
         return view('mod_misi_asing_asean.show', compact('misiAsingAsean'));
     }
 
@@ -30,8 +39,9 @@ class MisiAsingAseanController extends Controller
     public function store(StoreMisiAsingAseanRequest $request)
     {
         MisiAsingAsean::create($request->validated());
+
         return redirect()->route('misi-asing-asean.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data misi asing untuk ASEAN berhasil disimpan.',
         ]);
     }
@@ -47,8 +57,9 @@ class MisiAsingAseanController extends Controller
     public function update(UpdateMisiAsingAseanRequest $request, MisiAsingAsean $misiAsingAsean)
     {
         $misiAsingAsean->update($request->validated());
+
         return redirect()->route('misi-asing-asean.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data misi asing untuk ASEAN berhasil diubah.',
         ]);
     }
@@ -60,8 +71,9 @@ class MisiAsingAseanController extends Controller
     {
         $misiAsingAsean->update(['is_active' => false]);
         $misiAsingAsean->mitra->update(['is_active' => false]);
+
         return redirect()->route('misi-asing-asean.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data misi asing untuk ASEAN berhasil dinonaktifkan.',
         ]);
     }
