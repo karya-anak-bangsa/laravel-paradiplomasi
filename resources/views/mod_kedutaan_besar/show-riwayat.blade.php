@@ -28,25 +28,26 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 30%">Kerjasama</th>
-                                <th>Rangkuman</th>
-                                <th style="width: 12%">Tanggal Diterima</th>
-                                <th style="width: 12%">Tanggal Selesai</th>
-                                <th style="width: 10%">Status</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 30%" class="text-start">Kerjasama</th>
+                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 15%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->kerjasama as $item)
                                 <tr>
-                                    <td>{{ str($item->kerjasama)->stripTags() }}</td>
-                                    <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
-                                    <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
-                                    <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td>
+                                    <td class="text-start">{{ str($item->kerjasama)->stripTags() }}</td>
+                                    <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                    <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                    <td class="text-center">
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-icon btn-warning">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-kerjasama-{{ $item->id_kerjasama }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -120,24 +121,25 @@
                         <thead>
                             <tr>
                                 <th style="width: 30%">Kolaborasi</th>
-                                <th>Rangkuman</th>
                                 <th style="width: 12%">Tanggal Diterima</th>
                                 <th style="width: 12%">Tanggal Selesai</th>
                                 <th style="width: 10%">Status</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->kolaborasi as $item)
                                 <tr>
                                     <td>{{ str($item->kolaborasi)->stripTags() }}</td>
-                                    <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-icon btn-warning">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-kolaborasi-{{ $item->id_kolaborasi }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -211,24 +213,25 @@
                         <thead>
                             <tr>
                                 <th style="width: 30%">Acara</th>
-                                <th>Rangkuman</th>
                                 <th style="width: 12%">Tanggal Diterima</th>
                                 <th style="width: 12%">Tanggal Selesai</th>
                                 <th style="width: 10%">Status</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->undangan as $item)
                                 <tr>
                                     <td>{{ str($item->acara)->stripTags() }}</td>
-                                    <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_undangan }}</span>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-icon btn-warning">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-undangan-{{ $item->id_undangan }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -302,24 +305,25 @@
                         <thead>
                             <tr>
                                 <th style="width: 30%">Topik</th>
-                                <th>Rangkuman</th>
                                 <th style="width: 12%">Tanggal Diterima</th>
                                 <th style="width: 12%">Tanggal Selesai</th>
                                 <th style="width: 10%">Status</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->audiensi as $item)
                                 <tr>
                                     <td>{{ str($item->topik)->stripTags() }}</td>
-                                    <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_audiensi }}</span>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-icon btn-warning">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-audiensi-{{ $item->id_audiensi }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -393,24 +397,25 @@
                         <thead>
                             <tr>
                                 <th style="width: 30%">Perihal</th>
-                                <th>Rangkuman</th>
                                 <th style="width: 12%">Tanggal Diterima</th>
                                 <th style="width: 12%">Tanggal Selesai</th>
                                 <th style="width: 10%">Status</th>
-                                <th style="width: 10%">Aksi</th>
+                                <th style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->kunjungan as $item)
                                 <tr>
                                     <td>{{ str($item->perihal)->stripTags() }}</td>
-                                    <td>{{ str($item->rangkuman)->stripTags()->limit(300) }}</td>
                                     <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td>
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kunjungan }}</span>
                                     </td>
                                     <td>
+                                        <button type="button" class="btn btn-icon btn-warning">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-kunjungan-{{ $item->id_kunjungan }}">
                                             <i class="fa-solid fa-eye"></i>

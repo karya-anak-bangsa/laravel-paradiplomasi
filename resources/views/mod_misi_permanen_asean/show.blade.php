@@ -6,22 +6,28 @@
 @endsection
 
 @section('page-content')
+
     <div class="row row-cards mb-4">
-        <div class="col-lg-12">
+        <div class="col-lg-8">
+
             <x-page-body-show title="Rincian Data">
                 @include('mod_misi_permanen_asean.show-rincian')
             </x-page-body-show>
-        </div>
-        <div class="col-lg-12">
+
             <x-page-body-show title="Riwayat Diplomasi">
                 @include('mod_misi_permanen_asean.show-riwayat')
             </x-page-body-show>
-        </div>
 
-        {{-- <div class="col-lg-4">
-            <x-page-body-show title="Lokasi di Peta">
+        </div>
+        {{-- col --}}
+
+        <div class="col-lg-4">
+            <x-page-body-show title="Peta Lokasi">
                 @include('mod_misi_permanen_asean.show-peta')
             </x-page-body-show>
-        </div> --}}
+        </div>
+        {{-- col --}}
+
     </div>
+    {{-- row --}}
 @endsection
