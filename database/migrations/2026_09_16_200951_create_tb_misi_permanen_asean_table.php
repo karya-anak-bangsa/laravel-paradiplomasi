@@ -23,13 +23,16 @@ return new class extends Migration
             $table->string('nama_misi_permanen_asean_en');
             $table->text('format_undangan')->nullable();
             $table->string('nama_diplomat')->nullable();
-            $table->text('telepon_kantor')->nullable();
             $table->text('email_kantor')->nullable();
+            $table->text('telepon_kantor')->nullable();
             $table->string('alamat')->nullable();
             $table->string('kelurahan')->nullable();
             $table->string('kecamatan')->nullable();
             $table->string('kota')->nullable();
             $table->string('kode_pos')->nullable();
+            $table->string('website')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
 
             # status data & timestamps
             $table->boolean('is_active')->default(true);
