@@ -6,7 +6,7 @@ Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data dipl
 ---
 
 ## 2. Pembagian Modul
-- **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing
+- **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing.
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
 - **Modul Administrator:** Pengaturan Sistem.
 
@@ -23,7 +23,7 @@ Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data dipl
 ## 4. Git & Deployment
 - **Repository:** https://github.com/karya-anak-bangsa/laravel-paradiplomasi
 - **Domain Testing:** https://www.paradiplomasi-jakarta.id (Hostinger)
-- **Domain Production:** belum tersedia.
+- **Domain Production:** belum tersedia
 
 ## 5. Sumber Data Acuan
 Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun beberapa link akses seperti berikut 
@@ -55,7 +55,7 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **Pola Desain:** Standard MVC Laravel 13.
 - **Kualitas Kode:** Mengikuti kaidah ISO 9126 (*Scalable* & *Maintainable*).
 
-### 7.2 Aturan Penamaan & Database (PENTING)
+### 7.2 Aturan Penamaan
 - **Database Non-Konvensional:** 
   - Nama tabel menggunakan awalan `tb_` (contoh: `tb_mitra`, `tb_kedutaan_besar`, `tb_kerjasama`).
   - Primary Key menggunakan format `id_[nama_tabel]` (contoh: `id_mitra`, `id_kedutaan_besar`).
@@ -64,6 +64,10 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **Controller:** Singular PascalCase + `Controller` (contoh: `KedutaanBesarController`).
 - **View (Blade):** Setiap modul dalam folder terpisah dengan struktur standar: `index.blade.php`, `show.blade.php`, `create.blade.php`, `edit.blade.php`, dan `_form.blade.php`.
 - **Variabel & Method:** camelCase (contoh: `$daftarKedutaan`, `getDaftarKedutaan()`).
+
+### Pola Penulisan Source Code
+- Jika kode view blade berulang dibeberapa modul maka dibuatkan x-component sehingga view blade tidak berulang.
+- Controller dan model harus tipis tidak boleh ada logic.
 
 ---
 
