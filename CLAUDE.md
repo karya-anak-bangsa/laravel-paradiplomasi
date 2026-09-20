@@ -13,7 +13,23 @@ Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, 
 ## 2. Pembagian Modul
 - **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing.
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
-- **Modul Administrator:** Pengaturan Sistem.
+- **Modul Administrator:** Akun pengguna, Riwayat Aktivitas.
+|---|---|---|
+| Nama Modul | Nama Tabel | Aksi | Keterangan |
+|---|---|---|
+| `Akun Pengguna` | `Hardcode dari AuthController` | login dan logout | Administrator dapat melihat daftar tamu-tamu yang memiliki akses ke sistem. |
+| `Riwayat Aktivitas` | `belum dibuat` | - | - |
+| `Kedutaan Besar` | `tb_kedutaan_besar` | lihat, cari, tambah, ubah, hapus | ex. Kedutaan Besar Australia |
+| `Misi Asing ASEAN` | `tb_misi_asing_asean` | lihat, cari, tambah, ubah, hapus | ex. Misi Australia untuk ASEAN |
+| `Misi Permanen ASEAN` | `tb_misi_permanen_asean` | lihat, cari, tambah, ubah, hapus | ex. Misi Permanen Republik Singapura |
+| `Non Perwakilan Negara Asing` | `belum dibuat` | - | - |
+| `Kerjasama` | `tb_kerjasama` | lihat, cari, tambah, ubah, hapus | - |
+| `Kolaborasi` | `tb_kolaborasi` | lihat, cari, tambah, ubah, hapus | - |
+| `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus | - |
+| `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus | - |
+| `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
+| `Acara DKI` | `tb_acara_dki` | lihat, cari, tambah, ubah, hapus | - |
+|---|---|---|
 
 ---
 
