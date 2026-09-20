@@ -198,7 +198,7 @@ class UndanganPart1Seeder extends Seeder
                 'rangkuman' => '<p>Melalui Undangan yang disampaikan melalui Koordinasi WhatsApp tanggal 25 Mei 2026, Kedutaan Besar Uruguay mengundang Ketua Sub-Kelompok Fasilitasi Korps Diplomatik untuk menghadiri pembukaan Panoramica, Eksibisi Seni Uruguay, pada tanggal 4 Juni 2026 di Galeri Nasional Indonesia. Eksibisi sendiri akan dilaksanakan dari tanggal 4 s.d. 28 Juni 2026 .</p><p>Undangan telah dihadiri oleh Ketua Sub-Kelompok Fasilitasi Korps Diplomatik, Biro Kerja Sama Daerah.</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',
                 'file_dokumen' => null,
-                'tanggal_diterima' => '25 Agustus 2026',
+                'tanggal_diterima' => '2026-06-04',
                 'tanggal_selesai' => '2026-06-04',
                 'triwulan_undangan' => 'TW II',
                 'status_undangan' => 'Selesai',

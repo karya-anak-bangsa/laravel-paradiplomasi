@@ -29,24 +29,12 @@ class DatabaseSeeder extends Seeder
             # Modul Misi Permanen
             MisiPermanenAseanSeeder::class,
 
-            # Modul Diplomasi (Kerjasama - Kunjungan)
+            # ---------------------------------------------------------------------------------------
+
+            # Modul Riwayat Diplomasi - Kerjasama 
             KerjasamaSeeder::class,
-
             KolaborasiPart1Seeder::class,
-            // KolaborasiPart2Seeder::class,
-
-
             UndanganPart1Seeder::class,
-            // UndanganPart2Seeder::class,
-
-            // AudiensiPart1Seeder::class,
-            // AudiensiPart2Seeder::class,
-
-            // KunjunganPart1Seeder::class,
-            // KunjunganPart2Seeder::class,
-
-
-
         ]);
     }
 }
