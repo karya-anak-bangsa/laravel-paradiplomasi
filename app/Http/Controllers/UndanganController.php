@@ -9,6 +9,7 @@ use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
 use App\Models\NonPerwakilanNegaraAsing;
 use App\Models\Undangan;
+use Illuminate\Http\Request;
 
 class UndanganController extends Controller
 {
@@ -19,14 +20,20 @@ class UndanganController extends Controller
         'mitra.nonPerwakilanNegaraAsing',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         $undangan = Undangan::with(self::MITRA_RELATIONS)
             ->where('is_active', true)
+            ->filterStatus($request->input('status'))
+            ->filterTahun($request->input('tahun'))
             ->latest('tanggal_diterima')
             ->get();
 
-        return view('mod_undangan.index', compact('undangan'));
+        return view('mod_undangan.index', [
+            'undangan' => $undangan,
+            'statusOptions' => Undangan::STATUS_OPTIONS,
+            'tahunOptions' => Undangan::tahunTersedia(),
+        ]);
     }
 
     public function show(Undangan $undangan)

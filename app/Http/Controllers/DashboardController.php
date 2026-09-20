@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Audiensi;
 use App\Models\KedutaanBesar;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
 use App\Models\Kerjasama;
 use App\Models\Kolaborasi;
-use App\Models\Undangan;
-use App\Models\Audiensi;
 use App\Models\Kunjungan;
-use Illuminate\Support\Facades\DB;
-
+use App\Models\MisiAsingAsean;
+use App\Models\MisiPermanenAsean;
+use App\Models\Undangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -20,14 +19,14 @@ class DashboardController extends Controller
     {
         //  Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta
         $dash_akumulasi = [
-            'kedutaan_besar'        => KedutaanBesar::where('is_active', true)->count(),
-            'misi_asing_asean'      => MisiAsingAsean::where('is_active', true)->count(),
-            'misi_permanen_asean'   => MisiPermanenAsean::where('is_active', true)->count(),
-            'kerjasama'         => Kerjasama::where('is_active', true)->count(),
-            'kolaborasi'        => Kolaborasi::where('is_active', true)->count(),
-            'undangan'          => Undangan::where('is_active', true)->count(),
-            'audiensi'          => Audiensi::where('is_active', true)->count(),
-            'kunjungan'         => Kunjungan::where('is_active', true)->count(),
+            'kedutaan_besar' => KedutaanBesar::where('is_active', true)->count(),
+            'misi_asing_asean' => MisiAsingAsean::where('is_active', true)->count(),
+            'misi_permanen_asean' => MisiPermanenAsean::where('is_active', true)->count(),
+            'kerjasama' => Kerjasama::where('is_active', true)->count(),
+            'kolaborasi' => Kolaborasi::where('is_active', true)->count(),
+            'undangan' => Undangan::where('is_active', true)->count(),
+            'audiensi' => Audiensi::where('is_active', true)->count(),
+            'kunjungan' => Kunjungan::where('is_active', true)->count(),
         ];
 
         // Peta Sebaran & Pencarian Lokasi Kedutaan Besar
@@ -35,7 +34,7 @@ class DashboardController extends Controller
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->orderBy('nama_negara')
-            ->get(['id_kedutaan_besar', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id', 'alamat', 'kelurahan', 'kecamatan', 'kota', 'latitude', 'longitude',]);
+            ->get(['id_kedutaan_besar', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id', 'alamat', 'kelurahan', 'kecamatan', 'kota', 'latitude', 'longitude']);
 
         $rincianWilayah = KedutaanBesar::query()
             ->select([
@@ -54,51 +53,46 @@ class DashboardController extends Controller
             ->orderBy('kecamatan')->orderByDesc('jumlah_kelurahan')
             ->orderBy('kelurahan')
             ->get();
-        $totalPerKecamatan = $rincianWilayah->unique(fn($baris) => $baris->kota . '|' . $baris->kecamatan)->sum('jumlah_kecamatan');
+        $totalPerKecamatan = $rincianWilayah->unique(fn ($baris) => $baris->kota.'|'.$baris->kecamatan)->sum('jumlah_kecamatan');
         $totalPerKelurahan = $rincianWilayah->sum('jumlah_kelurahan');
 
         // Analisa Statistik Pelayanan Perwakilan Negara Asing (perbandingan status per modul)
         $statusList = ['Berjalan', 'Selesai', 'Tunda', 'Batal', 'Regret'];
         $jumlahPerModul = [
-            'Kerjasama'  => Kerjasama::selectRaw('status_kerjasama as status, COUNT(*) as total')->groupBy('status_kerjasama')->pluck('total', 'status'),
+            'Kerjasama' => Kerjasama::selectRaw('status_kerjasama as status, COUNT(*) as total')->groupBy('status_kerjasama')->pluck('total', 'status'),
             'Kolaborasi' => Kolaborasi::selectRaw('status_kolaborasi as status, COUNT(*) as total')->groupBy('status_kolaborasi')->pluck('total', 'status'),
-            'Undangan'   => Undangan::selectRaw('status_undangan as status, COUNT(*) as total')->groupBy('status_undangan')->pluck('total', 'status'),
-            'Audiensi'   => Audiensi::selectRaw('status_audiensi as status, COUNT(*) as total')->groupBy('status_audiensi')->pluck('total', 'status'),
-            'Kunjungan'  => Kunjungan::selectRaw('status_kunjungan as status, COUNT(*) as total')->groupBy('status_kunjungan')->pluck('total', 'status'),
+            'Undangan' => Undangan::selectRaw('status_undangan as status, COUNT(*) as total')->groupBy('status_undangan')->pluck('total', 'status'),
+            'Audiensi' => Audiensi::selectRaw('status_audiensi as status, COUNT(*) as total')->groupBy('status_audiensi')->pluck('total', 'status'),
+            'Kunjungan' => Kunjungan::selectRaw('status_kunjungan as status, COUNT(*) as total')->groupBy('status_kunjungan')->pluck('total', 'status'),
         ];
         $moduleLabels = array_keys($jumlahPerModul);
         $pieSeriesPerModul = collect($jumlahPerModul)
-            ->map(fn($counts) => collect($statusList)->map(fn($status) => $counts[$status] ?? 0)->values())
+            ->map(fn ($counts) => collect($statusList)->map(fn ($status) => $counts[$status] ?? 0)->values())
             ->values();
 
-        // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi), per tipe mitra
-        $hitungAktivitas = function ($query, ?int $batas = null) {
-            $hasil = $query
+        // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi)
+        // Digabung dari 3 tipe mitra: Kedutaan Besar, Misi Asing ASEAN, Misi Permanen Negara ASEAN.
+        $hitungAktivitas = function ($query, string $labelNamaResmi) {
+            return $query
                 ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan'])
                 ->get()
-                ->map(function ($mitra) {
-                    $mitra->total_aktivitas = $mitra->kerjasama_count
+                ->map(fn ($mitra) => (object) [
+                    'kode_negara' => $mitra->kode_negara,
+                    'nama_resmi' => $mitra->{$labelNamaResmi},
+                    'total_aktivitas' => $mitra->kerjasama_count
                         + $mitra->kolaborasi_count
                         + $mitra->undangan_count
                         + $mitra->audiensi_count
-                        + $mitra->kunjungan_count;
-                    return $mitra;
-                })
-                ->sortByDesc('total_aktivitas');
-
-            if ($batas !== null) {
-                $hasil = $hasil->take($batas);
-            }
-
-            return $hasil->values();
+                        + $mitra->kunjungan_count,
+                ]);
         };
 
-        // Kedutaan Besar & Misi Asing ASEAN: tampilkan 8 mitra paling aktif.
-        // Misi Permanen Negara ASEAN: tampilkan semua (jumlahnya sedikit, cukup 1 halaman).
-        $mitraAktifKedutaanBesar = $hitungAktivitas(KedutaanBesar::where('is_active', true), 8);
-        $mitraAktifMisiAsingAsean = $hitungAktivitas(MisiAsingAsean::where('is_active', true), 8);
-        $mitraAktifMisiPermanenAsean = $hitungAktivitas(MisiPermanenAsean::where('is_active', true));
-
+        $mitraAktif = $hitungAktivitas(KedutaanBesar::where('is_active', true), 'nama_kedutaan_besar_id')
+            ->concat($hitungAktivitas(MisiAsingAsean::where('is_active', true), 'nama_misi_asing_asean_id'))
+            ->concat($hitungAktivitas(MisiPermanenAsean::where('is_active', true), 'nama_misi_permanen_asean_id'))
+            ->sortByDesc('total_aktivitas')
+            ->take(40)
+            ->values();
 
         return view('mod_dashboard.dashboard', compact(
             'dash_akumulasi',
@@ -109,9 +103,7 @@ class DashboardController extends Controller
             'statusList',
             'moduleLabels',
             'pieSeriesPerModul',
-            'mitraAktifKedutaanBesar',
-            'mitraAktifMisiAsingAsean',
-            'mitraAktifMisiPermanenAsean',
+            'mitraAktif',
         ));
     }
 

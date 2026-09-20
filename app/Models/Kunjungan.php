@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Concerns\HasDiplomasiFieldOptions;
+use App\Models\Concerns\HasDiplomasiFilter;
 use App\Models\Concerns\HasDiplomasiProfileAccessors;
 use App\Models\Concerns\ReferencesMitra;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kunjungan extends Model
 {
-    use SoftDeletes, HasDiplomasiFieldOptions, HasDiplomasiProfileAccessors, ReferencesMitra;
+    use HasDiplomasiFieldOptions, HasDiplomasiFilter, HasDiplomasiProfileAccessors, ReferencesMitra, SoftDeletes;
 
-    protected string $judulColumn  = 'perihal';
+    protected string $judulColumn = 'perihal';
+
     protected string $statusColumn = 'status_kunjungan';
 
-    protected $table        = 'tb_kunjungan';
-    protected $primaryKey   = 'id_kunjungan';
+    protected $table = 'tb_kunjungan';
+
+    protected $primaryKey = 'id_kunjungan';
 
     protected $fillable = [
         'id_mitra',
@@ -35,7 +38,7 @@ class Kunjungan extends Model
 
     protected $casts = [
         'tanggal_diterima' => 'date',
-        'tanggal_selesai'  => 'date',
-        'is_active'        => 'boolean',
+        'tanggal_selesai' => 'date',
+        'is_active' => 'boolean',
     ];
 }

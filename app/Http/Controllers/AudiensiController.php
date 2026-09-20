@@ -9,6 +9,7 @@ use App\Models\KedutaanBesar;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
 use App\Models\NonPerwakilanNegaraAsing;
+use Illuminate\Http\Request;
 
 class AudiensiController extends Controller
 {
@@ -19,14 +20,20 @@ class AudiensiController extends Controller
         'mitra.nonPerwakilanNegaraAsing',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         $audiensi = Audiensi::with(self::MITRA_RELATIONS)
             ->where('is_active', true)
+            ->filterStatus($request->input('status'))
+            ->filterTahun($request->input('tahun'))
             ->latest('tanggal_diterima')
             ->get();
 
-        return view('mod_audiensi.index', compact('audiensi'));
+        return view('mod_audiensi.index', [
+            'audiensi' => $audiensi,
+            'statusOptions' => Audiensi::STATUS_OPTIONS,
+            'tahunOptions' => Audiensi::tahunTersedia(),
+        ]);
     }
 
     public function show(Audiensi $audiensi)

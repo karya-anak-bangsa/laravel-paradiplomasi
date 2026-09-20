@@ -10,6 +10,8 @@
 @endsection
 
 @section('page-content')
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
+
     <x-page-body-table title="Daftar kunjungan dari/ke perwakilan negara asing">
         <x-slot name="thead">
             <tr>

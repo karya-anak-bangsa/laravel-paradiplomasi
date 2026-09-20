@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Concerns\HasDiplomasiFieldOptions;
+use App\Models\Concerns\HasDiplomasiFilter;
 use App\Models\Concerns\HasDiplomasiProfileAccessors;
 use App\Models\Concerns\ReferencesMitra;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kerjasama extends Model
 {
-    use SoftDeletes, HasDiplomasiFieldOptions, HasDiplomasiProfileAccessors, ReferencesMitra;
+    use HasDiplomasiFieldOptions, HasDiplomasiFilter, HasDiplomasiProfileAccessors, ReferencesMitra, SoftDeletes;
 
-    protected string $judulColumn  = 'kerjasama';
+    protected string $judulColumn = 'kerjasama';
+
     protected string $statusColumn = 'status_kerjasama';
 
-    protected $table        = 'tb_kerjasama';
-    protected $primaryKey   = 'id_kerjasama';
+    protected $table = 'tb_kerjasama';
+
+    protected $primaryKey = 'id_kerjasama';
 
     protected $fillable = [
         'id_mitra',
@@ -35,7 +38,7 @@ class Kerjasama extends Model
 
     protected $casts = [
         'tanggal_diterima' => 'date',
-        'tanggal_selesai'  => 'date',
-        'is_active'        => 'boolean',
+        'tanggal_selesai' => 'date',
+        'is_active' => 'boolean',
     ];
 }

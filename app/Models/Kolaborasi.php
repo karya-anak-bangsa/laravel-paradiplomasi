@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Concerns\HasDiplomasiFieldOptions;
+use App\Models\Concerns\HasDiplomasiFilter;
 use App\Models\Concerns\HasDiplomasiProfileAccessors;
 use App\Models\Concerns\ReferencesMitra;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kolaborasi extends Model
 {
-    use SoftDeletes, HasDiplomasiFieldOptions, HasDiplomasiProfileAccessors, ReferencesMitra;
+    use HasDiplomasiFieldOptions, HasDiplomasiFilter, HasDiplomasiProfileAccessors, ReferencesMitra, SoftDeletes;
 
-    protected string $judulColumn  = 'kolaborasi';
+    protected string $judulColumn = 'kolaborasi';
+
     protected string $statusColumn = 'status_kolaborasi';
 
-    protected $table        = 'tb_kolaborasi';
-    protected $primaryKey   = 'id_kolaborasi';
+    protected $table = 'tb_kolaborasi';
+
+    protected $primaryKey = 'id_kolaborasi';
 
     protected $fillable = [
         'id_mitra',
@@ -34,8 +37,8 @@ class Kolaborasi extends Model
     ];
 
     protected $casts = [
-        'tanggal_diterima'  => 'date',
-        'tanggal_selesai'   => 'date',
-        'is_active'         => 'boolean',
+        'tanggal_diterima' => 'date',
+        'tanggal_selesai' => 'date',
+        'is_active' => 'boolean',
     ];
 }

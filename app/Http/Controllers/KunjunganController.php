@@ -9,6 +9,7 @@ use App\Models\Kunjungan;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
 use App\Models\NonPerwakilanNegaraAsing;
+use Illuminate\Http\Request;
 
 class KunjunganController extends Controller
 {
@@ -19,14 +20,20 @@ class KunjunganController extends Controller
         'mitra.nonPerwakilanNegaraAsing',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         $kunjungan = Kunjungan::with(self::MITRA_RELATIONS)
             ->where('is_active', true)
+            ->filterStatus($request->input('status'))
+            ->filterTahun($request->input('tahun'))
             ->latest('tanggal_diterima')
             ->get();
 
-        return view('mod_kunjungan.index', compact('kunjungan'));
+        return view('mod_kunjungan.index', [
+            'kunjungan' => $kunjungan,
+            'statusOptions' => Kunjungan::STATUS_OPTIONS,
+            'tahunOptions' => Kunjungan::tahunTersedia(),
+        ]);
     }
 
     public function show(Kunjungan $kunjungan)

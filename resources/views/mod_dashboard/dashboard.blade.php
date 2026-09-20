@@ -32,24 +32,10 @@
         </div>
     </div>
 
-    {{-- Mitra Kedutaan Besar Paling Aktif --}}
+    {{-- Mitra Paling Aktif --}}
     <div class="row row-cards mb-4">
         <div class="col-lg-12">
-            @include('mod_dashboard.dashboard-mitra-aktif-kedutaan-besar')
-        </div>
-    </div>
-
-    {{-- Misi Asing untuk ASEAN Paling Aktif --}}
-    <div class="row row-cards mb-4">
-        <div class="col-lg-12">
-            @include('mod_dashboard.dashboard-mitra-aktif-misi-asing-asean')
-        </div>
-    </div>
-
-    {{-- Misi Permanen Negara ASEAN Paling Aktif --}}
-    <div class="row row-cards mb-4">
-        <div class="col-lg-12">
-            @include('mod_dashboard.dashboard-mitra-aktif-misi-permanen-asean')
+            @include('mod_dashboard.dashboard-mitra-aktif')
         </div>
     </div>
 

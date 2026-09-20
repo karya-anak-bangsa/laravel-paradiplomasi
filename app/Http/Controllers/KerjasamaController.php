@@ -9,6 +9,7 @@ use App\Models\Kerjasama;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
 use App\Models\NonPerwakilanNegaraAsing;
+use Illuminate\Http\Request;
 
 class KerjasamaController extends Controller
 {
@@ -23,14 +24,20 @@ class KerjasamaController extends Controller
         'mitra.nonPerwakilanNegaraAsing',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         $kerjasama = Kerjasama::with(self::MITRA_RELATIONS)
             ->where('is_active', true)
+            ->filterStatus($request->input('status'))
+            ->filterTahun($request->input('tahun'))
             ->latest('tanggal_diterima')
             ->get();
 
-        return view('mod_kerjasama.index', compact('kerjasama'));
+        return view('mod_kerjasama.index', [
+            'kerjasama' => $kerjasama,
+            'statusOptions' => Kerjasama::STATUS_OPTIONS,
+            'tahunOptions' => Kerjasama::tahunTersedia(),
+        ]);
     }
 
     public function show(Kerjasama $kerjasama)

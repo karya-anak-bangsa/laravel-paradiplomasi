@@ -1,8 +1,7 @@
 {{--
-    Partial grid "Mitra Paling Aktif" untuk satu tipe mitra.
+    Partial grid "Mitra Paling Aktif".
     Variabel yang harus dikirim via @include(..., [...]):
-    - $daftarMitra   : Collection hasil withCount + total_aktivitas (lihat DashboardController)
-    - $labelNamaResmi: nama kolom nama resmi pada model subtype (misal 'nama_kedutaan_besar_id')
+    - $daftarMitra : Collection objek dengan kode_negara, nama_resmi, total_aktivitas (lihat DashboardController)
 --}}
 <div class="row row-cards">
     @forelse ($daftarMitra as $mitra)
@@ -13,7 +12,7 @@
                         <span class="flag flag-md flag-country-{{ $mitra->kode_negara }} flex-shrink-0 me-2"></span>
                         <div>
                             <div class="fw-semibold">{{ $mitra->total_aktivitas }} Catatan Data</div>
-                            <div class="text-secondary">{{ $mitra->{$labelNamaResmi} }}</div>
+                            <div class="text-secondary" style="min-height: 2.5rem; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;">{{ $mitra->nama_resmi }}</div>
                         </div>
                     </div>
                 </div>
