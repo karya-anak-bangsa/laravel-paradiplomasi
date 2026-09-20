@@ -1,25 +1,16 @@
 # Proyek Web Paradiplomasi Pemda DKI
 
-## 1. Ikhtisar & Tautan Penting
-- **Repository:** https://github.com/karya-anak-bangsa/laravel-paradiplomasi
-- **Domain Produksi:** https://www.paradiplomasi-jakarta.id (Hostinger)
-- **Sumber Data Acuan:** [Spreadsheet Data Diplomasi DKI](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?usp=sharing)
-- **Tujuan Sistem:** Pengelolaan dan pencatatan riwayat diplomasi dan kemitraan luar negeri Pemda DKI Jakarta.
+## 1. Deskripsi Singkat
+Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data diplomasi dan hubungan luar negeri Pemda DKI Jakarta yang diwakili oleh Biro Kerjasama Daerah (KSD) setda DKI Jakarta dengan beberapa mitra seperti kedutaan besar, misi asing untuk asean, misi permanen negara asean, dan non perwakilan negara asing.
 
 ---
-
-## 1. Deskripsi Singkat
-- Sistem pengelolaan kerja sama internasional dan hubungan paradiplomasi Pemda DKI Jakarta.
-- saya akan lanjutkan. 
-
-***
 
 ## 2. Pembagian Modul
 - **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
 - **Modul Administrator:** Pengaturan Sistem.
 
-___
+---
 
 ## 3. Hak Akses & Modul
 - **Administrator:** Akses penuh (CRUD) ke seluruh modul, termasuk Pengaturan Sistem.
@@ -30,10 +21,15 @@ ___
 ## 4. Git & Deployment
 - **Repository:** https://github.com/karya-anak-bangsa/laravel-paradiplomasi
 - **Domain Testing:** https://www.paradiplomasi-jakarta.id (Hostinger)
+- **Domain Production:** belum tersedia.
+
+## 5. Sumber Data Acuan
+- Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun beberapa link akses seperti berikut 
+  - **[Data Kedutaan besar](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=0#gid=0)** 
 
 ---
 
-## 5. Stack Teknologi & Environment
+## 5. Teknologi & Environment
 - **Framework & UI:** Laravel 13.27.0, Template Tabler UI 1.4.0
 - **Environment:** PHP 8.3.28, MySQL 8.0.40, Apache 2.4.62, Composer 2.10.1, Node.js 24.12.0
 - **Local Server:** Laragon 8.4.0
