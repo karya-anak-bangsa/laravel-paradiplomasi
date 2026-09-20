@@ -158,23 +158,23 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 30%">Kolaborasi</th>
-                                <th style="width: 12%">Tanggal Diterima</th>
-                                <th style="width: 12%">Tanggal Selesai</th>
-                                <th style="width: 10%">Status</th>
-                                <th style="width: 15%">Aksi</th>
+                                <th style="width: 30%" class="text-start">Kolaborasi</th>
+                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 15%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->kolaborasi as $item)
                                 <tr>
-                                    <td>{{ str($item->kolaborasi)->stripTags() }}</td>
-                                    <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
-                                    <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td>
+                                    <td class="text-start">{{ str($item->kolaborasi)->stripTags() }}</td>
+                                    <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                    <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                    <td class="text-center">
                                         <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kolaborasi }}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('kolaborasi.edit', $item->id_kolaborasi) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
@@ -288,23 +288,23 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 30%">Acara</th>
-                                <th style="width: 12%">Tanggal Diterima</th>
-                                <th style="width: 12%">Tanggal Selesai</th>
-                                <th style="width: 10%">Status</th>
-                                <th style="width: 15%">Aksi</th>
+                                <th style="width: 30%" class="text-start">Acara</th>
+                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 15%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->undangan as $item)
                                 <tr>
-                                    <td>{{ str($item->acara)->stripTags() }}</td>
-                                    <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
-                                    <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td>
+                                    <td class="text-start">{{ str($item->acara)->stripTags() }}</td>
+                                    <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                    <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                    <td class="text-center">
                                         <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_undangan }}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('undangan.edit', $item->id_undangan) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
@@ -418,23 +418,23 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 30%">Topik</th>
-                                <th style="width: 12%">Tanggal Diterima</th>
-                                <th style="width: 12%">Tanggal Selesai</th>
-                                <th style="width: 10%">Status</th>
-                                <th style="width: 15%">Aksi</th>
+                                <th style="width: 30%" class="text-start">Topik</th>
+                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 15%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->audiensi as $item)
                                 <tr>
-                                    <td>{{ str($item->topik)->stripTags() }}</td>
-                                    <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
-                                    <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td>
+                                    <td class="text-start">{{ str($item->topik)->stripTags() }}</td>
+                                    <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                    <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                    <td class="text-center">
                                         <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_audiensi }}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('audiensi.edit', $item->id_audiensi) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
@@ -548,23 +548,23 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 30%">Perihal</th>
-                                <th style="width: 12%">Tanggal Diterima</th>
-                                <th style="width: 12%">Tanggal Selesai</th>
-                                <th style="width: 10%">Status</th>
-                                <th style="width: 15%">Aksi</th>
+                                <th style="width: 30%" class="text-start">Perihal</th>
+                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 15%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($kedutaanBesar->kunjungan as $item)
                                 <tr>
-                                    <td>{{ str($item->perihal)->stripTags() }}</td>
-                                    <td>{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
-                                    <td>{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td>
+                                    <td class="text-start">{{ str($item->perihal)->stripTags() }}</td>
+                                    <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                    <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                    <td class="text-center">
                                         <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kunjungan }}</span>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('kunjungan.edit', $item->id_kunjungan) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
