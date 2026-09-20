@@ -36,6 +36,16 @@ class DatabaseSeeder extends Seeder
             // KolaborasiPart2Seeder::class,
 
 
+            UndanganPart1Seeder::class,
+            // UndanganPart2Seeder::class,
+
+            // AudiensiPart1Seeder::class,
+            // AudiensiPart2Seeder::class,
+
+            // KunjunganPart1Seeder::class,
+            // KunjunganPart2Seeder::class,
+
+
 
         ]);
     }
