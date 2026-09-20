@@ -6,20 +6,20 @@
 - **Sumber Data Acuan:** [Spreadsheet Data Diplomasi DKI](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?usp=sharing)
 - **Tujuan Sistem:** Pengelolaan dan pencatatan riwayat diplomasi dan kemitraan luar negeri Pemda DKI Jakarta.
 
---
+---
 
 ## 1. Deskripsi Singkat
 - Sistem pengelolaan kerja sama internasional dan hubungan paradiplomasi Pemda DKI Jakarta.
 - saya akan lanjutkan. 
 
----
+***
 
 ## 2. Pembagian Modul
 - **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
 - **Modul Administrator:** Pengaturan Sistem.
 
----
+___
 
 ## 3. Hak Akses & Modul
 - **Administrator:** Akses penuh (CRUD) ke seluruh modul, termasuk Pengaturan Sistem.
