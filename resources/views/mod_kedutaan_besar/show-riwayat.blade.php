@@ -41,9 +41,7 @@
                                     <td class="text-start">{{ str($item->kerjasama)->stripTags() }}</td>
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td class="text-center">
-                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kerjasama }}</span>
-                                    </td>
+                                    <td class="text-center">{{ $item->status_kerjasama }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('kerjasama.edit', $item->id_kerjasama) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
@@ -130,11 +128,7 @@
                                         </div>
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Status Kerjasama</div>
-                                            <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">
-                                                    {{ $item->status_kerjasama }}
-                                                </span>
-                                            </div>
+                                            <div class="datagrid-content">{{ $item->status_kerjasama }}</div>
                                         </div>
                                     </div>
 
@@ -171,9 +165,7 @@
                                     <td class="text-start">{{ str($item->kolaborasi)->stripTags() }}</td>
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td class="text-center">
-                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kolaborasi }}</span>
-                                    </td>
+                                    <td class="text-center">{{ $item->status_kolaborasi }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('kolaborasi.edit', $item->id_kolaborasi) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
@@ -260,11 +252,7 @@
                                         </div>
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Status Kolaborasi</div>
-                                            <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">
-                                                    {{ $item->status_kolaborasi }}
-                                                </span>
-                                            </div>
+                                            <div class="datagrid-content">{{ $item->status_kolaborasi }}</div>
                                         </div>
                                     </div>
 
@@ -301,9 +289,7 @@
                                     <td class="text-start">{{ str($item->acara)->stripTags() }}</td>
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td class="text-center">
-                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_undangan }}</span>
-                                    </td>
+                                    <td class="text-center">{{ $item->status_undangan }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('undangan.edit', $item->id_undangan) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
@@ -390,11 +376,7 @@
                                         </div>
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Status Undangan</div>
-                                            <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">
-                                                    {{ $item->status_undangan }}
-                                                </span>
-                                            </div>
+                                            <div class="datagrid-content">{{ $item->status_undangan }}</div>
                                         </div>
                                     </div>
 
@@ -431,9 +413,7 @@
                                     <td class="text-start">{{ str($item->topik)->stripTags() }}</td>
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td class="text-center">
-                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_audiensi }}</span>
-                                    </td>
+                                    <td class="text-center">{{ $item->status_audiensi }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('audiensi.edit', $item->id_audiensi) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
@@ -520,11 +500,7 @@
                                         </div>
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Status Audiensi</div>
-                                            <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">
-                                                    {{ $item->status_audiensi }}
-                                                </span>
-                                            </div>
+                                            <div class="datagrid-content">{{ $item->status_audiensi }}</div>
                                         </div>
                                     </div>
 
@@ -561,9 +537,7 @@
                                     <td class="text-start">{{ str($item->perihal)->stripTags() }}</td>
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                    <td class="text-center">
-                                        <span class="badge {{ $item->status_badge_color }}" style="font-size: inherit;">{{ $item->status_kunjungan }}</span>
-                                    </td>
+                                    <td class="text-center">{{ $item->status_kunjungan }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('kunjungan.edit', $item->id_kunjungan) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
@@ -650,11 +624,7 @@
                                         </div>
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Status Kunjungan</div>
-                                            <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">
-                                                    {{ $item->status_kunjungan }}
-                                                </span>
-                                            </div>
+                                            <div class="datagrid-content">{{ $item->status_kunjungan }}</div>
                                         </div>
                                     </div>
 
