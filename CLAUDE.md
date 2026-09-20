@@ -15,6 +15,7 @@ Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data dipl
 ## 3. Hak Akses & Modul
 - **Administrator:** Akses penuh (CRUD) ke seluruh modul, termasuk Pengaturan Sistem.
 - **Tamu (Guest):** Akses baca/cari (Read-only) pada modul publik.
+
 | Role | Kunci session | Kemampuan |
 |---|---|---|
 | `admin` | `auth_role = admin` | CRUD penuh + menu Pengaturan Sistem |
