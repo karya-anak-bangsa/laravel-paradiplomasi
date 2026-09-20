@@ -14,6 +14,7 @@ Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, 
 - **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing.
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
 - **Modul Administrator:** Akun pengguna, Riwayat Aktivitas.
+
 |---|---|---|
 | Nama Modul | Nama Tabel | Aksi | Keterangan |
 |---|---|---|
