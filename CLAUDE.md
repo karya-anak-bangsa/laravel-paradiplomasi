@@ -15,9 +15,8 @@ Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, 
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
 - **Modul Administrator:** Akun pengguna, Riwayat Aktivitas.
 
-|---|---|---|
 | Nama Modul | Nama Tabel | Aksi | Keterangan |
-|---|---|---|
+|---|---|---|---|
 | `Akun Pengguna` | `Hardcode dari AuthController` | login dan logout | Administrator dapat melihat daftar tamu-tamu yang memiliki akses ke sistem. |
 | `Riwayat Aktivitas` | `belum dibuat` | - | - |
 | `Kedutaan Besar` | `tb_kedutaan_besar` | lihat, cari, tambah, ubah, hapus | ex. Kedutaan Besar Australia |
@@ -30,7 +29,8 @@ Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, 
 | `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus | - |
 | `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
 | `Acara DKI` | `tb_acara_dki` | lihat, cari, tambah, ubah, hapus | - |
-|---|---|---|
+| `Dashboard` | - | Rangkuman data dari modul mitra dan riwayat diplomasi | - |
+
 
 ---
 

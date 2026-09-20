@@ -1,14 +1,36 @@
 # Proyek Web Paradiplomasi Pemda DKI
 
 ## 1. Deskripsi Singkat
-Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data diplomasi dan hubungan luar negeri Pemda DKI Jakarta yang diwakili oleh Biro Kerjasama Daerah (KSD) setda DKI Jakarta dengan beberapa mitra seperti kedutaan besar, misi asing untuk asean, misi permanen negara asean, dan non perwakilan negara asing.
+<p align="justify">
+Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data diplomasi dan hubungan luar negeri Pemda DKI Jakarta yang diwakili oleh Biro Kerjasama Daerah (KSD) setda DKI Jakarta dengan beberapa mitra seperti kedutaan besar, misi asing untuk asean, misi permanen negara asean, dan non perwakilan negara asing. Saat ini, web paradiplomasi jakarta dalam tahap domain testing artinya hasil development akan dijalankan pada domain hostinger. Jika seluruh proses bisnis di web paradiplomasi telah selesai dikerjakan maka akan dilakukan deployment ke server resmi pemda dki yaitu server diskominfotik pemda dki.
+</p>
+<p align="justify">
+Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, dan Non Perwakilan Negara Asing dapat melakukan diplomasi berupa Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI dan tercatat di web paradiplomasi jakarta. Sebagai contoh, kedutaan besar australia dan misi australia untuk asean melakukan pergantian pimpinan. Lalu kedua pimpinan tersebut ingin berkunjung ke balai kota dki untuk bertemu dengan gubernur dki. Hal ini dilakukan untuk protokoler antara pemda dki dengan mitra biro ksd. Oleh karena itu, pada modul kunjungan akan tercatat dua data kunjungan. Pertama kunjungan duta besar australia dan kedua kunjungan kepala misi australia untuk asean. Walaupun pelaksanaan kunjungan dilakukan pada hari yang sama, namun proses pencatatannya dilakukan dua kali. Contoh lainnya, negara singapura yang diwakili oleh misi permanen republik singapura untuk asean ingin melakukan kerjasama dengan beberapa perguran tinggi di Indonesia. Adapun bentuk kerjasamanya adalah program pertukaran mahasiswa antara nanyang technological university dengan mahasiswa dari universitas indonesia, universitas gajah mada, institut teknologi bandung. Oleh karena itu, pada modul kerjasama akan tercatat satu kerjasama. Secara singkat, setiap riwayat diplomasi (modul kerjasama - acara dki) dapat mencatat data diplomasi dari berbagai jenis mitra biro ksd.
+</p>
 
 ---
 
 ## 2. Pembagian Modul
 - **Modul Mitra:** Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN, Non Perwakilan Negara Asing.
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI.
-- **Modul Administrator:** Pengaturan Sistem.
+- **Modul Administrator:** Akun pengguna, Riwayat Aktivitas.
+
+| Nama Modul | Nama Tabel | Aksi | Keterangan |
+|---|---|---|---|
+| `Akun Pengguna` | `Hardcode dari AuthController` | login dan logout | Administrator dapat melihat daftar tamu-tamu yang memiliki akses ke sistem. |
+| `Riwayat Aktivitas` | `belum dibuat` | - | - |
+| `Kedutaan Besar` | `tb_kedutaan_besar` | lihat, cari, tambah, ubah, hapus | ex. Kedutaan Besar Australia |
+| `Misi Asing ASEAN` | `tb_misi_asing_asean` | lihat, cari, tambah, ubah, hapus | ex. Misi Australia untuk ASEAN |
+| `Misi Permanen ASEAN` | `tb_misi_permanen_asean` | lihat, cari, tambah, ubah, hapus | ex. Misi Permanen Republik Singapura |
+| `Non Perwakilan Negara Asing` | `belum dibuat` | - | - |
+| `Kerjasama` | `tb_kerjasama` | lihat, cari, tambah, ubah, hapus | - |
+| `Kolaborasi` | `tb_kolaborasi` | lihat, cari, tambah, ubah, hapus | - |
+| `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus | - |
+| `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus | - |
+| `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
+| `Acara DKI` | `tb_acara_dki` | lihat, cari, tambah, ubah, hapus | - |
+| `Dashboard` | - | Rangkuman data dari modul mitra dan riwayat diplomasi | - |
+
 
 ---
 
