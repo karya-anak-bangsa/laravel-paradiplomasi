@@ -23,6 +23,7 @@ class NonPerwakilanNegaraAsingController extends Controller
             'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
             'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
             'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
+            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
         ]);
 
         return view('mod_non_perwakilan_negara_asing.show', compact('nonPerwakilanNegaraAsing'));

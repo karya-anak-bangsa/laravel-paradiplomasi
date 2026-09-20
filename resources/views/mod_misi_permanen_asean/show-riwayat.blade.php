@@ -643,7 +643,138 @@
 
         {{-- Acara DKI --}}
         <div class="tab-pane" id="tab-acara-dki" role="tabpanel">
-            <p class="text-danger mb-0">Belum tersedia. Modul Acara DKI akan dikembangkan pada tahap berikutnya.</p>
+            @if ($misiPermanenAsean->acaraDki->isNotEmpty())
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%" class="text-start">Acara DKI</th>
+                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 15%" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($misiPermanenAsean->acaraDki as $item)
+                                <tr>
+                                    <td class="text-start">{{ str($item->acara_dki)->stripTags() }}</td>
+                                    <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
+                                    <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
+                                    <td class="text-center">{{ $item->status_acara_dki }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ route('acara-dki.edit', $item->id_acara_dki) }}" class="btn btn-icon btn-warning">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-icon btn-primary"
+                                            data-bs-toggle="modal" data-bs-target="#modal-acara-dki-{{ $item->id_acara_dki }}">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                @foreach ($misiPermanenAsean->acaraDki as $item)
+                    <div class="modal modal-blur fade" id="modal-acara-dki-{{ $item->id_acara_dki }}"
+                        tabindex="-1" role="dialog" aria-hidden="true"
+                        data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title">Rincian Acara DKI - {{ $misiPermanenAsean->mitra->nama_mitra }}</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="hr-text hr-text-start">Mitra</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-content d-flex align-items-center">
+                                                <span class="flag flag-md flag-country-{{ $misiPermanenAsean->mitra->kode_mitra }} me-2"></span>
+                                                <span class="fw-bold">{{ $misiPermanenAsean->mitra->nama_mitra }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tipe Mitra</div>
+                                            <div class="datagrid-content">{{ $misiPermanenAsean->mitra->tipe_mitra->value }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Nama Resmi</div>
+                                            <div class="datagrid-content">{{ $misiPermanenAsean->mitra->nama_resmi_mitra ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Acara DKI</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            @if ($item->acara_dki)
+                                                {!! $item->acara_dki !!}
+                                            @else
+                                                <p class="text-secondary mb-0">Belum ada catatan acara DKI.</p>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Rangkuman</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->rangkuman !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Catatan</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Status & Jadwal</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tanggal Diterima</div>
+                                            <div class="datagrid-content">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tanggal Selesai</div>
+                                            <div class="datagrid-content">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Triwulan</div>
+                                            <div class="datagrid-content">{{ $item->triwulan_acara_dki }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Acara DKI</div>
+                                            <div class="datagrid-content">{{ $item->status_acara_dki }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Tanggal Pelaksanaan</div>
+                                    <div class="datagrid align-items-center">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tanggal Awal Pelaksanaan</div>
+                                            <div class="datagrid-content">{{ $item->tanggal_awal_pelaksanaan?->format('d M Y') ?? '-' }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tanggal Akhir Pelaksanaan</div>
+                                            <div class="datagrid-content">{{ $item->tanggal_akhir_pelaksanaan?->format('d M Y') ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p class="text-danger mb-0">Belum ada riwayat acara DKI untuk misi ini.</p>
+            @endif
         </div>
 
     </div>

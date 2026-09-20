@@ -14,6 +14,7 @@ class StoreAcaraDKIRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id_mitra' => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
             'acara_dki' => ['required', 'string'],
             'rangkuman' => ['required', 'string'],
             'catatan' => ['required', 'string'],
@@ -29,6 +30,7 @@ class StoreAcaraDKIRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'id_mitra' => 'Nama Negara',
             'acara_dki' => 'Acara DKI',
             'rangkuman' => 'Rangkuman',
             'catatan' => 'Catatan',

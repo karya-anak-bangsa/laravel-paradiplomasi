@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\Concerns\HasDiplomasiFieldOptions;
 use App\Models\Concerns\HasDiplomasiFilter;
 use App\Models\Concerns\HasDiplomasiProfileAccessors;
+use App\Models\Concerns\ReferencesMitra;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AcaraDKI extends Model
 {
-    use HasDiplomasiFieldOptions, HasDiplomasiFilter, HasDiplomasiProfileAccessors, SoftDeletes;
+    use HasDiplomasiFieldOptions, HasDiplomasiFilter, HasDiplomasiProfileAccessors, ReferencesMitra, SoftDeletes;
 
     protected string $judulColumn = 'acara_dki';
 
@@ -21,6 +22,7 @@ class AcaraDKI extends Model
     protected $primaryKey = 'id_acara_dki';
 
     protected $fillable = [
+        'id_mitra',
         'acara_dki',
         'rangkuman',
         'catatan',

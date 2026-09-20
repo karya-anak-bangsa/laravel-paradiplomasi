@@ -15,7 +15,8 @@
     <x-page-body-table title="Daftar acara DKI">
         <x-slot name="thead">
             <tr>
-                <th data-orderable="true" style="width:35%" class="text-start">Acara DKI</th>
+                <th data-orderable="true" style="width:20%" class="text-start">Mitra</th>
+                <th data-orderable="true" style="width:25%" class="text-start">Acara DKI</th>
                 <th data-orderable="true" style="width:15%" class="text-center">Tanggal Diterima</th>
                 <th data-orderable="true" style="width:15%" class="text-center">Tanggal Selesai</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Triwulan</th>
@@ -26,6 +27,12 @@
         <x-slot name="tbody">
             @foreach ($acaraDki as $item)
                 <tr>
+                    <td class="text-start">
+                        <div class="d-flex align-items-center">
+                            <x-mitra-icon :mitra="$item->mitra" />
+                            <span class="fw-bold">{{ $item->mitra->nama_mitra ?? $item->mitra->nama_resmi_mitra }}</span>
+                        </div>
+                    </td>
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
                     <td class="text-center">{{ $item->tanggal_diterima_display }}</td>
                     <td class="text-center">{!! $item->tanggal_selesai_display !!}</td>

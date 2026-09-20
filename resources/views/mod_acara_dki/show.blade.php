@@ -16,9 +16,29 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Rincian Acara DKI - {{ $acaraDki->judul_ringkas }}</h3>
+                    <h3 class="card-title">Rincian Acara DKI - {{ $acaraDki->mitra->nama_mitra ?? $acaraDki->mitra->nama_resmi_mitra }}</h3>
                 </div>
                 <div class="card-body">
+
+                    {{-- id_mitra --}}
+                    <div class="hr-text hr-text-start">Mitra</div>
+                    <div class="datagrid align-items-center mb-3">
+                        <div class="datagrid-item">
+                            <div class="datagrid-content d-flex align-items-center">
+                                <x-mitra-icon :mitra="$acaraDki->mitra" />
+                                <span class="fw-bold">{{ $acaraDki->mitra->nama_mitra ?? $acaraDki->mitra->nama_resmi_mitra }}</span>
+                            </div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Tipe Mitra</div>
+                            <div class="datagrid-content">{{ $acaraDki->mitra->tipe_mitra->value }}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Nama Resmi</div>
+                            <div class="datagrid-content">{{ $acaraDki->mitra->nama_resmi_mitra ?? '-' }}</div>
+                        </div>
+                    </div>
+                    {{-- id_mitra --}}
 
                     {{-- acara_dki --}}
                     <div class="hr-text hr-text-start">Acara DKI</div>

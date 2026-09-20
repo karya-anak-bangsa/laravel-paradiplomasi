@@ -1,8 +1,15 @@
 <?php
+
 // app/Models/Concerns/HasRiwayatDiplomasi.php
 
 namespace App\Models\Concerns;
 
+use App\Models\AcaraDKI;
+use App\Models\Audiensi;
+use App\Models\Kerjasama;
+use App\Models\Kolaborasi;
+use App\Models\Kunjungan;
+use App\Models\Undangan;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -17,26 +24,31 @@ trait HasRiwayatDiplomasi
 {
     public function kerjasama(): HasMany
     {
-        return $this->hasMany(\App\Models\Kerjasama::class, 'id_mitra', 'id_mitra');
+        return $this->hasMany(Kerjasama::class, 'id_mitra', 'id_mitra');
     }
 
     public function kolaborasi(): HasMany
     {
-        return $this->hasMany(\App\Models\Kolaborasi::class, 'id_mitra', 'id_mitra');
+        return $this->hasMany(Kolaborasi::class, 'id_mitra', 'id_mitra');
     }
 
     public function undangan(): HasMany
     {
-        return $this->hasMany(\App\Models\Undangan::class, 'id_mitra', 'id_mitra');
+        return $this->hasMany(Undangan::class, 'id_mitra', 'id_mitra');
     }
 
     public function audiensi(): HasMany
     {
-        return $this->hasMany(\App\Models\Audiensi::class, 'id_mitra', 'id_mitra');
+        return $this->hasMany(Audiensi::class, 'id_mitra', 'id_mitra');
     }
 
     public function kunjungan(): HasMany
     {
-        return $this->hasMany(\App\Models\Kunjungan::class, 'id_mitra', 'id_mitra');
+        return $this->hasMany(Kunjungan::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function acaraDki(): HasMany
+    {
+        return $this->hasMany(AcaraDKI::class, 'id_mitra', 'id_mitra');
     }
 }

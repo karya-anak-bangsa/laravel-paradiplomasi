@@ -23,6 +23,7 @@ class MisiAsingAseanController extends Controller
             'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
             'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
             'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
+            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
         ]);
 
         return view('mod_misi_asing_asean.show', compact('misiAsingAsean'));

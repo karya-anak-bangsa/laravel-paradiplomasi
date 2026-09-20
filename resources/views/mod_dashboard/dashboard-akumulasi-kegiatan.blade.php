@@ -189,7 +189,7 @@
                     {{-- col --}}
 
                     {{-- 6. Jumlah Acara DKI --}}
-                    {{-- <div class="col-lg-4">
+                    <div class="col-lg-4">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -199,13 +199,15 @@
                                         </span>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="fw-semibold">9999 Data</div>
+                                        <div class="fw-semibold">{{ $dash_akumulasi['acara_dki'] }} Data</div>
                                         <div class="text-secondary">Jumlah Acara DKI</div>
                                     </div>
                                 </div>
                             </div>
+                            {{-- card-body --}}
                         </div>
-                    </div> --}}
+                        {{-- card --}}
+                    </div>
                     {{-- col --}}
                 </div>
                 {{-- row (grid avatar) --}}
@@ -224,6 +226,7 @@
                 <div class="text-center mt-1">
                     <span class="status-dot" style="background-color: var(--tblr-azure)"></span> Audiensi
                     <span class="status-dot ms-3" style="background-color: var(--tblr-green)"></span> Kunjungan
+                    <span class="status-dot ms-3" style="background-color: var(--tblr-orange)"></span> Acara DKI
                 </div>
             </div>
             {{-- col-lg-4 --}}
@@ -256,14 +259,16 @@
                         {{ $dash_akumulasi['undangan'] }},
                         {{ $dash_akumulasi['audiensi'] }},
                         {{ $dash_akumulasi['kunjungan'] }},
+                        {{ $dash_akumulasi['acara_dki'] }},
                     ],
-                    labels: ["Kerjasama", "Kolaborasi", "Undangan", "Audiensi", "Kunjungan"],
+                    labels: ["Kerjasama", "Kolaborasi", "Undangan", "Audiensi", "Kunjungan", "Acara DKI"],
                     colors: [
                         "var(--tblr-primary)",
                         "var(--tblr-yellow)",
                         "var(--tblr-red)",
                         "var(--tblr-azure)",
                         "var(--tblr-green)",
+                        "var(--tblr-orange)",
                     ],
                     tooltip: {
                         theme: "dark",

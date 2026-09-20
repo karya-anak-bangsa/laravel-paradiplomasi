@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcaraDKI;
 use App\Models\Audiensi;
 use App\Models\KedutaanBesar;
 use App\Models\Kerjasama;
@@ -27,6 +28,7 @@ class DashboardController extends Controller
             'undangan' => Undangan::where('is_active', true)->count(),
             'audiensi' => Audiensi::where('is_active', true)->count(),
             'kunjungan' => Kunjungan::where('is_active', true)->count(),
+            'acara_dki' => AcaraDKI::where('is_active', true)->count(),
         ];
 
         // Peta Sebaran & Pencarian Lokasi Kedutaan Besar
@@ -64,6 +66,7 @@ class DashboardController extends Controller
             'Undangan' => Undangan::selectRaw('status_undangan as status, COUNT(*) as total')->groupBy('status_undangan')->pluck('total', 'status'),
             'Audiensi' => Audiensi::selectRaw('status_audiensi as status, COUNT(*) as total')->groupBy('status_audiensi')->pluck('total', 'status'),
             'Kunjungan' => Kunjungan::selectRaw('status_kunjungan as status, COUNT(*) as total')->groupBy('status_kunjungan')->pluck('total', 'status'),
+            'Acara DKI' => AcaraDKI::selectRaw('status_acara_dki as status, COUNT(*) as total')->groupBy('status_acara_dki')->pluck('total', 'status'),
         ];
         $moduleLabels = array_keys($jumlahPerModul);
         $pieSeriesPerModul = collect($jumlahPerModul)
@@ -74,7 +77,7 @@ class DashboardController extends Controller
         // Digabung dari 3 tipe mitra: Kedutaan Besar, Misi Asing ASEAN, Misi Permanen Negara ASEAN.
         $hitungAktivitas = function ($query, string $labelNamaResmi) {
             return $query
-                ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan'])
+                ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan', 'acaraDki'])
                 ->get()
                 ->map(fn ($mitra) => (object) [
                     'kode_negara' => $mitra->kode_negara,
@@ -83,7 +86,8 @@ class DashboardController extends Controller
                         + $mitra->kolaborasi_count
                         + $mitra->undangan_count
                         + $mitra->audiensi_count
-                        + $mitra->kunjungan_count,
+                        + $mitra->kunjungan_count
+                        + $mitra->acara_dki_count,
                 ]);
         };
 
