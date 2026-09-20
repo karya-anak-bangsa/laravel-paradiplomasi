@@ -23,19 +23,16 @@ class DatabaseSeeder extends Seeder
             KedutaanBesarPart10Seeder::class,
             KedutaanBesarPart11Seeder::class,
 
-            # Modul Misi Asing
+            # Modul Misi Asing dan Misi Permanen
             MisiAsingAseanSeeder::class,
-
-            # Modul Misi Permanen
             MisiPermanenAseanSeeder::class,
-
-            # ---------------------------------------------------------------------------------------
 
             # Modul Riwayat Diplomasi - Kerjasama 
             KerjasamaSeeder::class,
             KolaborasiPart1Seeder::class,
             UndanganPart1Seeder::class,
             AudiensiPart1Seeder::class,
+            KunjunganPart1Seeder::class,
         ]);
     }
 }
