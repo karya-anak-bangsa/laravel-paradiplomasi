@@ -22,13 +22,13 @@ Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, 
 | `Kedutaan Besar` | `tb_kedutaan_besar` | lihat, cari, tambah, ubah, hapus | ex. Kedutaan Besar Australia |
 | `Misi Asing ASEAN` | `tb_misi_asing_asean` | lihat, cari, tambah, ubah, hapus | ex. Misi Australia untuk ASEAN |
 | `Misi Permanen ASEAN` | `tb_misi_permanen_asean` | lihat, cari, tambah, ubah, hapus | ex. Misi Permanen Republik Singapura |
-| `Non Perwakilan Negara Asing` | `belum dibuat` | - | - |
+| `Non Perwakilan Negara Asing` | `tb_non_perwakilan_negara_asing` | - | - |
 | `Kerjasama` | `tb_kerjasama` | lihat, cari, tambah, ubah, hapus | - |
 | `Kolaborasi` | `tb_kolaborasi` | lihat, cari, tambah, ubah, hapus | - |
 | `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus | - |
 | `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus | - |
 | `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
-| `Acara DKI` | `tb_acara_dki` | lihat, cari, tambah, ubah, hapus | - |
+| `Acara DKI` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
 | `Dashboard` | - | Rangkuman data dari modul mitra dan riwayat diplomasi | - |
 
 
