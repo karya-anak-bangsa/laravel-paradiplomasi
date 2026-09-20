@@ -6,7 +6,7 @@
 - **Sumber Data Acuan:** [Spreadsheet Data Diplomasi DKI](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?usp=sharing)
 - **Tujuan Sistem:** Pengelolaan dan pencatatan riwayat diplomasi dan kemitraan luar negeri Pemda DKI Jakarta.
 
----
+--
 
 ## 1. Deskripsi Singkat
 - Sistem pengelolaan kerja sama internasional dan hubungan paradiplomasi Pemda DKI Jakarta.
