@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreKerjasamaRequest;
+use App\Http\Requests\UpdateKerjasamaRequest;
 use App\Models\KedutaanBesar;
 use App\Models\Kerjasama;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
-use App\Http\Requests\StoreKerjasamaRequest;
-use App\Http\Requests\UpdateKerjasamaRequest;
+use App\Models\NonPerwakilanNegaraAsing;
 
 class KerjasamaController extends Controller
 {
     /**
-     * Eager-load relasi mitra + ketiga subtype-nya, dipakai bareng oleh
+     * Eager-load relasi mitra + keempat subtype-nya, dipakai bareng oleh
      * index/show supaya accessor $mitra->nama_mitra / kode_mitra / nama_resmi_mitra tidak N+1.
      */
     private const MITRA_RELATIONS = [
         'mitra.kedutaanBesar',
         'mitra.misiAsingAsean',
         'mitra.misiPermanenAsean',
+        'mitra.nonPerwakilanNegaraAsing',
     ];
 
     public function index()
@@ -27,42 +29,48 @@ class KerjasamaController extends Controller
             ->where('is_active', true)
             ->latest('tanggal_diterima')
             ->get();
+
         return view('mod_kerjasama.index', compact('kerjasama'));
     }
 
     public function show(Kerjasama $kerjasama)
     {
         $kerjasama->load(self::MITRA_RELATIONS);
+
         return view('mod_kerjasama.show', compact('kerjasama'));
     }
 
     public function create()
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
-        return view('mod_kerjasama.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
+
+        return view('mod_kerjasama.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
     }
 
     public function store(StoreKerjasamaRequest $request)
     {
         Kerjasama::create($request->validated());
+
         return redirect()->route('kerjasama.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data kerjasama berhasil disimpan.',
         ]);
     }
 
     public function edit(Kerjasama $kerjasama)
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
         $kerjasama->load(self::MITRA_RELATIONS);
-        return view('mod_kerjasama.edit', compact('kerjasama', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
+
+        return view('mod_kerjasama.edit', compact('kerjasama', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
     }
 
     public function update(UpdateKerjasamaRequest $request, Kerjasama $kerjasama)
     {
         $kerjasama->update($request->validated());
+
         return redirect()->route('kerjasama.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data kerjasama berhasil diubah.',
         ]);
     }
@@ -70,8 +78,9 @@ class KerjasamaController extends Controller
     public function destroy(Kerjasama $kerjasama)
     {
         $kerjasama->update(['is_active' => false]);
+
         return redirect()->route('kerjasama.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data kerjasama berhasil dinonaktifkan.',
         ]);
     }
@@ -96,6 +105,10 @@ class KerjasamaController extends Controller
             ->orderBy('nama_negara')
             ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
 
-        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean];
+        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)
+            ->orderBy('nama_non_perwakilan_negara_asing')
+            ->get(['id_mitra', 'nama_non_perwakilan_negara_asing']);
+
+        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing];
     }
 }

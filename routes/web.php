@@ -1,36 +1,35 @@
 <?php
 
-# halaman auth
+// halaman auth
+use App\Http\Controllers\AcaraDKIController;
+// halaman backend
+use App\Http\Controllers\AudiensiController;
 use App\Http\Controllers\AuthController;
-
-# halaman backend
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KedutaanBesarController;
-use App\Http\Controllers\MisiAsingAseanController;
-use App\Http\Controllers\MisiPermanenAseanController;
 use App\Http\Controllers\KerjasamaController;
 use App\Http\Controllers\KolaborasiController;
-use App\Http\Controllers\UndanganController;
-use App\Http\Controllers\AudiensiController;
 use App\Http\Controllers\KunjunganController;
-use App\Http\Controllers\AcaraDKIController;
+use App\Http\Controllers\MisiAsingAseanController;
+use App\Http\Controllers\MisiPermanenAseanController;
+use App\Http\Controllers\NonPerwakilanNegaraAsingController;
 use App\Http\Controllers\TanggalPentingController;
-
-# other
+use App\Http\Controllers\UndanganController;
+// other
 use Illuminate\Support\Facades\Route;
 
-# ------------------------------------------------------------------------------------------------- #
-# Route Halaman Auth
-# ------------------------------------------------------------------------------------------------- #
+// ------------------------------------------------------------------------------------------------- #
+// Route Halaman Auth
+// ------------------------------------------------------------------------------------------------- #
 Route::middleware('cek.tamu')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 });
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-# ------------------------------------------------------------------------------------------------- #
-# Modul-Modul di Paradiplomasi Jakarta
-# ------------------------------------------------------------------------------------------------- #
+// ------------------------------------------------------------------------------------------------- #
+// Modul-Modul di Paradiplomasi Jakarta
+// ------------------------------------------------------------------------------------------------- #
 Route::middleware('cek.auth')->group(function () {
     Route::resource('dashboard', DashboardController::class);
 
@@ -39,6 +38,7 @@ Route::middleware('cek.auth')->group(function () {
         Route::resource('kedutaan-besar', KedutaanBesarController::class)->except(['index', 'show']);
         Route::resource('misi-asing-asean', MisiAsingAseanController::class)->except(['index', 'show']);
         Route::resource('misi-permanen-asean', MisiPermanenAseanController::class)->except(['index', 'show']);
+        Route::resource('non-perwakilan-negara-asing', NonPerwakilanNegaraAsingController::class)->except(['index', 'show']);
         Route::resource('kerjasama', KerjasamaController::class)->except(['index', 'show']);
         Route::resource('kolaborasi', KolaborasiController::class)->except(['index', 'show']);
         Route::resource('undangan', UndanganController::class)->except(['index', 'show']);
@@ -54,6 +54,7 @@ Route::middleware('cek.auth')->group(function () {
     Route::resource('kedutaan-besar', KedutaanBesarController::class)->only(['index', 'show']);
     Route::resource('misi-asing-asean', MisiAsingAseanController::class)->only(['index', 'show']);
     Route::resource('misi-permanen-asean', MisiPermanenAseanController::class)->only(['index', 'show']);
+    Route::resource('non-perwakilan-negara-asing', NonPerwakilanNegaraAsingController::class)->only(['index', 'show']);
     Route::resource('kerjasama', KerjasamaController::class)->only(['index', 'show']);
     Route::resource('kolaborasi', KolaborasiController::class)->only(['index', 'show']);
     Route::resource('undangan', UndanganController::class)->only(['index', 'show']);

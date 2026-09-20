@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreKolaborasiRequest;
+use App\Http\Requests\UpdateKolaborasiRequest;
 use App\Models\KedutaanBesar;
 use App\Models\Kolaborasi;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
-use App\Http\Requests\StoreKolaborasiRequest;
-use App\Http\Requests\UpdateKolaborasiRequest;
+use App\Models\NonPerwakilanNegaraAsing;
 
 class KolaborasiController extends Controller
 {
@@ -15,6 +16,7 @@ class KolaborasiController extends Controller
         'mitra.kedutaanBesar',
         'mitra.misiAsingAsean',
         'mitra.misiPermanenAsean',
+        'mitra.nonPerwakilanNegaraAsing',
     ];
 
     public function index()
@@ -23,42 +25,48 @@ class KolaborasiController extends Controller
             ->where('is_active', true)
             ->latest('tanggal_diterima')
             ->get();
+
         return view('mod_kolaborasi.index', compact('kolaborasi'));
     }
 
     public function show(Kolaborasi $kolaborasi)
     {
         $kolaborasi->load(self::MITRA_RELATIONS);
+
         return view('mod_kolaborasi.show', compact('kolaborasi'));
     }
 
     public function create()
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
-        return view('mod_kolaborasi.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
+
+        return view('mod_kolaborasi.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
     }
 
     public function store(StoreKolaborasiRequest $request)
     {
         Kolaborasi::create($request->validated());
+
         return redirect()->route('kolaborasi.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data kolaborasi berhasil disimpan.',
         ]);
     }
 
     public function edit(Kolaborasi $kolaborasi)
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean] = $this->daftarMitraAktif();
+        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
         $kolaborasi->load(self::MITRA_RELATIONS);
-        return view('mod_kolaborasi.edit', compact('kolaborasi', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean'));
+
+        return view('mod_kolaborasi.edit', compact('kolaborasi', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
     }
 
     public function update(UpdateKolaborasiRequest $request, Kolaborasi $kolaborasi)
     {
         $kolaborasi->update($request->validated());
+
         return redirect()->route('kolaborasi.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data kolaborasi berhasil diubah.',
         ]);
     }
@@ -66,8 +74,9 @@ class KolaborasiController extends Controller
     public function destroy(Kolaborasi $kolaborasi)
     {
         $kolaborasi->update(['is_active' => false]);
+
         return redirect()->route('kolaborasi.index')->with('notify', [
-            'type'    => 'success',
+            'type' => 'success',
             'message' => 'Data kolaborasi berhasil dinonaktifkan.',
         ]);
     }
@@ -86,6 +95,10 @@ class KolaborasiController extends Controller
             ->orderBy('nama_negara')
             ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
 
-        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean];
+        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)
+            ->orderBy('nama_non_perwakilan_negara_asing')
+            ->get(['id_mitra', 'nama_non_perwakilan_negara_asing']);
+
+        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing];
     }
 }

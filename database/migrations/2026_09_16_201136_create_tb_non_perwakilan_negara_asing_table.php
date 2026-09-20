@@ -12,8 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_non_perwakilan_negara_asing', function (Blueprint $table) {
-            $table->id();
+
+            // primary key mandiri
+            $table->id('id_non_perwakilan_negara_asing');
+
+            // foreign key terpisah ke tb_mitra (unique -> menjamin relasi 1:1 ke tb_mitra)
+            $table->foreignId('id_mitra')->unique()->constrained('tb_mitra', 'id_mitra')->restrictOnDelete();
+
+            // columns-columns
+            $table->string('nama_non_perwakilan_negara_asing');
+            $table->text('keterangan')->nullable();
+
+            // status data & timestamps
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

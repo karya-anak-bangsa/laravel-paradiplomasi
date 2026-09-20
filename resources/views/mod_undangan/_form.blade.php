@@ -6,6 +6,7 @@
             <option value="kedutaan_besar">Kedutaan Besar</option>
             <option value="misi_asing_asean">Misi Asing untuk ASEAN</option>
             <option value="misi_permanen_asean">Misi Permanen Negara ASEAN</option>
+            <option value="non_pna">Non Perwakilan Negara Asing</option>
         </select>
         <small class="form-text">Pilih tipe mitra terlebih dahulu untuk menampilkan daftar negaranya.</small>
     </div>
@@ -35,6 +36,14 @@
                 @foreach ($misiPermanenAsean as $mitra)
                     <option value="{{ $mitra->id_mitra }}" @selected(old('id_mitra', $undangan->id_mitra ?? null) == $mitra->id_mitra)>
                         {{ $mitra->nama_negara }}
+                    </option>
+                @endforeach
+            </optgroup>
+
+            <optgroup label="Non Perwakilan Negara Asing" data-tipe-mitra="non_pna" hidden>
+                @foreach ($nonPerwakilanNegaraAsing as $mitra)
+                    <option value="{{ $mitra->id_mitra }}" @selected(old('id_mitra', $undangan->id_mitra ?? null) == $mitra->id_mitra)>
+                        {{ $mitra->nama_non_perwakilan_negara_asing }}
                     </option>
                 @endforeach
             </optgroup>
@@ -124,6 +133,7 @@
         isset($undangan) && $undangan->mitra?->kedutaanBesar => 'kedutaan_besar',
         isset($undangan) && $undangan->mitra?->misiAsingAsean => 'misi_asing_asean',
         isset($undangan) && $undangan->mitra?->misiPermanenAsean => 'misi_permanen_asean',
+        isset($undangan) && $undangan->mitra?->nonPerwakilanNegaraAsing => 'non_pna',
         default => null,
     };
 @endphp

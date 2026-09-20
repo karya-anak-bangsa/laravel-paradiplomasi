@@ -27,7 +27,7 @@
                 <tr>
                     <td class="text-start">
                         <div class="d-flex align-items-center">
-                            <span class="flag flag-md flag-country-{{ $item->mitra->kode_mitra }} me-2"></span>
+                            <x-mitra-icon :mitra="$item->mitra" />
                             <span class="fw-bold">{{ $item->mitra->nama_resmi_mitra }}</span>
                         </div>
                     </td>

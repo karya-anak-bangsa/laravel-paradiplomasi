@@ -16,7 +16,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Rincian Undangan - {{ $undangan->mitra->nama_mitra }}</h3>
+                    <h3 class="card-title">Rincian Undangan - {{ $undangan->mitra->nama_mitra ?? $undangan->mitra->nama_resmi_mitra }}</h3>
                 </div>
                 <div class="card-body">
 
@@ -25,8 +25,8 @@
                     <div class="datagrid align-items-center mb-3">
                         <div class="datagrid-item">
                             <div class="datagrid-content d-flex align-items-center">
-                                <span class="flag flag-md flag-country-{{ $undangan->mitra->kode_mitra }} me-2"></span>
-                                <span class="fw-bold">{{ $undangan->mitra->nama_mitra }}</span>
+                                <x-mitra-icon :mitra="$undangan->mitra" />
+                                <span class="fw-bold">{{ $undangan->mitra->nama_mitra ?? $undangan->mitra->nama_resmi_mitra }}</span>
                             </div>
                         </div>
                         <div class="datagrid-item">
