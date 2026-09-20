@@ -58,9 +58,9 @@
                                 </div>
                             </li>
                             @if (session('auth_role') === 'admin')
-                                {{-- <li class="nav-item dropdown @yield('nav-administrasi')">
+                                <li class="nav-item dropdown @yield('nav-administrasi')">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                        <span class="nav-link-title"><i class="fa-solid fa-layer-group me-2"></i>Administrasi Biro KSD</span>
+                                        <span class="nav-link-title text-primary"><i class="fa-solid fa-layer-group me-2"></i>Administrasi</span>
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">Generate Nota Dinas</a>
@@ -68,10 +68,10 @@
                                         <a class="dropdown-item" href="#">Disposisi Surat Masuk</a>
                                         <a class="dropdown-item" href="#">Disposisi Surat Keluar</a>
                                     </div>
-                                </li> --}}
+                                </li>
                                 <li class="nav-item dropdown @yield('nav-pengaturan')">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                        <span class="nav-link-title text-dark"><i class="fa-solid fa-gear me-2"></i>Pengaturan Sistem</span>
+                                        <span class="nav-link-title text-primary"><i class="fa-solid fa-gear me-2"></i>Pengaturan</span>
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('akun-pengguna.index') }}">Akun Pengguna</a>
