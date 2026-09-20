@@ -45,9 +45,9 @@
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
                                     </td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-icon btn-warning">
+                                        <a href="{{ route('kerjasama.edit', $item->id_kerjasama) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-kerjasama-{{ $item->id_kerjasama }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -66,24 +66,55 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">Kerjasama</h3>
+                                    <h3 class="modal-title">Rincian Kerjasama - {{ $kedutaanBesar->mitra->nama_mitra }}</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h2 class="mb-3">{{ str($item->kerjasama)->stripTags() }}</h2>
+
+                                    <div class="hr-text hr-text-start">Mitra</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-content d-flex align-items-center">
+                                                <span class="flag flag-md flag-country-{{ $kedutaanBesar->mitra->kode_mitra }} me-2"></span>
+                                                <span class="fw-bold">{{ $kedutaanBesar->mitra->nama_mitra }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tipe Mitra</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->tipe_mitra->value }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Nama Resmi</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->nama_resmi_mitra ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Kerjasama</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            @if ($item->kerjasama)
+                                                {!! $item->kerjasama !!}
+                                            @else
+                                                <p class="text-secondary mb-0">Belum ada catatan kerjasama.</p>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Rangkuman</div>
-                                    <div class="mb-3">{!! $item->rangkuman ?: '<span class="text-secondary">Tidak ada rangkuman.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->rangkuman !!}
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Catatan</div>
-                                    <div class="mb-3">{!! $item->catatan ?: '<span class="text-secondary">Tidak ada catatan.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
 
-                                    <div class="hr-text hr-text-start">Dokumen</div>
-                                    <a href="{{-- asset('storage/'.$item->file_dokumen) --}}" target="_blank" rel="noopener" class="btn btn-outline-primary">
-                                        <i class="fa-solid fa-download me-1"></i>Unduh Dokumen
-                                    </a>
-
-                                    <div class="hr-text hr-text-start">Informasi Lainnya</div>
+                                    <div class="hr-text hr-text-start">Status & Jadwal</div>
                                     <div class="datagrid align-items-center">
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Tanggal Diterima</div>
@@ -94,12 +125,19 @@
                                             <div class="datagrid-content">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                                         </div>
                                         <div class="datagrid-item">
-                                            <div class="datagrid-title">Status</div>
+                                            <div class="datagrid-title">Triwulan</div>
+                                            <div class="datagrid-content">{{ $item->triwulan_kerjasama }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Kerjasama</div>
                                             <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kerjasama }}</span>
+                                                <span class="badge {{ $item->status_badge_color }}">
+                                                    {{ $item->status_kerjasama }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
@@ -137,9 +175,9 @@
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-icon btn-warning">
+                                        <a href="{{ route('kolaborasi.edit', $item->id_kolaborasi) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-kolaborasi-{{ $item->id_kolaborasi }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -158,24 +196,55 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">Kolaborasi</h3>
+                                    <h3 class="modal-title">Rincian Kolaborasi - {{ $kedutaanBesar->mitra->nama_mitra }}</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h2 class="mb-3">{{ str($item->kolaborasi)->stripTags() }}</h2>
+
+                                    <div class="hr-text hr-text-start">Mitra</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-content d-flex align-items-center">
+                                                <span class="flag flag-md flag-country-{{ $kedutaanBesar->mitra->kode_mitra }} me-2"></span>
+                                                <span class="fw-bold">{{ $kedutaanBesar->mitra->nama_mitra }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tipe Mitra</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->tipe_mitra->value }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Nama Resmi</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->nama_resmi_mitra ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Isi Kolaborasi</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            @if ($item->kolaborasi)
+                                                {!! $item->kolaborasi !!}
+                                            @else
+                                                <p class="text-secondary mb-0">Belum ada catatan kolaborasi.</p>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Rangkuman</div>
-                                    <div class="mb-3">{!! $item->rangkuman ?: '<span class="text-secondary">Tidak ada rangkuman.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->rangkuman !!}
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Catatan</div>
-                                    <div class="mb-3">{!! $item->catatan ?: '<span class="text-secondary">Tidak ada catatan.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
 
-                                    <div class="hr-text hr-text-start">Dokumen</div>
-                                    <a href="{{-- asset('storage/'.$item->file_dokumen) --}}" target="_blank" rel="noopener" class="btn btn-outline-primary">
-                                        <i class="fa-solid fa-download me-1"></i>Unduh Dokumen
-                                    </a>
-
-                                    <div class="hr-text hr-text-start">Informasi Lainnya</div>
+                                    <div class="hr-text hr-text-start">Status & Jadwal</div>
                                     <div class="datagrid align-items-center">
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Tanggal Diterima</div>
@@ -186,12 +255,19 @@
                                             <div class="datagrid-content">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                                         </div>
                                         <div class="datagrid-item">
-                                            <div class="datagrid-title">Status</div>
+                                            <div class="datagrid-title">Triwulan</div>
+                                            <div class="datagrid-content">{{ $item->triwulan_kolaborasi }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Kolaborasi</div>
                                             <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kolaborasi }}</span>
+                                                <span class="badge {{ $item->status_badge_color }}">
+                                                    {{ $item->status_kolaborasi }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
@@ -229,9 +305,9 @@
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_undangan }}</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-icon btn-warning">
+                                        <a href="{{ route('undangan.edit', $item->id_undangan) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-undangan-{{ $item->id_undangan }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -250,24 +326,55 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">Undangan</h3>
+                                    <h3 class="modal-title">Rincian Undangan - {{ $kedutaanBesar->mitra->nama_mitra }}</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h2 class="mb-3">{{ str($item->acara)->stripTags() }}</h2>
+
+                                    <div class="hr-text hr-text-start">Mitra</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-content d-flex align-items-center">
+                                                <span class="flag flag-md flag-country-{{ $kedutaanBesar->mitra->kode_mitra }} me-2"></span>
+                                                <span class="fw-bold">{{ $kedutaanBesar->mitra->nama_mitra }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tipe Mitra</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->tipe_mitra->value }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Nama Resmi</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->nama_resmi_mitra ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Acara</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            @if ($item->acara)
+                                                {!! $item->acara !!}
+                                            @else
+                                                <p class="text-secondary mb-0">Belum ada catatan acara.</p>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Rangkuman</div>
-                                    <div class="mb-3">{!! $item->rangkuman ?: '<span class="text-secondary">Tidak ada rangkuman.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->rangkuman !!}
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Catatan</div>
-                                    <div class="mb-3">{!! $item->catatan ?: '<span class="text-secondary">Tidak ada catatan.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
 
-                                    <div class="hr-text hr-text-start">Dokumen</div>
-                                    <a href="{{-- asset('storage/'.$item->file_dokumen) --}}" target="_blank" rel="noopener" class="btn btn-outline-primary">
-                                        <i class="fa-solid fa-download me-1"></i>Unduh Dokumen
-                                    </a>
-
-                                    <div class="hr-text hr-text-start">Informasi Lainnya</div>
+                                    <div class="hr-text hr-text-start">Status & Jadwal</div>
                                     <div class="datagrid align-items-center">
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Tanggal Diterima</div>
@@ -278,12 +385,19 @@
                                             <div class="datagrid-content">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                                         </div>
                                         <div class="datagrid-item">
-                                            <div class="datagrid-title">Status</div>
+                                            <div class="datagrid-title">Triwulan</div>
+                                            <div class="datagrid-content">{{ $item->triwulan_undangan }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Undangan</div>
                                             <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">{{ $item->status_undangan }}</span>
+                                                <span class="badge {{ $item->status_badge_color }}">
+                                                    {{ $item->status_undangan }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
@@ -321,9 +435,9 @@
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_audiensi }}</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-icon btn-warning">
+                                        <a href="{{ route('audiensi.edit', $item->id_audiensi) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-audiensi-{{ $item->id_audiensi }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -342,24 +456,55 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">Audiensi</h3>
+                                    <h3 class="modal-title">Rincian Audiensi - {{ $kedutaanBesar->mitra->nama_mitra }}</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h2 class="mb-3">{{ str($item->topik)->stripTags() }}</h2>
+
+                                    <div class="hr-text hr-text-start">Mitra</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-content d-flex align-items-center">
+                                                <span class="flag flag-md flag-country-{{ $kedutaanBesar->mitra->kode_mitra }} me-2"></span>
+                                                <span class="fw-bold">{{ $kedutaanBesar->mitra->nama_mitra }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tipe Mitra</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->tipe_mitra->value }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Nama Resmi</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->nama_resmi_mitra ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Topik</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            @if ($item->topik)
+                                                {!! $item->topik !!}
+                                            @else
+                                                <p class="text-secondary mb-0">Belum ada catatan topik.</p>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Rangkuman</div>
-                                    <div class="mb-3">{!! $item->rangkuman ?: '<span class="text-secondary">Tidak ada rangkuman.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->rangkuman !!}
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Catatan</div>
-                                    <div class="mb-3">{!! $item->catatan ?: '<span class="text-secondary">Tidak ada catatan.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
 
-                                    <div class="hr-text hr-text-start">Dokumen</div>
-                                    <a href="{{-- asset('storage/'.$item->file_dokumen) --}}" target="_blank" rel="noopener" class="btn btn-outline-primary">
-                                        <i class="fa-solid fa-download me-1"></i>Unduh Dokumen
-                                    </a>
-
-                                    <div class="hr-text hr-text-start">Informasi Lainnya</div>
+                                    <div class="hr-text hr-text-start">Status & Jadwal</div>
                                     <div class="datagrid align-items-center">
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Tanggal Diterima</div>
@@ -370,12 +515,19 @@
                                             <div class="datagrid-content">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                                         </div>
                                         <div class="datagrid-item">
-                                            <div class="datagrid-title">Status</div>
+                                            <div class="datagrid-title">Triwulan</div>
+                                            <div class="datagrid-content">{{ $item->triwulan_audiensi }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Audiensi</div>
                                             <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">{{ $item->status_audiensi }}</span>
+                                                <span class="badge {{ $item->status_badge_color }}">
+                                                    {{ $item->status_audiensi }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
@@ -413,9 +565,9 @@
                                         <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kunjungan }}</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-icon btn-warning">
+                                        <a href="{{ route('kunjungan.edit', $item->id_kunjungan) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-kunjungan-{{ $item->id_kunjungan }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -434,24 +586,55 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h3 class="modal-title">Kunjungan</h3>
+                                    <h3 class="modal-title">Rincian Kunjungan - {{ $kedutaanBesar->mitra->nama_mitra }}</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h2 class="mb-3">{{ str($item->perihal)->stripTags() }}</h2>
+
+                                    <div class="hr-text hr-text-start">Mitra</div>
+                                    <div class="datagrid align-items-center mb-3">
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-content d-flex align-items-center">
+                                                <span class="flag flag-md flag-country-{{ $kedutaanBesar->mitra->kode_mitra }} me-2"></span>
+                                                <span class="fw-bold">{{ $kedutaanBesar->mitra->nama_mitra }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Tipe Mitra</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->tipe_mitra->value }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Nama Resmi</div>
+                                            <div class="datagrid-content">{{ $kedutaanBesar->mitra->nama_resmi_mitra ?? '-' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-text hr-text-start">Perihal</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            @if ($item->perihal)
+                                                {!! $item->perihal !!}
+                                            @else
+                                                <p class="text-secondary mb-0">Belum ada catatan perihal.</p>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Rangkuman</div>
-                                    <div class="mb-3">{!! $item->rangkuman ?: '<span class="text-secondary">Tidak ada rangkuman.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->rangkuman !!}
+                                        </div>
+                                    </div>
 
                                     <div class="hr-text hr-text-start">Catatan</div>
-                                    <div class="mb-3">{!! $item->catatan ?: '<span class="text-secondary">Tidak ada catatan.</span>' !!}</div>
+                                    <div class="mb-3">
+                                        <div class="border rounded p-3">
+                                            {!! $item->catatan !!}
+                                        </div>
+                                    </div>
 
-                                    <div class="hr-text hr-text-start">Dokumen</div>
-                                    <a href="{{-- asset('storage/'.$item->file_dokumen) --}}" target="_blank" rel="noopener" class="btn btn-outline-primary">
-                                        <i class="fa-solid fa-download me-1"></i>Unduh Dokumen
-                                    </a>
-
-                                    <div class="hr-text hr-text-start">Informasi Lainnya</div>
+                                    <div class="hr-text hr-text-start">Status & Jadwal</div>
                                     <div class="datagrid align-items-center">
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Tanggal Diterima</div>
@@ -462,12 +645,19 @@
                                             <div class="datagrid-content">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</div>
                                         </div>
                                         <div class="datagrid-item">
-                                            <div class="datagrid-title">Status</div>
+                                            <div class="datagrid-title">Triwulan</div>
+                                            <div class="datagrid-content">{{ $item->triwulan_kunjungan }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Kunjungan</div>
                                             <div class="datagrid-content">
-                                                <span class="badge {{ $item->status_badge_color }}">{{ $item->status_kunjungan }}</span>
+                                                <span class="badge {{ $item->status_badge_color }}">
+                                                    {{ $item->status_kunjungan }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
