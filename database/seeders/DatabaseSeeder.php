@@ -31,10 +31,12 @@ class DatabaseSeeder extends Seeder
 
             # Modul Diplomasi (Kerjasama - Kunjungan)
             KerjasamaSeeder::class,
-            // KolaborasiSeeder::class,
-            // UndanganSeeder::class,
-            // AudiensiSeeder::class,
-            // KunjunganSeeder::class,
+
+            KolaborasiPart1Seeder::class,
+            // KolaborasiPart2Seeder::class,
+
+
+
         ]);
     }
 }
