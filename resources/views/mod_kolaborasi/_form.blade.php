@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-lg-6 mb-3">
-        <label class="form-label" for="id_mitra">Nama Mitra</label>
+        <label class="form-label" for="id_mitra"><span class="text-danger">*</span>Nama Mitra</label>
         <select class="form-select border-dark" name="id_mitra" id="id_mitra" disabled>
             <option value="" selected>Pilih tipe mitra terlebih dahulu</option>
 
@@ -59,6 +59,7 @@
             name="kolaborasi"
             rows="10"
             :value="$kolaborasi->kolaborasi ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -68,6 +69,7 @@
             name="rangkuman"
             rows="10"
             :value="$kolaborasi->rangkuman ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -78,6 +80,7 @@
             rows="10"
             hint="Harap masukan link dokumen dibagian catatan."
             :value="$kolaborasi->catatan ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -86,7 +89,8 @@
             label="Tanggal Diterima"
             name="tanggal_diterima"
             type="date"
-            :value="optional($kolaborasi->tanggal_diterima ?? null)->format('Y-m-d')" />
+            :value="optional($kolaborasi->tanggal_diterima ?? null)->format('Y-m-d')"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -104,7 +108,8 @@
             name="triwulan_kolaborasi"
             hint="Periode triwulan saat kolaborasi ini diterima/dicatat."
             :options="\App\Models\Kolaborasi::TRIWULAN_OPTIONS"
-            :value="$kolaborasi->triwulan_kolaborasi ?? null" />
+            :value="$kolaborasi->triwulan_kolaborasi ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -112,7 +117,8 @@
             label="Status Kolaborasi"
             name="status_kolaborasi"
             :options="\App\Models\Kolaborasi::STATUS_OPTIONS"
-            :value="$kolaborasi->status_kolaborasi ?? null" />
+            :value="$kolaborasi->status_kolaborasi ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-2 mb-3">

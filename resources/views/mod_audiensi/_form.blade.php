@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-lg-6 mb-3">
-        <label class="form-label" for="id_mitra">Nama Mitra</label>
+        <label class="form-label" for="id_mitra"><span class="text-danger">*</span>Nama Mitra</label>
         <select class="form-select border-dark" name="id_mitra" id="id_mitra" disabled>
             <option value="" selected>Pilih tipe mitra terlebih dahulu</option>
 
@@ -59,6 +59,7 @@
             name="topik"
             rows="10"
             :value="$audiensi->topik ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -68,6 +69,7 @@
             name="rangkuman"
             rows="10"
             :value="$audiensi->rangkuman ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -78,6 +80,7 @@
             rows="10"
             hint="Harap masukan link dokumen dibagian catatan."
             :value="$audiensi->catatan ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -86,7 +89,8 @@
             label="Tanggal Diterima"
             name="tanggal_diterima"
             type="date"
-            :value="optional($audiensi->tanggal_diterima ?? null)->format('Y-m-d')" />
+            :value="optional($audiensi->tanggal_diterima ?? null)->format('Y-m-d')"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -104,7 +108,8 @@
             name="triwulan_audiensi"
             hint="Periode triwulan saat audiensi ini diterima/dicatat."
             :options="\App\Models\Audiensi::TRIWULAN_OPTIONS"
-            :value="$audiensi->triwulan_audiensi ?? null" />
+            :value="$audiensi->triwulan_audiensi ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -112,7 +117,8 @@
             label="Status Audiensi"
             name="status_audiensi"
             :options="\App\Models\Audiensi::STATUS_OPTIONS"
-            :value="$audiensi->status_audiensi ?? null" />
+            :value="$audiensi->status_audiensi ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-2 mb-3">

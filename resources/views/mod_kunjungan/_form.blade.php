@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-lg-6 mb-3">
-        <label class="form-label" for="id_mitra">Nama Mitra</label>
+        <label class="form-label" for="id_mitra"><span class="text-danger">*</span>Nama Mitra</label>
         <select class="form-select border-dark" name="id_mitra" id="id_mitra" disabled>
             <option value="" selected>Pilih tipe mitra terlebih dahulu</option>
 
@@ -59,6 +59,7 @@
             name="perihal"
             rows="10"
             :value="$kunjungan->perihal ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -68,6 +69,7 @@
             name="rangkuman"
             rows="10"
             :value="$kunjungan->rangkuman ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -78,6 +80,7 @@
             rows="10"
             hint="Harap masukan link dokumen dibagian catatan."
             :value="$kunjungan->catatan ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -86,7 +89,8 @@
             label="Tanggal Diterima"
             name="tanggal_diterima"
             type="date"
-            :value="optional($kunjungan->tanggal_diterima ?? null)->format('Y-m-d')" />
+            :value="optional($kunjungan->tanggal_diterima ?? null)->format('Y-m-d')"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -104,7 +108,8 @@
             name="triwulan_kunjungan"
             hint="Periode triwulan saat kunjungan ini diterima/dicatat."
             :options="\App\Models\Kunjungan::TRIWULAN_OPTIONS"
-            :value="$kunjungan->triwulan_kunjungan ?? null" />
+            :value="$kunjungan->triwulan_kunjungan ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -112,7 +117,8 @@
             label="Status Kunjungan"
             name="status_kunjungan"
             :options="\App\Models\Kunjungan::STATUS_OPTIONS"
-            :value="$kunjungan->status_kunjungan ?? null" />
+            :value="$kunjungan->status_kunjungan ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-2 mb-3">

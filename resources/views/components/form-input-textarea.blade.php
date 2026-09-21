@@ -1,5 +1,5 @@
 <div class="mb-3">
-    <label class="form-label" for="{{ $name }}">{{ $label }}</label>
+    <label class="form-label" for="{{ $name }}">@if ($required)<span class="text-danger">*</span>@endif{{ $label }}</label>
     <textarea class="form-control border-dark {{ $wysiwyg ? 'wysiwyg' : '' }}" name="{{ $name }}" id="{{ $name }}" rows="{{ $rows }}"
         placeholder="{{ $placeholder }}">{{ old($name, $value) }}</textarea>
 

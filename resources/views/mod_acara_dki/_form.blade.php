@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-lg-6 mb-3">
-        <label class="form-label" for="id_mitra">Nama Mitra</label>
+        <label class="form-label" for="id_mitra"><span class="text-danger">*</span>Nama Mitra</label>
         <select class="form-select border-dark" name="id_mitra" id="id_mitra" disabled>
             <option value="" selected>Pilih tipe mitra terlebih dahulu</option>
 
@@ -59,6 +59,7 @@
             name="acara_dki"
             rows="10"
             :value="$acaraDki->acara_dki ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -68,6 +69,7 @@
             name="rangkuman"
             rows="10"
             :value="$acaraDki->rangkuman ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
@@ -78,18 +80,20 @@
             rows="10"
             hint="Harap masukan link dokumen dibagian catatan."
             :value="$acaraDki->catatan ?? null"
+            :required="true"
             :wysiwyg="true" />
     </div>
 
-    <div class="col-lg-6 mb-3">
+    <div class="col-lg-3 mb-3">
         <x-form-input-text
             label="Tanggal Diterima"
             name="tanggal_diterima"
             type="date"
-            :value="optional($acaraDki->tanggal_diterima ?? null)->format('Y-m-d')" />
+            :value="optional($acaraDki->tanggal_diterima ?? null)->format('Y-m-d')"
+            :required="true" />
     </div>
 
-    <div class="col-lg-6 mb-3">
+    <div class="col-lg-3 mb-3">
         <x-form-input-text
             label="Tanggal Selesai"
             name="tanggal_selesai"
@@ -98,7 +102,7 @@
             :value="optional($acaraDki->tanggal_selesai ?? null)->format('Y-m-d')" />
     </div>
 
-    <div class="col-lg-6 mb-3">
+    <div class="col-lg-3 mb-3">
         <x-form-input-text
             label="Tanggal Awal Pelaksanaan"
             name="tanggal_awal_pelaksanaan"
@@ -106,7 +110,7 @@
             :value="optional($acaraDki->tanggal_awal_pelaksanaan ?? null)->format('Y-m-d')" />
     </div>
 
-    <div class="col-lg-6 mb-3">
+    <div class="col-lg-3 mb-3">
         <x-form-input-text
             label="Tanggal Akhir Pelaksanaan"
             name="tanggal_akhir_pelaksanaan"
@@ -120,7 +124,8 @@
             name="triwulan_acara_dki"
             hint="Periode triwulan saat acara DKI ini diterima/dicatat."
             :options="\App\Models\AcaraDKI::TRIWULAN_OPTIONS"
-            :value="$acaraDki->triwulan_acara_dki ?? null" />
+            :value="$acaraDki->triwulan_acara_dki ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -128,7 +133,8 @@
             label="Status Acara DKI"
             name="status_acara_dki"
             :options="\App\Models\AcaraDKI::STATUS_OPTIONS"
-            :value="$acaraDki->status_acara_dki ?? null" />
+            :value="$acaraDki->status_acara_dki ?? null"
+            :required="true" />
     </div>
 
     <div class="col-lg-2 mb-3">

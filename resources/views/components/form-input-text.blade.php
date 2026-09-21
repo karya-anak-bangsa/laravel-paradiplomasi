@@ -1,5 +1,5 @@
 <div class="mb-3">
-    <label class="form-label" for="{{ $name }}">{{ $label }}</label>
+    <label class="form-label" for="{{ $name }}">@if ($required)<span class="text-danger">*</span>@endif{{ $label }}</label>
     <input class="form-control border-dark" type="{{ $type }}" name="{{ $name }}" id="{{ $name }}"
         value="{{ old($name, $value) }}" placeholder="{{ $placeholder }}">
 
