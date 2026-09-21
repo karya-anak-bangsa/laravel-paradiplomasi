@@ -28,7 +28,7 @@ Setiap mitra baik kedutaan besar, misi asing asean, misi permanen negara asean, 
 | `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus | - |
 | `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus | - |
 | `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
-| `Acara DKI` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | - |
+| `Acara DKI` | `tb_acara_dki` | lihat, cari, tambah, ubah, hapus | - |
 | `Dashboard` | - | Rangkuman data dari modul mitra dan riwayat diplomasi | - |
 
 
