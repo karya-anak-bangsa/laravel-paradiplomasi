@@ -2,7 +2,7 @@
 
 @section('nav-mitra-kami', 'active')
 @section('page-header')
-    <x-page-header title="Modul Non Perwakilan Negara Asing" action="non-perwakilan-negara-asing.create" />
+    <x-page-header title="Modul Mitra Non PNA" action="non-perwakilan-negara-asing.create" />
 @endsection
 
 @section('page-content')
