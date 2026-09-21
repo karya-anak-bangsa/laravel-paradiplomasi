@@ -152,13 +152,13 @@
                 if (hariIni > mulai && hariIni <= selesai) {
                     return {
                         label: 'Berlangsung',
-                        badgeClass: 'bg-green-lt text-green'
+                        badgeClass: 'bg-success-lt text-success'
                     };
                 }
                 if (selisihHari === 0) {
                     return {
                         label: 'Hari ini',
-                        badgeClass: 'bg-red-lt text-red'
+                        badgeClass: 'bg-success-lt text-success'
                     };
                 }
                 if (selisihHari === 1) {
