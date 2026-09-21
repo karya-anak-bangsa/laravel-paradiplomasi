@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('nav-acara-dki', 'active')
+@section('nav-kegiatan', 'active')
 @section('page-header')
     <x-page-header title="Modul Acara DKI" />
 @endsection

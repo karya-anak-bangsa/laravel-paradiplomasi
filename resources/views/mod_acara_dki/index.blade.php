@@ -1,6 +1,6 @@
 @extends('template.app')
 
-@section('nav-acara-dki', 'active')
+@section('nav-kegiatan', 'active')
 @section('page-header')
     <x-page-header
         title="Modul Acara DKI"
@@ -19,7 +19,6 @@
                 <th data-orderable="true" style="width:25%" class="text-start">Acara DKI</th>
                 <th data-orderable="true" style="width:15%" class="text-center">Tanggal Diterima</th>
                 <th data-orderable="true" style="width:15%" class="text-center">Tanggal Selesai</th>
-                <th data-orderable="true" style="width:10%" class="text-center">Triwulan</th>
                 <th data-orderable="true" style="width:15%" class="text-center">Status</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Aksi</th>
             </tr>
@@ -36,7 +35,6 @@
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
                     <td class="text-center">{{ $item->tanggal_diterima_display }}</td>
                     <td class="text-center">{!! $item->tanggal_selesai_display !!}</td>
-                    <td class="text-center">{{ $item->triwulan_acara_dki }}</td>
                     <td class="text-center">
                         <span class="badge {{ $item->status_badge_color }}">
                             {{ $item->status_acara_dki }}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcaraDKI;
 use Illuminate\Http\Request;
 
 class TanggalPentingController extends Controller
@@ -11,7 +12,18 @@ class TanggalPentingController extends Controller
      */
     public function index()
     {
-        return view('mod_tanggal_penting.index');
+        $acaraDkiEvents = AcaraDKI::where('is_active', true)
+            ->whereNotNull('tanggal_awal_pelaksanaan')
+            ->whereNotNull('tanggal_akhir_pelaksanaan')
+            ->orderBy('tanggal_awal_pelaksanaan')
+            ->get()
+            ->map(fn (AcaraDKI $acaraDki) => [
+                'title' => $acaraDki->judul_ringkas,
+                'start' => $acaraDki->tanggal_awal_pelaksanaan->toDateString(),
+                'end' => $acaraDki->tanggal_akhir_pelaksanaan->toDateString(),
+            ]);
+
+        return view('mod_tanggal_penting.index', compact('acaraDkiEvents'));
     }
 
     /**

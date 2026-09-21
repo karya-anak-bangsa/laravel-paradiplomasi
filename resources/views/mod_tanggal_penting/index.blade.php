@@ -55,105 +55,55 @@
 
             var calendarEl = document.getElementById('calendar-tanggal-penting');
             var agendaListEl = document.getElementById('agenda-mendatang-list');
-            var currentYear = new Date().getFullYear();
             var namaBulanSingkat = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
-            // TODO: data placeholder - nanti diganti hasil rekap Acara DKI dari sumber data resmi.
-            // Contoh sengaja dibatasi pada bulan Agustus - Oktober, dengan variasi:
-            // acara 1 hari, acara beberapa hari (banner merah), dan beberapa acara dalam 1 hari yang sama.
-            var acaraDkiEvents = [
+            // data acara DKI yang punya tanggal pelaksanaan, dikirim dari
+            // TanggalPentingController berdasarkan modul Acara DKI
+            var acaraDkiEvents = @json($acaraDkiEvents).map(function(acara) {
+                return {
+                    title: acara.title,
+                    start: new Date(acara.start + 'T00:00:00'),
+                    end: new Date(acara.end + 'T00:00:00'),
+                };
+            });
 
-                // ---------- AGUSTUS ----------
-                {
-                    title: 'Rapat Koordinasi Persiapan HUT RI',
-                    start: new Date(currentYear, 7, 5, 9, 0), // 5 Agustus
-                    end: new Date(currentYear, 7, 5, 11, 0),
-                },
-                {
-                    // acara ke-2 di tanggal yang sama (5 Agustus)
-                    title: 'Audiensi Delegasi Singapura',
-                    start: new Date(currentYear, 7, 5, 13, 0), // 5 Agustus
-                    end: new Date(currentYear, 7, 5, 14, 30),
-                },
-                {
-                    // acara 1 hari
-                    title: 'Upacara Peringatan HUT Kemerdekaan RI',
-                    start: new Date(currentYear, 7, 17, 7, 0), // 17 Agustus
-                    end: new Date(currentYear, 7, 17, 9, 0),
-                },
-                {
-                    // acara beberapa hari
-                    title: 'Pameran Investasi dan Kerja Sama Jakarta',
-                    start: new Date(currentYear, 7, 20, 9, 0), // 20 - 22 Agustus
-                    end: new Date(currentYear, 7, 22, 17, 0),
-                    color: 'var(--tblr-red)',
-                    backgroundColor: 'var(--tblr-red-lt)',
-                    borderColor: 'var(--tblr-red-200)',
-                },
+            function mulaiHariIni(tanggal) {
+                return new Date(tanggal.getFullYear(), tanggal.getMonth(), tanggal.getDate());
+            }
 
-                // ---------- SEPTEMBER ----------
-                {
-                    title: 'Rapat Pimpinan Biro KSD',
-                    start: new Date(currentYear, 8, 3, 10, 0), // 3 September
-                    end: new Date(currentYear, 8, 3, 12, 0),
-                },
-                {
-                    // acara ke-2 di tanggal yang sama (3 September)
-                    title: 'Kunjungan Kerja Wakil Gubernur',
-                    start: new Date(currentYear, 8, 3, 14, 0), // 3 September
-                    end: new Date(currentYear, 8, 3, 16, 0),
-                },
-                {
-                    // acara beberapa hari
-                    title: 'Forum Kerja Sama Regional ASEAN',
-                    start: new Date(currentYear, 8, 15, 9, 0), // 15 - 17 September
-                    end: new Date(currentYear, 8, 17, 17, 0),
-                    color: 'var(--tblr-red)',
-                    backgroundColor: 'var(--tblr-red-lt)',
-                    borderColor: 'var(--tblr-red-200)',
-                },
-                {
-                    // acara 1 hari
-                    title: 'Evaluasi Program Kerja Sama Semester II',
-                    start: new Date(currentYear, 8, 25, 9, 0), // 25 September
-                    end: new Date(currentYear, 8, 25, 11, 0),
-                },
-
-                // ---------- OKTOBER ----------
-                {
-                    // acara 1 hari
-                    title: 'Sosialisasi Kebijakan Gubernur',
-                    start: new Date(currentYear, 9, 2, 13, 0), // 2 Oktober
-                    end: new Date(currentYear, 9, 2, 15, 0),
-                },
-                {
-                    // acara beberapa hari
-                    title: 'Kunjungan Kenegaraan Delegasi Jepang',
-                    start: new Date(currentYear, 9, 10, 9, 0), // 10 - 12 Oktober
-                    end: new Date(currentYear, 9, 12, 17, 0),
-                    color: 'var(--tblr-red)',
-                    backgroundColor: 'var(--tblr-red-lt)',
-                    borderColor: 'var(--tblr-red-200)',
-                },
-                {
-                    title: 'Rapat Evaluasi Akhir Tahun Anggaran',
-                    start: new Date(currentYear, 9, 20, 9, 30), // 20 Oktober
-                    end: new Date(currentYear, 9, 20, 11, 0),
-                },
-                {
-                    // acara ke-2 di tanggal yang sama (20 Oktober)
-                    title: 'Audiensi Komunitas Diaspora Indonesia',
-                    start: new Date(currentYear, 9, 20, 13, 0), // 20 Oktober
-                    end: new Date(currentYear, 9, 20, 14, 0),
-                },
-            ];
+            function tambahHari(tanggal, jumlah) {
+                var hasil = new Date(tanggal);
+                hasil.setDate(hasil.getDate() + jumlah);
+                return hasil;
+            }
 
             // ---------- render kalender ----------
+            var calendarEvents = acaraDkiEvents.map(function(acara) {
+                var acaraBeberapaHari = mulaiHariIni(acara.start).getTime() !== mulaiHariIni(acara.end).getTime();
+
+                var event = {
+                    title: acara.title,
+                    start: acara.start,
+                    end: tambahHari(acara.end, 1), // end FullCalendar bersifat eksklusif
+                    allDay: true,
+                };
+
+                // acara beberapa hari ditandai banner merah, acara 1 hari
+                // memakai warna bawaan FullCalendar
+                if (acaraBeberapaHari) {
+                    event.color = 'var(--tblr-red)';
+                    event.backgroundColor = 'var(--tblr-red-lt)';
+                    event.borderColor = 'var(--tblr-red-200)';
+                }
+
+                return event;
+            });
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 locale: 'id',
                 firstDay: 1,
-                events: acaraDkiEvents,
+                events: calendarEvents,
 
                 // hanya tampilkan judul acara, tanpa jam mulai
                 displayEventTime: false,
@@ -189,10 +139,6 @@
                 }
 
                 return formatTanggalSingkat(mulai) + ' - ' + formatTanggalSingkat(selesai);
-            }
-
-            function mulaiHariIni(tanggal) {
-                return new Date(tanggal.getFullYear(), tanggal.getMonth(), tanggal.getDate());
             }
 
             // hitung status waktu acara relatif terhadap hari ini: sedang
@@ -279,11 +225,11 @@
                 return item;
             }
 
-            var sekarang = new Date();
+            var hariIniSekarang = mulaiHariIni(new Date());
             var agendaBelumTerlaksana = acaraDkiEvents
                 .filter(function(acara) {
-                    var selesai = acara.end || acara.start;
-                    return selesai >= sekarang;
+                    var selesai = mulaiHariIni(acara.end || acara.start);
+                    return selesai >= hariIniSekarang;
                 })
                 .sort(function(a, b) {
                     return a.start - b.start;
