@@ -2,24 +2,22 @@
     'name' => 'id_mitra',
     'value' => null,
     'mitra' => null,
-    'kedutaanBesar',
-    'misiAsingAsean',
-    'misiPermanenAsean',
-    'nonPerwakilanNegaraAsing',
+    'daftarMitra',
     'required' => true,
 ])
 
+{{--
+    Pemilih mitra dua tingkat: pilih tipe mitra dulu, baru nama mitranya.
+
+    Seluruh isi dropdown diturunkan dari $daftarMitra (App\Support\DaftarMitra),
+    yang sendirinya diturunkan dari enum App\Enums\TipeMitra. Komponen ini karena
+    itu TIDAK menyebut satu pun jenis mitra secara hardcode — menambah jenis
+    mitra baru tidak perlu menyentuh berkas ini.
+--}}
+
 @php
     $nilaiTerpilih = old($name, $value);
-
-    $tipeAwal = match ($mitra?->tipe_mitra) {
-        \App\Enums\TipeMitra::KedutaanBesar => 'kedutaan_besar',
-        \App\Enums\TipeMitra::MisiAsingAsean => 'misi_asing_asean',
-        \App\Enums\TipeMitra::MisiPermanenAsean => 'misi_permanen_asean',
-        \App\Enums\TipeMitra::NonPNA => 'non_pna',
-        default => null,
-    };
-
+    $tipeAwal = $mitra?->tipe_mitra?->slug();
     $idTipe = 'tipe-mitra-pilihan-' . $name;
 @endphp
 
@@ -27,12 +25,11 @@
     <label class="form-label" for="{{ $idTipe }}">Tipe Mitra</label>
     <select class="form-select border-dark" id="{{ $idTipe }}">
         <option value="" selected>Pilih tipe mitra</option>
-        <option value="kedutaan_besar">Kedutaan Besar</option>
-        <option value="misi_asing_asean">Misi Asing untuk ASEAN</option>
-        <option value="misi_permanen_asean">Misi Permanen Negara ASEAN</option>
-        <option value="non_pna">Non Perwakilan Negara Asing</option>
+        @foreach ($daftarMitra as $slug => $tipe)
+            <option value="{{ $slug }}">{{ $tipe['label'] }}</option>
+        @endforeach
     </select>
-    <small class="form-text">Pilih tipe mitra terlebih dahulu untuk menampilkan daftar negaranya.</small>
+    <small class="form-text">Pilih tipe mitra terlebih dahulu untuk menampilkan daftar mitranya.</small>
 </div>
 
 <div class="col-lg-6 mb-3">
@@ -51,12 +48,7 @@
             const selectTipe = document.getElementById(@json($idTipe));
             const selectMitra = document.getElementById(@json($name));
 
-            const daftarMitraPerTipe = {
-                kedutaan_besar: @json($kedutaanBesar->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                misi_asing_asean: @json($misiAsingAsean->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                misi_permanen_asean: @json($misiPermanenAsean->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                non_pna: @json($nonPerwakilanNegaraAsing->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_non_perwakilan_negara_asing])),
-            };
+            const daftarMitraPerTipe = @json(collect($daftarMitra)->map(fn ($tipe) => $tipe['opsi']));
 
             const $selectMitra = $(selectMitra);
             $selectMitra.select2({

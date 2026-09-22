@@ -3,14 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Audiensi;
-use App\Models\KedutaanBesar;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
-use App\Models\NonPerwakilanNegaraAsing;
+use Database\Seeders\Concerns\ResolvesMitra;
 use Illuminate\Database\Seeder;
 
 class AudiensiSeeder extends Seeder
 {
+    use ResolvesMitra;
+
     /**
      * Sumber data: sheet "Audiensi (AU)" pada spreadsheet Data Paradiplomasi
      * Jakarta 2026 - SELURUH baris, mencakup keempat jenis mitra.
@@ -333,7 +332,7 @@ class AudiensiSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_non_perwakilan_negara_asing' => 'KBRI Bern',
+                'nama_kbri' => 'KBRI Bern',
                 'topik' => '<p>Permohonan audiensi kepada Gubernur DKI Jakarta dari KBRI Bern</p>',
                 'rangkuman' => '<p>Melalui pemberitahuan dari Sekretariat Gubernur, KBRI Bern memohon Audiensi Kepada Gubernur DKI Jakarta</p><p>Audiensi dilaksanakan 4 Maret 2026</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen audiensi',
@@ -411,7 +410,7 @@ class AudiensiSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_non_perwakilan_negara_asing' => 'Biro Kepala Daerah',
+                'nama_pemprov_dki' => 'Biro Kepala Daerah',
                 'topik' => '<p>Permohonan menerima audiensi Mr Alexander Feldman, Partner The Asia Group di Asia Tenggara, Ex President & CEO of the US-ASEAN Business Council</p>',
                 'rangkuman' => '<p>Melalui koordinasi per WhatsApp, Biro Kepala Daerah menyampaikan kepada Biro Kerja Sama Daerah permohonan untuk mendampingi Gubernur DKI Jakarta dalam menerima Mr. Alexander Feldman (Partner The Asia Group di Asia Tenggara, Ex President & CEO of the US-ASEAN Business Council), yang akan diselenggarakan pada 30 Juni 2026</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen audiensi',
@@ -424,7 +423,7 @@ class AudiensiSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_non_perwakilan_negara_asing' => 'Biro Kepala Daerah',
+                'nama_pemprov_dki' => 'Biro Kepala Daerah',
                 'topik' => '<p>Permohonan menerima audiensi Mr. Ludy Suryantoro - Head of Unit for Multisectoral Engagement for Health Security WHO,</p>',
                 'rangkuman' => '<p>Melalui Undangan No, 1182/HM.00.02 tanggal 12 Agustus 2026, Biro Kepala Daerah Mengundang Biro Kerja Sama Daerah untuk mendampingi Gubernur menerima Audiensi Mr. Ludy Suryantoro - Head of Unit for Multisectoral Engagement for Health Security WHO, pada hari Kamis, 13 Agustus 2026.</p><p>Audiensi telah dihadiri oleh Kepala Biro Kerja Sama Daerah.</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen audiensi',
@@ -450,7 +449,7 @@ class AudiensiSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_non_perwakilan_negara_asing' => 'Biro Kepala Daerah',
+                'nama_pemprov_dki' => 'Biro Kepala Daerah',
                 'topik' => '<p>Audiensi Duta Besar Republik Indonesia untuk Kerajaan Swedia - KBRI Stockholm</p>',
                 'rangkuman' => '<p>Melalui koordinasi lisan kepada Biro Kerja Sama Daerah, Biro Kepala Daerah memohon pendampingan untuk Audiensi Duta Besar RI di Swedia kepada Wakil Gubernur.</p><p>Pembahasan pada Audiensi meliputi:</p><p>1. Penjajakan Sister City Dki Jakarta Dengan Stockholm 2. Kemungkinan kerja sama Waste To Energy 3. Keikutsertaan Tim Seni Budaya DKI Jakarta Pada Indonesia Day 2027 di Stockholm</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen audiensi',
@@ -465,25 +464,7 @@ class AudiensiSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            $idMitra = null;
-
-            if (array_key_exists('nama_kedutaan_besar_id', $item)) {
-                $mitra = KedutaanBesar::where('nama_kedutaan_besar_id', $item['nama_kedutaan_besar_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_kedutaan_besar_id']);
-            } elseif (array_key_exists('nama_misi_asing_asean_id', $item)) {
-                $mitra = MisiAsingAsean::where('nama_misi_asing_asean_id', $item['nama_misi_asing_asean_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_misi_asing_asean_id']);
-            } elseif (array_key_exists('nama_misi_permanen_asean_id', $item)) {
-                $mitra = MisiPermanenAsean::where('nama_misi_permanen_asean_id', $item['nama_misi_permanen_asean_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_misi_permanen_asean_id']);
-            } elseif (array_key_exists('nama_non_perwakilan_negara_asing', $item)) {
-                $mitra = NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $item['nama_non_perwakilan_negara_asing'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_non_perwakilan_negara_asing']);
-            }
+            $idMitra = $this->ambilIdMitra($item);
 
             if (! $idMitra) {
                 continue;

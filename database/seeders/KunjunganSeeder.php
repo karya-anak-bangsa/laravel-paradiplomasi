@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\KedutaanBesar;
 use App\Models\Kunjungan;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
-use App\Models\NonPerwakilanNegaraAsing;
+use Database\Seeders\Concerns\ResolvesMitra;
 use Illuminate\Database\Seeder;
 
 class KunjunganSeeder extends Seeder
 {
+    use ResolvesMitra;
+
     /**
      * Sumber data: sheet "Kunjungan (VI)" pada spreadsheet Data Paradiplomasi
      * Jakarta 2026 - SELURUH baris, mencakup keempat jenis mitra.
@@ -93,7 +92,7 @@ class KunjunganSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_non_perwakilan_negara_asing' => 'KBRI Tokyo',
+                'nama_kbri' => 'KBRI Tokyo',
                 'perihal' => '<p>Kunjungan Duta Besar Indonesia untuk Jepang ke Jakarta.</p>',
                 'rangkuman' => '<p>Pemerintah Provinsi DKI Jakarta mengundang Duta Besar Indoesia untuk Jepang untuk berkunjung ke Jakarta sebagai bagian dari upaya penguatan kerja sama strategis Jakarta–Jepang di berbagai sektor prioritas.</p><p>Berdasarkan komunikasi dengan KBRI Tokyo, kegiatan direncanakan berupa kunjungan ke lokasi-lokasi proyek infrastruktur Jakarta yang potensial, baik dari sektor investasi, infrastruktur, transportasi publik, pengembangan kota, transformasi pemerintahan digital, pengelolaan lingkungan, dan ketahanan pesisir.</p><p>Persetujuan pelaksanaan kegiatan telah disampaikan melalui Nota Dinas Kepala Biro Kerja Sama Daerah kepada Sekretaris Daerah Provinsi DKI Jakarta No. 17/UD.02.02 tanggal 29 Mei 2026.</p><p>Rangkaian agenda yang diusulkan meliputi Pertemuan bilateral dengan Gubernur DKI Jakarta, Forum inovasi perkotaan dan kemitraan strategis, Kunjungan lapangan ke TPST Bantar Gebang terkait pengolahan sampah menjadi energi, serta Diskusi pengembangan Giant Sea Wall Jakarta.</p><p>Kegiatan telah dilaksanakan 4 s.d. 6 Juni 2026. Duta Besar RI untuk Jepang menyampaikan terima kasih melalui Surat No. 82/EKON/vI/2026 Tanggal 9 Juni 2026.</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen kunjungan',
@@ -160,25 +159,7 @@ class KunjunganSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            $idMitra = null;
-
-            if (array_key_exists('nama_kedutaan_besar_id', $item)) {
-                $mitra = KedutaanBesar::where('nama_kedutaan_besar_id', $item['nama_kedutaan_besar_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_kedutaan_besar_id']);
-            } elseif (array_key_exists('nama_misi_asing_asean_id', $item)) {
-                $mitra = MisiAsingAsean::where('nama_misi_asing_asean_id', $item['nama_misi_asing_asean_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_misi_asing_asean_id']);
-            } elseif (array_key_exists('nama_misi_permanen_asean_id', $item)) {
-                $mitra = MisiPermanenAsean::where('nama_misi_permanen_asean_id', $item['nama_misi_permanen_asean_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_misi_permanen_asean_id']);
-            } elseif (array_key_exists('nama_non_perwakilan_negara_asing', $item)) {
-                $mitra = NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $item['nama_non_perwakilan_negara_asing'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_non_perwakilan_negara_asing']);
-            }
+            $idMitra = $this->ambilIdMitra($item);
 
             if (! $idMitra) {
                 continue;

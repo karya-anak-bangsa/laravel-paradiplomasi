@@ -29,6 +29,9 @@ class Mitra extends Model
 
     // --------------------------------------------------------------------------
     // RELASI KE DATA SPESIFIK (subtype) — sesuai tipe_mitra
+    //
+    // Nama tiap relasi di bawah WAJIB sama dengan TipeMitra::relasi(), karena
+    // accessor di bawah dan eager-load di controller menurunkannya dari enum.
     // --------------------------------------------------------------------------
 
     public function kedutaanBesar(): HasOne
@@ -51,21 +54,47 @@ class Mitra extends Model
         return $this->hasOne(NonPerwakilanNegaraAsing::class, 'id_mitra', 'id_mitra');
     }
 
+    public function pemprovDki(): HasOne
+    {
+        return $this->hasOne(PemprovDki::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function kbri(): HasOne
+    {
+        return $this->hasOne(Kbri::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function kjri(): HasOne
+    {
+        return $this->hasOne(Kjri::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function ptri(): HasOne
+    {
+        return $this->hasOne(Ptri::class, 'id_mitra', 'id_mitra');
+    }
+
     // --------------------------------------------------------------------------
-    // ACCESSOR LINTAS SUBTYPE — dipakai oleh 5 modul Riwayat Diplomasi supaya
+    // ACCESSOR LINTAS SUBTYPE — dipakai oleh modul Riwayat Diplomasi supaya
     // tidak perlu tahu/peduli mitra ini sebenarnya tipe apa
     // --------------------------------------------------------------------------
 
     /**
-     * Ambil record subtype yang benar-benar terisi (KedutaanBesar,
-     * MisiAsingAsean, MisiPermanenAsean, atau NonPerwakilanNegaraAsing),
-     * sesuai `tipe_mitra`. Panggil dengan eager-load keempat relasi
-     * (with('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean',
-     * 'nonPerwakilanNegaraAsing')) untuk hindari N+1.
+     * Ambil record subtype yang benar-benar terisi, sesuai `tipe_mitra`.
+     *
+     * Relasi yang dibaca ditentukan oleh TipeMitra::relasi(), jadi menambah
+     * jenis mitra baru TIDAK perlu menyentuh method ini. Panggil dengan
+     * eager-load `with(TipeMitra::relasiMitra(''))` untuk hindari N+1.
      */
-    public function subtype(): KedutaanBesar|MisiAsingAsean|MisiPermanenAsean|NonPerwakilanNegaraAsing|null
+    public function subtype(): ?Model
     {
-        return $this->kedutaanBesar ?? $this->misiAsingAsean ?? $this->misiPermanenAsean ?? $this->nonPerwakilanNegaraAsing;
+        $relasi = $this->tipe_mitra?->relasi();
+
+        if ($relasi === null) {
+            return null;
+        }
+
+        return $this->{$relasi};
     }
 
     protected function namaMitra(): Attribute
@@ -83,26 +112,28 @@ class Mitra extends Model
     }
 
     /**
-     * Nama resmi (Bahasa Indonesia) mitra sesuai tipenya — kolom nama
-     * resmi berbeda nama per tabel subtype (nama_kedutaan_besar_id,
-     * nama_misi_asing_asean_id, nama_misi_permanen_asean_id,
-     * nama_non_perwakilan_negara_asing), sehingga tidak bisa diakses
-     * lewat properti generik seperti namaMitra.
+     * Nama resmi (Bahasa Indonesia) mitra sesuai tipenya — kolom nama resmi
+     * berbeda nama per tabel subtype (nama_kedutaan_besar_id, nama_kbri, dst),
+     * sehingga tidak bisa diakses lewat properti generik seperti namaMitra.
+     * Pemetaan kolomnya diambil dari TipeMitra::kolomNama().
      */
     protected function namaResmiMitra(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                $subtype = $this->subtype();
+            get: fn () => $this->subtype()?->{$this->tipe_mitra->kolomNama()},
+        );
+    }
 
-                return match (true) {
-                    $subtype instanceof KedutaanBesar => $subtype->nama_kedutaan_besar_id,
-                    $subtype instanceof MisiAsingAsean => $subtype->nama_misi_asing_asean_id,
-                    $subtype instanceof MisiPermanenAsean => $subtype->nama_misi_permanen_asean_id,
-                    $subtype instanceof NonPerwakilanNegaraAsing => $subtype->nama_non_perwakilan_negara_asing,
-                    default => null,
-                };
-            },
+    /**
+     * Label yang aman dipakai di UI manapun: nama negara bila mitra ini
+     * perwakilan negara asing, selain itu nama resminya.
+     */
+    protected function labelMitra(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->tipe_mitra?->berbasisNegara()
+                ? $this->nama_mitra
+                : $this->nama_resmi_mitra,
         );
     }
 }

@@ -8,11 +8,11 @@ use Illuminate\View\Component;
 
 class PageBodyForm extends Component
 {
-    public $title       = '';
+    public $title = '';
 
     public function __construct($title = '')
     {
-        $this->title    = $title;
+        $this->title = $title;
     }
 
     public function render(): View|Closure|string

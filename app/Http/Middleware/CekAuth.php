@@ -15,9 +15,10 @@ class CekAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!session()->has('auth_email')) {
+        if (! session()->has('auth_email')) {
             return redirect()->route('login');
         }
+
         return $next($request);
     }
 }

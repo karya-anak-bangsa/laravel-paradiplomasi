@@ -19,7 +19,7 @@ trait BelongsToMitra
             if (empty($model->id_mitra)) {
                 $mitra = Mitra::create([
                     'tipe_mitra' => static::tipeMitra(),
-                    'is_active'  => $model->is_active ?? true,
+                    'is_active' => $model->is_active ?? true,
                 ]);
 
                 $model->id_mitra = $mitra->id_mitra;
@@ -28,7 +28,7 @@ trait BelongsToMitra
 
         // ikut soft-delete tb_mitra saat record anak di-soft-delete
         static::deleted(function ($model) {
-            if (!$model->isForceDeleting()) {
+            if (! $model->isForceDeleting()) {
                 optional($model->mitra)->delete();
             }
         });

@@ -15,7 +15,7 @@
             </x-page-body-show>
 
             <x-page-body-show title="Riwayat Diplomasi">
-                @include('mod_misi_permanen_asean.show-riwayat')
+                <x-mitra-riwayat :mitra="$misiPermanenAsean" sebutan="misi ini" />
             </x-page-body-show>
 
         </div>

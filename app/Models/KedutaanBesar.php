@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KedutaanBesar extends Model
 {
-    use SoftDeletes, BelongsToMitra, HasMitraProfileAccessors, HasRiwayatDiplomasi;
+    use BelongsToMitra, HasMitraProfileAccessors, HasRiwayatDiplomasi, SoftDeletes;
 
-    protected $table        = 'tb_kedutaan_besar';
-    protected $primaryKey   = 'id_kedutaan_besar';
+    protected $table = 'tb_kedutaan_besar';
+
+    protected $primaryKey = 'id_kedutaan_besar';
 
     protected $fillable = [
         'kode_negara',
@@ -38,9 +39,9 @@ class KedutaanBesar extends Model
     ];
 
     protected $casts = [
-        'is_active'     => 'boolean',
-        'latitude'      => 'decimal:7',
-        'longitude'     => 'decimal:7',
+        'is_active' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
     ];
 
     // WAJIB — dipanggil oleh trait BelongsToMitra saat record baru dibuat

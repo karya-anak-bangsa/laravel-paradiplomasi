@@ -12,18 +12,17 @@ return new class extends Migration
      * dibuat OTOMATIS oleh trait BelongsToMitra saat record anak (Kedutaan Besar,
      * Misi Asing ASEAN, dst) dibuat. Baris di sini TIDAK PERNAH diisi manual/di-seed.
      */
-
     public function up(): void
     {
         Schema::create('tb_mitra', function (Blueprint $table) {
 
-            # primary key
+            // primary key
             $table->id('id_mitra');
 
-            # columns-columns
+            // columns-columns
             $table->string('tipe_mitra');
 
-            # status data & timestamps
+            // status data & timestamps
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

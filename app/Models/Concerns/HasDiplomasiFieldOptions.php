@@ -13,17 +13,17 @@ namespace App\Models\Concerns;
 trait HasDiplomasiFieldOptions
 {
     public const TRIWULAN_OPTIONS = [
-        'TW I'      => 'TW I',
-        'TW II'     => 'TW II',
-        'TW III'    => 'TW III',
-        'TW IV'     => 'TW IV',
+        'TW I' => 'TW I',
+        'TW II' => 'TW II',
+        'TW III' => 'TW III',
+        'TW IV' => 'TW IV',
     ];
 
     public const STATUS_OPTIONS = [
-        'Berjalan'  => 'Berjalan',
-        'Selesai'   => 'Selesai',
-        'Tunda'     => 'Tunda',
-        'Batal'     => 'Batal',
-        'Regret'    => 'Regret',
+        'Berjalan' => 'Berjalan',
+        'Selesai' => 'Selesai',
+        'Tunda' => 'Tunda',
+        'Batal' => 'Batal',
+        'Regret' => 'Regret',
     ];
 }

@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('tb_kolaborasi', function (Blueprint $table) {
 
-            # primary key dan foreign key
+            // primary key dan foreign key
             $table->id('id_kolaborasi');
             $table->foreignId('id_mitra')->constrained('tb_mitra', 'id_mitra')->restrictOnDelete();
 
-            # columns-columns
+            // columns-columns
             $table->text('kolaborasi')->nullable();
             $table->text('rangkuman')->nullable();
             $table->text('catatan')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('nama_pic')->nullable();
             $table->string('nomor_pic')->nullable();
 
-            # status data & timestamps
+            // status data & timestamps
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

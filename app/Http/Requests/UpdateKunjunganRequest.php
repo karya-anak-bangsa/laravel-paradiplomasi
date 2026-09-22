@@ -14,27 +14,27 @@ class UpdateKunjunganRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_mitra'           => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
-            'perihal'            => ['required', 'string'],
-            'rangkuman'          => ['nullable', 'string'],
-            'catatan'            => ['nullable', 'string'],
-            'tanggal_diterima'   => ['nullable', 'date'],
-            'tanggal_selesai'    => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
+            'id_mitra' => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
+            'perihal' => ['required', 'string'],
+            'rangkuman' => ['nullable', 'string'],
+            'catatan' => ['nullable', 'string'],
+            'tanggal_diterima' => ['nullable', 'date'],
+            'tanggal_selesai' => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
             'triwulan_kunjungan' => ['required', 'in:TW I,TW II,TW III,TW IV'],
-            'status_kunjungan'   => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
+            'status_kunjungan' => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'id_mitra'           => 'Nama Negara',
-            'perihal'            => 'Perihal',
-            'rangkuman'          => 'Rangkuman',
-            'catatan'            => 'Catatan',
-            'tanggal_diterima'   => 'Tanggal Diterima',
-            'tanggal_selesai'    => 'Tanggal Selesai',
-            'status_kunjungan'   => 'Status Kunjungan',
+            'id_mitra' => 'Nama Negara',
+            'perihal' => 'Perihal',
+            'rangkuman' => 'Rangkuman',
+            'catatan' => 'Catatan',
+            'tanggal_diterima' => 'Tanggal Diterima',
+            'tanggal_selesai' => 'Tanggal Selesai',
+            'status_kunjungan' => 'Status Kunjungan',
             'triwulan_kunjungan' => 'Triwulan',
         ];
     }

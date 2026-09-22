@@ -16,7 +16,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Rincian Kolaborasi - {{ $kolaborasi->mitra->nama_mitra ?? $kolaborasi->mitra->nama_resmi_mitra }}</h3>
+                    <h3 class="card-title">Rincian Kolaborasi - {{ $kolaborasi->mitra->label_mitra }}</h3>
                 </div>
                 <div class="card-body">
 
@@ -26,7 +26,7 @@
                         <div class="datagrid-item">
                             <div class="datagrid-content d-flex align-items-center">
                                 <x-mitra-icon :mitra="$kolaborasi->mitra" />
-                                <span class="fw-bold">{{ $kolaborasi->mitra->nama_mitra ?? $kolaborasi->mitra->nama_resmi_mitra }}</span>
+                                <span class="fw-bold">{{ $kolaborasi->mitra->label_mitra }}</span>
                             </div>
                         </div>
                         <div class="datagrid-item">

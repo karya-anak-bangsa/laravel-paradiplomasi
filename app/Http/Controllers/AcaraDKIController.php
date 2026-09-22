@@ -2,27 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TipeMitra;
 use App\Http\Requests\StoreAcaraDKIRequest;
 use App\Http\Requests\UpdateAcaraDKIRequest;
 use App\Models\AcaraDKI;
-use App\Models\KedutaanBesar;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
-use App\Models\NonPerwakilanNegaraAsing;
+use App\Support\DaftarMitra;
 use Illuminate\Http\Request;
 
 class AcaraDKIController extends Controller
 {
-    private const MITRA_RELATIONS = [
-        'mitra.kedutaanBesar',
-        'mitra.misiAsingAsean',
-        'mitra.misiPermanenAsean',
-        'mitra.nonPerwakilanNegaraAsing',
-    ];
-
     public function index(Request $request)
     {
-        $acaraDki = AcaraDKI::with(self::MITRA_RELATIONS)
+        $acaraDki = AcaraDKI::with(TipeMitra::relasiMitra())
             ->where('is_active', true)
             ->filterStatus($request->input('status'))
             ->filterTahun($request->input('tahun'))
@@ -38,16 +29,16 @@ class AcaraDKIController extends Controller
 
     public function show(AcaraDKI $acaraDki)
     {
-        $acaraDki->load(self::MITRA_RELATIONS);
+        $acaraDki->load(TipeMitra::relasiMitra());
 
         return view('mod_acara_dki.show', compact('acaraDki'));
     }
 
     public function create()
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
+        $daftarMitra = DaftarMitra::aktifPerTipe();
 
-        return view('mod_acara_dki.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
+        return view('mod_acara_dki.create', compact('daftarMitra'));
     }
 
     public function store(StoreAcaraDKIRequest $request)
@@ -65,10 +56,10 @@ class AcaraDKIController extends Controller
 
     public function edit(AcaraDKI $acaraDki)
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
-        $acaraDki->load(self::MITRA_RELATIONS);
+        $daftarMitra = DaftarMitra::aktifPerTipe();
+        $acaraDki->load(TipeMitra::relasiMitra());
 
-        return view('mod_acara_dki.edit', compact('acaraDki', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
+        return view('mod_acara_dki.edit', compact('acaraDki', 'daftarMitra'));
     }
 
     public function update(UpdateAcaraDKIRequest $request, AcaraDKI $acaraDki)
@@ -92,36 +83,5 @@ class AcaraDKIController extends Controller
             'type' => 'success',
             'message' => 'Data acara DKI berhasil dinonaktifkan.',
         ]);
-    }
-
-    private function daftarMitraAktif(): array
-    {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id']);
-
-        $misiAsingAsean = MisiAsingAsean::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_asing_asean_id']);
-
-        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
-
-        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)
-            ->orderBy('nama_non_perwakilan_negara_asing')
-            ->get(['id_mitra', 'nama_non_perwakilan_negara_asing']);
-
-        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing];
-    }
-
-    private function pivotMitra(array $mitra): array
-    {
-        return collect($mitra)->mapWithKeys(fn (array $row) => [
-            $row['id_mitra'] => [
-                'status_kehadiran' => $row['status_kehadiran'],
-                'keterangan_kehadiran' => $row['keterangan_kehadiran'] ?? null,
-            ],
-        ])->all();
     }
 }

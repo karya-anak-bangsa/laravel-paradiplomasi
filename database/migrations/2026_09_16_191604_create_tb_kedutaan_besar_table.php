@@ -10,13 +10,13 @@ return new class extends Migration
     {
         Schema::create('tb_kedutaan_besar', function (Blueprint $table) {
 
-            # primary key
+            // primary key
             $table->id('id_kedutaan_besar');
 
-            # foreign key terpisah ke tb_mitra (unique -> menjamin relasi 1:1 ke tb_mitra)
+            // foreign key terpisah ke tb_mitra (unique -> menjamin relasi 1:1 ke tb_mitra)
             $table->foreignId('id_mitra')->unique()->constrained('tb_mitra', 'id_mitra')->restrictOnDelete();
 
-            # columns-columns
+            // columns-columns
             $table->string('kode_negara');
             $table->string('nama_negara');
             $table->string('nama_kedutaan_besar_id');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
 
-            # status data & timestamps
+            // status data & timestamps
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

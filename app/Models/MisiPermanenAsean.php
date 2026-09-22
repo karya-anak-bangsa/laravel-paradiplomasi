@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MisiPermanenAsean extends Model
 {
-    use SoftDeletes, BelongsToMitra, HasMitraProfileAccessors, HasRiwayatDiplomasi;
+    use BelongsToMitra, HasMitraProfileAccessors, HasRiwayatDiplomasi, SoftDeletes;
 
-    protected $table        = 'tb_misi_permanen_asean';
-    protected $primaryKey   = 'id_misi_permanen_asean';
+    protected $table = 'tb_misi_permanen_asean';
+
+    protected $primaryKey = 'id_misi_permanen_asean';
 
     protected $fillable = [
         'kode_negara',

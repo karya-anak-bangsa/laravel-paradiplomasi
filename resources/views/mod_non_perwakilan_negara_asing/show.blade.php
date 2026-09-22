@@ -15,7 +15,7 @@
             </x-page-body-show>
 
             <x-page-body-show title="Riwayat Diplomasi">
-                @include('mod_non_perwakilan_negara_asing.show-riwayat')
+                <x-mitra-riwayat :mitra="$nonPerwakilanNegaraAsing" sebutan="mitra ini" />
             </x-page-body-show>
 
         </div>

@@ -2,27 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TipeMitra;
 use App\Http\Requests\StoreKunjunganRequest;
 use App\Http\Requests\UpdateKunjunganRequest;
-use App\Models\KedutaanBesar;
 use App\Models\Kunjungan;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
-use App\Models\NonPerwakilanNegaraAsing;
+use App\Support\DaftarMitra;
 use Illuminate\Http\Request;
 
 class KunjunganController extends Controller
 {
-    private const MITRA_RELATIONS = [
-        'mitra.kedutaanBesar',
-        'mitra.misiAsingAsean',
-        'mitra.misiPermanenAsean',
-        'mitra.nonPerwakilanNegaraAsing',
-    ];
-
     public function index(Request $request)
     {
-        $kunjungan = Kunjungan::with(self::MITRA_RELATIONS)
+        $kunjungan = Kunjungan::with(TipeMitra::relasiMitra())
             ->where('is_active', true)
             ->filterStatus($request->input('status'))
             ->filterTahun($request->input('tahun'))
@@ -38,16 +29,16 @@ class KunjunganController extends Controller
 
     public function show(Kunjungan $kunjungan)
     {
-        $kunjungan->load(self::MITRA_RELATIONS);
+        $kunjungan->load(TipeMitra::relasiMitra());
 
         return view('mod_kunjungan.show', compact('kunjungan'));
     }
 
     public function create()
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
+        $daftarMitra = DaftarMitra::aktifPerTipe();
 
-        return view('mod_kunjungan.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
+        return view('mod_kunjungan.create', compact('daftarMitra'));
     }
 
     public function store(StoreKunjunganRequest $request)
@@ -62,10 +53,10 @@ class KunjunganController extends Controller
 
     public function edit(Kunjungan $kunjungan)
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
-        $kunjungan->load(self::MITRA_RELATIONS);
+        $daftarMitra = DaftarMitra::aktifPerTipe();
+        $kunjungan->load(TipeMitra::relasiMitra());
 
-        return view('mod_kunjungan.edit', compact('kunjungan', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
+        return view('mod_kunjungan.edit', compact('kunjungan', 'daftarMitra'));
     }
 
     public function update(UpdateKunjunganRequest $request, Kunjungan $kunjungan)
@@ -86,26 +77,5 @@ class KunjunganController extends Controller
             'type' => 'success',
             'message' => 'Data kunjungan berhasil dinonaktifkan.',
         ]);
-    }
-
-    private function daftarMitraAktif(): array
-    {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id']);
-
-        $misiAsingAsean = MisiAsingAsean::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_asing_asean_id']);
-
-        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
-
-        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)
-            ->orderBy('nama_non_perwakilan_negara_asing')
-            ->get(['id_mitra', 'nama_non_perwakilan_negara_asing']);
-
-        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing];
     }
 }

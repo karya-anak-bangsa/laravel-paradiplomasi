@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\KedutaanBesar;
 use App\Models\Kerjasama;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
-use App\Models\NonPerwakilanNegaraAsing;
+use Database\Seeders\Concerns\ResolvesMitra;
 use Illuminate\Database\Seeder;
 
 class KerjasamaSeeder extends Seeder
 {
+    use ResolvesMitra;
+
     /**
      * Sumber data: sheet "Kerja Sama (KS)" pada spreadsheet Data Paradiplomasi
      * Jakarta 2026 (29 baris data, sesuai jumlah baris berisi pada sheet acuan).
@@ -441,25 +440,7 @@ class KerjasamaSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            $idMitra = null;
-
-            if (array_key_exists('nama_kedutaan_besar_id', $item)) {
-                $mitra = KedutaanBesar::where('nama_kedutaan_besar_id', $item['nama_kedutaan_besar_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_kedutaan_besar_id']);
-            } elseif (array_key_exists('nama_misi_asing_asean_id', $item)) {
-                $mitra = MisiAsingAsean::where('nama_misi_asing_asean_id', $item['nama_misi_asing_asean_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_misi_asing_asean_id']);
-            } elseif (array_key_exists('nama_misi_permanen_asean_id', $item)) {
-                $mitra = MisiPermanenAsean::where('nama_misi_permanen_asean_id', $item['nama_misi_permanen_asean_id'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_misi_permanen_asean_id']);
-            } elseif (array_key_exists('nama_non_perwakilan_negara_asing', $item)) {
-                $mitra = NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $item['nama_non_perwakilan_negara_asing'])->first();
-                $idMitra = $mitra?->id_mitra;
-                unset($item['nama_non_perwakilan_negara_asing']);
-            }
+            $idMitra = $this->ambilIdMitra($item);
 
             if (! $idMitra) {
                 continue;

@@ -1,4 +1,5 @@
 <?php
+
 // app/Models/MisiAsingAsean.php
 
 namespace App\Models;
@@ -12,10 +13,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MisiAsingAsean extends Model
 {
-    use SoftDeletes, BelongsToMitra, HasMitraProfileAccessors, HasRiwayatDiplomasi;
+    use BelongsToMitra, HasMitraProfileAccessors, HasRiwayatDiplomasi, SoftDeletes;
 
-    protected $table        = 'tb_misi_asing_asean';
-    protected $primaryKey   = 'id_misi_asing_asean';
+    protected $table = 'tb_misi_asing_asean';
+
+    protected $primaryKey = 'id_misi_asing_asean';
 
     protected $fillable = [
         'kode_negara',

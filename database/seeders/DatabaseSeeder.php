@@ -27,10 +27,14 @@ class DatabaseSeeder extends Seeder
             MisiAsingAseanSeeder::class,
             MisiPermanenAseanSeeder::class,
 
-            // Modul Non Perwakilan Negara Asing
+            // Modul mitra "nama + keterangan"
             // WAJIB sebelum seluruh seeder Riwayat Diplomasi di bawah, karena
-            // seeder tersebut me-lookup id_mitra berdasarkan nama mitra Non-PNA.
+            // seeder tersebut me-lookup id_mitra berdasarkan nama mitranya.
             NonPerwakilanNegaraAsingSeeder::class,
+            PemprovDkiSeeder::class,
+            KbriSeeder::class,
+            KjriSeeder::class,
+            PtriSeeder::class,
 
             // Modul Riwayat Diplomasi
             KerjasamaSeeder::class,

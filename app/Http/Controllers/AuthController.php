@@ -14,20 +14,20 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email'    => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         $daftarAkun = [
             'admin@mail.com' => [
                 'password' => '2026paradiplomasi2026',
-                'nama'     => 'Administrator',
-                'role'     => 'admin',
+                'nama' => 'Administrator',
+                'role' => 'admin',
             ],
             'guest@mail.com' => [
                 'password' => '2026paradiplomasi2026',
-                'nama'     => 'Tamu Biro KSD',
-                'role'     => 'guest',
+                'nama' => 'Tamu Biro KSD',
+                'role' => 'guest',
             ],
         ];
 
@@ -37,9 +37,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
             session([
                 'auth_email' => $request->email,
-                'auth_nama'  => $akun['nama'],
-                'auth_role'  => $akun['role'],
+                'auth_nama' => $akun['nama'],
+                'auth_role' => $akun['role'],
             ]);
+
             return redirect()->route('dashboard.index');
         }
 
@@ -52,6 +53,7 @@ class AuthController extends Controller
     {
         $request->session()->flush();
         $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 }

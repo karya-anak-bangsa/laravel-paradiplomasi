@@ -2,10 +2,7 @@
     <x-mitra-picker
         :value="$kerjasama->id_mitra ?? null"
         :mitra="$kerjasama->mitra ?? null"
-        :kedutaan-besar="$kedutaanBesar"
-        :misi-asing-asean="$misiAsingAsean"
-        :misi-permanen-asean="$misiPermanenAsean"
-        :non-perwakilan-negara-asing="$nonPerwakilanNegaraAsing" />
+        :daftar-mitra="$daftarMitra" />
 
     <div class="col-lg-12 mb-3">
         <x-form-input-textarea

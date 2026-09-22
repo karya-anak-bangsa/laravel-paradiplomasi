@@ -14,28 +14,28 @@ class StoreKolaborasiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_mitra'            => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
-            'kolaborasi'          => ['required', 'string'],
-            'rangkuman'           => ['required', 'string'],
-            'catatan'             => ['required', 'string'],
-            'tanggal_diterima'    => ['required', 'date'],
-            'tanggal_selesai'     => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
+            'id_mitra' => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
+            'kolaborasi' => ['required', 'string'],
+            'rangkuman' => ['required', 'string'],
+            'catatan' => ['required', 'string'],
+            'tanggal_diterima' => ['required', 'date'],
+            'tanggal_selesai' => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
             'triwulan_kolaborasi' => ['required', 'in:TW I,TW II,TW III,TW IV'],
-            'status_kolaborasi'   => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
+            'status_kolaborasi' => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'id_mitra'            => 'Nama Negara',
-            'kolaborasi'          => 'Isi Kolaborasi',
-            'rangkuman'           => 'Rangkuman',
-            'catatan'             => 'Catatan',
-            'tanggal_diterima'    => 'Tanggal Diterima',
-            'tanggal_selesai'     => 'Tanggal Selesai',
+            'id_mitra' => 'Nama Negara',
+            'kolaborasi' => 'Isi Kolaborasi',
+            'rangkuman' => 'Rangkuman',
+            'catatan' => 'Catatan',
+            'tanggal_diterima' => 'Tanggal Diterima',
+            'tanggal_selesai' => 'Tanggal Selesai',
             'triwulan_kolaborasi' => 'Triwulan',
-            'status_kolaborasi'   => 'Status Kolaborasi',
+            'status_kolaborasi' => 'Status Kolaborasi',
         ];
     }
 }

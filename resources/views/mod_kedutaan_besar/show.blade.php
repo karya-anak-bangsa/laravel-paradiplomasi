@@ -17,7 +17,7 @@
             </x-page-body-show>
 
             <x-page-body-show title="Riwayat Diplomasi">
-                @include('mod_kedutaan_besar.show-riwayat')
+                <x-mitra-riwayat :mitra="$kedutaanBesar" sebutan="kedutaan ini" />
             </x-page-body-show>
 
         </div>

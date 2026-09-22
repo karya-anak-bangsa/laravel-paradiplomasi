@@ -1,4 +1,5 @@
 <?php
+
 // app/Models/Concerns/HasMitraProfileAccessors.php
 
 namespace App\Models\Concerns;
@@ -19,15 +20,15 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * (KedutaanBesar, MisiAsingAsean, MisiPermanenAsean, dst).
  *
  * @property string|null $telepon_kantor Boleh berisi beberapa nomor dipisah koma
- * @property string|null $email_kantor   Boleh berisi beberapa email dipisah koma
- * @property bool        $is_active
+ * @property string|null $email_kantor Boleh berisi beberapa email dipisah koma
+ * @property bool $is_active
  */
 trait HasMitraProfileAccessors
 {
     protected function teleponKantorArray(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->telepon_kantor
+            get: fn ($value) => $this->telepon_kantor
                 ? array_map('trim', explode(',', $this->telepon_kantor))
                 : [],
         );
@@ -36,7 +37,7 @@ trait HasMitraProfileAccessors
     protected function emailKantorArray(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->email_kantor
+            get: fn ($value) => $this->email_kantor
                 ? array_map('trim', explode(',', $this->email_kantor))
                 : [],
         );
@@ -45,14 +46,14 @@ trait HasMitraProfileAccessors
     protected function activeLabel(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->is_active ? 'Aktif' : 'Nonaktif',
+            get: fn () => $this->is_active ? 'Aktif' : 'Nonaktif',
         );
     }
 
     protected function activeBadgeColor(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->is_active ? 'bg-success-lt' : 'bg-warning-lt',
+            get: fn () => $this->is_active ? 'bg-success-lt' : 'bg-warning-lt',
         );
     }
 }

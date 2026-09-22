@@ -18,6 +18,7 @@ class CekTamu
         if (session()->has('auth_email')) {
             return redirect()->route('dashboard.index');
         }
+
         return $next($request);
     }
 }

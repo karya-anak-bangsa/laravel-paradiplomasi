@@ -8,11 +8,11 @@ use Illuminate\View\Component;
 
 class PageBodyTable extends Component
 {
-    public $title       = '';
+    public $title = '';
 
     public function __construct($title = '')
     {
-        $this->title    = $title;
+        $this->title = $title;
     }
 
     public function render(): View|Closure|string

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TipeMitra;
 use App\Models\AcaraDKI;
 use App\Models\Audiensi;
 use App\Models\KedutaanBesar;
@@ -18,18 +19,31 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        //  Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta
-        $dash_akumulasi = [
-            'kedutaan_besar' => KedutaanBesar::where('is_active', true)->count(),
-            'misi_asing_asean' => MisiAsingAsean::where('is_active', true)->count(),
-            'misi_permanen_asean' => MisiPermanenAsean::where('is_active', true)->count(),
-            'kerjasama' => Kerjasama::where('is_active', true)->count(),
-            'kolaborasi' => Kolaborasi::where('is_active', true)->count(),
-            'undangan' => Undangan::where('is_active', true)->count(),
-            'audiensi' => Audiensi::where('is_active', true)->count(),
-            'kunjungan' => Kunjungan::where('is_active', true)->count(),
-            'acara_dki' => AcaraDKI::where('is_active', true)->count(),
-        ];
+        // Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta — kelompok
+        // Mitra diturunkan dari TipeMitra, sehingga jenis mitra baru otomatis
+        // muncul di dashboard tanpa menyentuh controller maupun blade-nya.
+        $akumulasiMitra = collect(TipeMitra::cases())->map(fn (TipeMitra $tipe) => (object) [
+            'label' => $tipe->labelSingkat(),
+            'ikon' => $tipe->ikon(),
+            'warna' => $tipe->warna(),
+            'route' => $tipe->routeIndex(),
+            'jumlah' => $tipe->modelClass()::where('is_active', true)->count(),
+        ]);
+
+        // Kelompok Riwayat Diplomasi tetap ditulis eksplisit: keenam modul ini
+        // tidak punya enum pemersatu, dan tiap modul punya ikon, warna kartu,
+        // serta warna irisan donat sendiri.
+        $akumulasiRiwayat = collect([
+            ['label' => 'Kerjasama', 'ikon' => 'folder-closed', 'warna' => 'green', 'route' => 'kerjasama.index', 'warnaChart' => 'primary', 'model' => Kerjasama::class],
+            ['label' => 'Kolaborasi', 'ikon' => 'thumbs-up', 'warna' => 'yellow', 'route' => 'kolaborasi.index', 'warnaChart' => 'yellow', 'model' => Kolaborasi::class],
+            ['label' => 'Undangan', 'ikon' => 'envelope', 'warna' => 'red', 'route' => 'undangan.index', 'warnaChart' => 'red', 'model' => Undangan::class],
+            ['label' => 'Audiensi', 'ikon' => 'comments', 'warna' => 'azure', 'route' => 'audiensi.index', 'warnaChart' => 'azure', 'model' => Audiensi::class],
+            ['label' => 'Kunjungan', 'ikon' => 'user-graduate', 'warna' => 'lime', 'route' => 'kunjungan.index', 'warnaChart' => 'green', 'model' => Kunjungan::class],
+            ['label' => 'Acara DKI', 'ikon' => 'calendar-days', 'warna' => 'orange', 'route' => 'acara-dki.index', 'warnaChart' => 'orange', 'model' => AcaraDKI::class],
+        ])->map(fn (array $modul) => (object) [
+            ...$modul,
+            'jumlah' => $modul['model']::where('is_active', true)->count(),
+        ]);
 
         // Peta Sebaran & Pencarian Lokasi Kedutaan Besar
         $daftarKedutaan = KedutaanBesar::where('is_active', true)
@@ -73,8 +87,18 @@ class DashboardController extends Controller
             ->map(fn ($counts) => collect($statusList)->map(fn ($status) => $counts[$status] ?? 0)->values())
             ->values();
 
-        // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi)
-        // Digabung dari 3 tipe mitra: Kedutaan Besar, Misi Asing ASEAN, Misi Permanen Negara ASEAN.
+        // Mitra Diplomatik Paling Aktif (berdasarkan total Riwayat Diplomasi).
+        //
+        // SENGAJA hanya 3 tipe mitra: Kedutaan Besar, Misi Asing ASEAN, Misi
+        // Permanen Negara ASEAN — yaitu perwakilan negara asing di Jakarta.
+        // Mitra Non-PNA, Pemprov DKI, KBRI, KJRI, dan PTRI TIDAK diperingkat di
+        // sini sesuai arahan bisnis: ranking ini mengukur keaktifan mitra
+        // diplomatik asing, bukan seluruh pihak yang pernah berinteraksi dengan
+        // Biro KSD. Jangan "melengkapi" daftar ini dengan kelima tipe lain.
+        //
+        // Konsekuensi teknis: ketiga tipe di bawah pasti punya `kode_negara`,
+        // sehingga grid-nya aman memakai `.flag-country-{kode}` langsung tanpa
+        // perlu x-mitra-icon.
         $hitungAktivitas = function ($query, string $labelNamaResmi) {
             return $query
                 ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan', 'acaraDki'])
@@ -99,7 +123,8 @@ class DashboardController extends Controller
             ->values();
 
         return view('mod_dashboard.dashboard', compact(
-            'dash_akumulasi',
+            'akumulasiMitra',
+            'akumulasiRiwayat',
             'daftarKedutaan',
             'rincianWilayah',
             'totalPerKecamatan',

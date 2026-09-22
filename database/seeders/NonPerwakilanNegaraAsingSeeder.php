@@ -38,21 +38,16 @@ class NonPerwakilanNegaraAsingSeeder extends Seeder
      * sheet acuan, agar operator tetap punya konteks saat mitra ini muncul di
      * dropdown pemilihan mitra maupun di halaman profil mitra.
      *
-     * Koreksi data terhadap sheet acuan:
-     *   - Sheet "Kolaborasi (KL)" baris "Rencana pelaksanaan Jakarta-Mumbai (JAMU)
-     *     2026" menuliskan nama mitra sebagai placeholder generik "Mitra Non-PNA".
-     *     Perihal dan rangkuman baris tersebut secara eksplisit menyebut Konsulat
-     *     Jenderal RI di Mumbai sebagai pihak pengaju, sehingga nama mitra
-     *     dikoreksi menjadi "KJRI Mumbai" - placeholder generik tidak layak
-     *     tersimpan sebagai record mitra karena akan muncul apa adanya di dropdown
-     *     pemilihan mitra.
+     * Mitra yang TIDAK lagi dicatat di sini (dipindah ke modul mitra tersendiri
+     * atas arahan Kasubag, karena jenisnya sudah punya modul sendiri):
+     *   - KBRI Tokyo, KBRI Bern             -> KbriSeeder
+     *   - KJRI Mumbai                       -> KjriSeeder
+     *   - Biro Kepala Daerah, Badan Kesatuan Bangsa dan Politik -> PemprovDkiSeeder
      *
-     * Catatan: sebagian nama pada sheet acuan adalah instansi dalam negeri
-     * (Kementerian Luar Negeri RI, Biro Kepala Daerah, Badan Kesatuan Bangsa dan
-     * Politik) maupun perwakilan RI di luar negeri (KBRI Tokyo, KBRI Bern, KJRI
-     * Mumbai). Keduanya tetap dicatat sebagai Non Perwakilan Negara Asing
-     * mengikuti klasifikasi Biro KSD pada sheet - modul ini memang menampung
-     * seluruh mitra diplomasi yang bukan perwakilan negara asing di Jakarta.
+     * Catatan: Kementerian Luar Negeri RI dan Menteri Luar Negeri Republik
+     * Indonesia TETAP di sini. Keduanya instansi pemerintah pusat - bukan
+     * perangkat daerah Pemprov DKI, bukan pula perwakilan RI di luar negeri -
+     * sehingga tidak masuk ke satu pun modul mitra baru tersebut.
      */
     public function run(): void
     {
@@ -111,23 +106,6 @@ class NonPerwakilanNegaraAsingSeeder extends Seeder
                 'is_active' => true,
             ],
 
-            // Perwakilan Republik Indonesia di luar negeri
-            [
-                'nama_non_perwakilan_negara_asing' => 'KBRI Tokyo',
-                'keterangan' => 'Kedutaan Besar Republik Indonesia di Tokyo, Jepang. Mitra Biro Kerja Sama Daerah dalam penguatan kerja sama strategis Jakarta-Jepang di sektor investasi, infrastruktur, transportasi publik, dan pengelolaan lingkungan.',
-                'is_active' => true,
-            ],
-            [
-                'nama_non_perwakilan_negara_asing' => 'KBRI Bern',
-                'keterangan' => 'Kedutaan Besar Republik Indonesia di Bern, Swiss.',
-                'is_active' => true,
-            ],
-            [
-                'nama_non_perwakilan_negara_asing' => 'KJRI Mumbai',
-                'keterangan' => 'Konsulat Jenderal Republik Indonesia di Mumbai, India. Penggagas rangkaian Jakarta-Mumbai Update (JAMU) dan penjajakan hubungan Sister City antara Jakarta dan Mumbai.',
-                'is_active' => true,
-            ],
-
             // Instansi pemerintah Republik Indonesia
             [
                 'nama_non_perwakilan_negara_asing' => 'Kementerian Luar Negeri RI',
@@ -137,18 +115,6 @@ class NonPerwakilanNegaraAsingSeeder extends Seeder
             [
                 'nama_non_perwakilan_negara_asing' => 'Menteri Luar Negeri Republik Indonesia',
                 'keterangan' => 'Pimpinan Kementerian Luar Negeri Republik Indonesia beserta jajaran Wakil Menteri. Dicatat terpisah dari "Kementerian Luar Negeri RI" mengikuti penamaan pada sheet acuan, khusus untuk agenda audiensi setingkat menteri/wakil menteri.',
-                'is_active' => true,
-            ],
-
-            // Perangkat daerah Pemerintah Provinsi DKI Jakarta
-            [
-                'nama_non_perwakilan_negara_asing' => 'Biro Kepala Daerah',
-                'keterangan' => 'Biro Kepala Daerah Setda Provinsi DKI Jakarta. Kerap meneruskan permohonan audiensi kepada Gubernur/Wakil Gubernur dan meminta pendampingan Biro Kerja Sama Daerah untuk tamu asing.',
-                'is_active' => true,
-            ],
-            [
-                'nama_non_perwakilan_negara_asing' => 'Badan Kesatuan Bangsa dan Politik',
-                'keterangan' => 'Badan Kesatuan Bangsa dan Politik Provinsi DKI Jakarta. Pelaksana kegiatan diplomasi hijau penanaman mangrove bersama Rumah Rusia di Jakarta.',
                 'is_active' => true,
             ],
 

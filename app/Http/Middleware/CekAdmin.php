@@ -18,6 +18,7 @@ class CekAdmin
         if (session('auth_role') !== 'admin') {
             abort(403, 'Anda tidak memiliki akses untuk halaman ini.');
         }
+
         return $next($request);
     }
 }

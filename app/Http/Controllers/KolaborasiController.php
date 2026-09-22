@@ -2,27 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TipeMitra;
 use App\Http\Requests\StoreKolaborasiRequest;
 use App\Http\Requests\UpdateKolaborasiRequest;
-use App\Models\KedutaanBesar;
 use App\Models\Kolaborasi;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
-use App\Models\NonPerwakilanNegaraAsing;
+use App\Support\DaftarMitra;
 use Illuminate\Http\Request;
 
 class KolaborasiController extends Controller
 {
-    private const MITRA_RELATIONS = [
-        'mitra.kedutaanBesar',
-        'mitra.misiAsingAsean',
-        'mitra.misiPermanenAsean',
-        'mitra.nonPerwakilanNegaraAsing',
-    ];
-
     public function index(Request $request)
     {
-        $kolaborasi = Kolaborasi::with(self::MITRA_RELATIONS)
+        $kolaborasi = Kolaborasi::with(TipeMitra::relasiMitra())
             ->where('is_active', true)
             ->filterStatus($request->input('status'))
             ->filterTahun($request->input('tahun'))
@@ -38,16 +29,16 @@ class KolaborasiController extends Controller
 
     public function show(Kolaborasi $kolaborasi)
     {
-        $kolaborasi->load(self::MITRA_RELATIONS);
+        $kolaborasi->load(TipeMitra::relasiMitra());
 
         return view('mod_kolaborasi.show', compact('kolaborasi'));
     }
 
     public function create()
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
+        $daftarMitra = DaftarMitra::aktifPerTipe();
 
-        return view('mod_kolaborasi.create', compact('kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
+        return view('mod_kolaborasi.create', compact('daftarMitra'));
     }
 
     public function store(StoreKolaborasiRequest $request)
@@ -62,10 +53,10 @@ class KolaborasiController extends Controller
 
     public function edit(Kolaborasi $kolaborasi)
     {
-        [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing] = $this->daftarMitraAktif();
-        $kolaborasi->load(self::MITRA_RELATIONS);
+        $daftarMitra = DaftarMitra::aktifPerTipe();
+        $kolaborasi->load(TipeMitra::relasiMitra());
 
-        return view('mod_kolaborasi.edit', compact('kolaborasi', 'kedutaanBesar', 'misiAsingAsean', 'misiPermanenAsean', 'nonPerwakilanNegaraAsing'));
+        return view('mod_kolaborasi.edit', compact('kolaborasi', 'daftarMitra'));
     }
 
     public function update(UpdateKolaborasiRequest $request, Kolaborasi $kolaborasi)
@@ -86,26 +77,5 @@ class KolaborasiController extends Controller
             'type' => 'success',
             'message' => 'Data kolaborasi berhasil dinonaktifkan.',
         ]);
-    }
-
-    private function daftarMitraAktif(): array
-    {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id']);
-
-        $misiAsingAsean = MisiAsingAsean::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_asing_asean_id']);
-
-        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)
-            ->orderBy('nama_negara')
-            ->get(['id_mitra', 'kode_negara', 'nama_negara', 'nama_misi_permanen_asean_id']);
-
-        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)
-            ->orderBy('nama_non_perwakilan_negara_asing')
-            ->get(['id_mitra', 'nama_non_perwakilan_negara_asing']);
-
-        return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing];
     }
 }

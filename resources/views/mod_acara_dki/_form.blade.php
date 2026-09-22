@@ -148,10 +148,9 @@
     <td>
         <select class="form-select border-dark tipe-mitra-baris">
             <option value="" selected>Pilih tipe mitra</option>
-            <option value="kedutaan_besar">Kedutaan Besar</option>
-            <option value="misi_asing_asean">Misi Asing untuk ASEAN</option>
-            <option value="misi_permanen_asean">Misi Permanen Negara ASEAN</option>
-            <option value="non_pna">Non Perwakilan Negara Asing</option>
+            @foreach ($daftarMitra as $slug => $tipe)
+                <option value="{{ $slug }}">{{ $tipe['label'] }}</option>
+            @endforeach
         </select>
     </td>
     <td>
@@ -176,36 +175,25 @@
 </script>
 
 @php
-    $slugTipeMitra = fn ($tipeMitra) => match ($tipeMitra) {
-        \App\Enums\TipeMitra::KedutaanBesar => 'kedutaan_besar',
-        \App\Enums\TipeMitra::MisiAsingAsean => 'misi_asing_asean',
-        \App\Enums\TipeMitra::MisiPermanenAsean => 'misi_permanen_asean',
-        \App\Enums\TipeMitra::NonPNA => 'non_pna',
-        default => null,
-    };
-
     // saat submit gagal validasi, sisipan mitra yang sudah diisi user harus
     // dipertahankan (bukan direset ke data lama di database) — id_mitra dari
     // old input dicocokkan balik ke tipe mitranya lewat daftar mitra aktif
-    // yang sama dengan yang dipakai untuk optgroup di bawah.
-    $tipeMitraByIdMitra = collect()
-        ->merge($kedutaanBesar->mapWithKeys(fn ($m) => [$m->id_mitra => 'kedutaan_besar']))
-        ->merge($misiAsingAsean->mapWithKeys(fn ($m) => [$m->id_mitra => 'misi_asing_asean']))
-        ->merge($misiPermanenAsean->mapWithKeys(fn ($m) => [$m->id_mitra => 'misi_permanen_asean']))
-        ->merge($nonPerwakilanNegaraAsing->mapWithKeys(fn ($m) => [$m->id_mitra => 'non_pna']));
+    // yang sama dengan yang dipakai untuk opsi dropdown di bawah.
+    $tipeMitraByIdMitra = collect($daftarMitra)
+        ->flatMap(fn ($tipe, $slug) => collect($tipe['opsi'])->mapWithKeys(fn ($opsi) => [$opsi['id'] => $slug]));
 
     $mitraLama = collect(old('mitra'));
 
     $mitraTerpilihAwal = $mitraLama->isNotEmpty()
         ? $mitraLama->map(fn ($row) => [
-            'tipe' => $tipeMitraByIdMitra->get($row['id_mitra'] ?? null),
+            'tipe' => $tipeMitraByIdMitra->get((string) ($row['id_mitra'] ?? null)),
             'idMitra' => $row['id_mitra'] ?? null,
             'status' => $row['status_kehadiran'] ?? 'Diundang',
             'keterangan' => $row['keterangan_kehadiran'] ?? null,
         ])->values()
         : (isset($acaraDki)
             ? $acaraDki->mitra->map(fn ($mitra) => [
-                'tipe' => $slugTipeMitra($mitra->tipe_mitra),
+                'tipe' => $mitra->tipe_mitra?->slug(),
                 'idMitra' => $mitra->id_mitra,
                 'status' => $mitra->pivot->status_kehadiran,
                 'keterangan' => $mitra->pivot->keterangan_kehadiran,
@@ -221,12 +209,7 @@
             const tombolTambah = document.getElementById('tambah-baris-mitra');
             let indexBaris = 0;
 
-            const daftarMitraPerTipe = {
-                kedutaan_besar: @json($kedutaanBesar->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                misi_asing_asean: @json($misiAsingAsean->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                misi_permanen_asean: @json($misiPermanenAsean->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_negara])),
-                non_pna: @json($nonPerwakilanNegaraAsing->map(fn ($m) => ['id' => (string) $m->id_mitra, 'text' => $m->nama_non_perwakilan_negara_asing])),
-            };
+            const daftarMitraPerTipe = @json(collect($daftarMitra)->map(fn ($tipe) => $tipe['opsi']));
 
             function pasangEventBaris(baris) {
                 const selectTipe = baris.querySelector('.tipe-mitra-baris');

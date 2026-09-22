@@ -43,7 +43,7 @@
                                         <td class="text-start">
                                             <div class="d-flex align-items-center">
                                                 <x-mitra-icon :mitra="$mitra" />
-                                                <span class="fw-bold">{{ $mitra->nama_mitra ?? $mitra->nama_resmi_mitra }}</span>
+                                                <span class="fw-bold">{{ $mitra->label_mitra }}</span>
                                             </div>
                                         </td>
                                         <td class="text-start">{{ $mitra->tipe_mitra->value }}</td>

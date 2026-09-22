@@ -3,12 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\AcaraDKI;
-use App\Models\KedutaanBesar;
-use App\Models\NonPerwakilanNegaraAsing;
+use Database\Seeders\Concerns\ResolvesMitra;
 use Illuminate\Database\Seeder;
 
 class AcaraDKISeeder extends Seeder
 {
+    use ResolvesMitra;
+
     /**
      * Sumber data: sheet "Acara DKI" (kode arsip "-EV-") pada spreadsheet Data
      * Paradiplomasi Jakarta 2026 (10 baris data, sesuai jumlah baris berisi pada
@@ -844,10 +845,7 @@ class AcaraDKISeeder extends Seeder
             $pivotMitra = [];
 
             foreach ($mitraList as $mitra) {
-                $idMitra = match ($mitra['type']) {
-                    'kedutaan_besar' => KedutaanBesar::where('nama_kedutaan_besar_id', $mitra['nama'])->value('id_mitra'),
-                    'non_pna' => NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $mitra['nama'])->value('id_mitra'),
-                };
+                $idMitra = $this->cariIdMitra($mitra['type'], $mitra['nama']);
 
                 if (! $idMitra) {
                     continue;
