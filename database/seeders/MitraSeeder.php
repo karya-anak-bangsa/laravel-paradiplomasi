@@ -8,6 +8,6 @@ class MitraSeeder extends Seeder
 {
     public function run(): void
     {
-        // Tidak dipakai. 
+        // Tidak dipakai.
     }
 }

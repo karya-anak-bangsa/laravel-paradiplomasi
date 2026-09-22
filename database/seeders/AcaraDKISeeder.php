@@ -39,9 +39,11 @@ class AcaraDKISeeder extends Seeder
      *
      * Organisasi internasional yang muncul sebagai penghadir pada baris "Resepsi
      * HUT ke-499 Jakarta" (Breathe Cities/C40 Cities, ICLEI Indonesia, UCLG ASPAC,
-     * UN Resident Coordinator Indonesia) di-seed sebagai mitra Non Perwakilan
-     * Negara Asing BARU lewat firstOrCreate() karena tb_non_perwakilan_negara_asing
-     * belum memiliki seeder tersendiri ("Data belum tersedia" pada CLAUDE.md).
+     * UN Resident Coordinator Indonesia) adalah mitra Non Perwakilan Negara Asing.
+     * Keempatnya kini di-seed lewat NonPerwakilanNegaraAsingSeeder bersama seluruh
+     * mitra Non-PNA lain dari sheet Riwayat Diplomasi, sehingga seeder ini cukup
+     * me-lookup nama-nya (sebelumnya memakai firstOrCreate() karena tabel
+     * tb_non_perwakilan_negara_asing belum punya seeder tersendiri).
      *
      * Baris "Resepsi HUT ke-499 Jakarta" membedakan tingkat kehadiran per mitra
      * pada sheet acuan (Duta Besar vs CdA/Wakil). Perbedaan ini dipertahankan lewat
@@ -844,13 +846,10 @@ class AcaraDKISeeder extends Seeder
             foreach ($mitraList as $mitra) {
                 $idMitra = match ($mitra['type']) {
                     'kedutaan_besar' => KedutaanBesar::where('nama_kedutaan_besar_id', $mitra['nama'])->value('id_mitra'),
-                    'non_pna' => NonPerwakilanNegaraAsing::firstOrCreate(
-                        ['nama_non_perwakilan_negara_asing' => $mitra['nama']],
-                        ['is_active' => true]
-                    )->id_mitra,
+                    'non_pna' => NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $mitra['nama'])->value('id_mitra'),
                 };
 
-                if (!$idMitra) {
+                if (! $idMitra) {
                     continue;
                 }
 

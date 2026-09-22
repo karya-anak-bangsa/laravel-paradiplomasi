@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kerjasama;
 use App\Models\KedutaanBesar;
+use App\Models\Kerjasama;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
+use App\Models\NonPerwakilanNegaraAsing;
 use Illuminate\Database\Seeder;
 
 class KerjasamaSeeder extends Seeder
@@ -27,6 +28,15 @@ class KerjasamaSeeder extends Seeder
      *   - 'nama_kedutaan_besar_id'    => untuk mitra Kedutaan Besar
      *   - 'nama_misi_asing_asean_id'  => untuk mitra Misi Asing untuk ASEAN
      *   - 'nama_misi_permanen_asean_id' => untuk mitra Misi Permanen ASEAN
+     *   - 'nama_non_perwakilan_negara_asing' => untuk mitra Non Perwakilan Negara Asing
+     *
+     * Berbeda dengan lima sheet Riwayat Diplomasi lainnya, sheet "Kerja Sama (KS)"
+     * TIDAK memiliki satu pun baris dengan mitra Non Perwakilan Negara Asing -
+     * karena itu seeder ini tidak pernah dipecah menjadi Part1/Part2. Cabang
+     * lookup untuk Non Perwakilan Negara Asing tetap disediakan agar polanya
+     * seragam dengan KolaborasiSeeder/UndanganSeeder/AudiensiSeeder/
+     * KunjunganSeeder dan siap dipakai saat baris jenis ini muncul di kemudian
+     * hari.
      *
      * Nama yang dituliskan mengikuti EJAAN RESMI pada seeder mitra
      * (nama_kedutaan_besar_id / nama_misi_asing_asean_id / dst di
@@ -445,9 +455,13 @@ class KerjasamaSeeder extends Seeder
                 $mitra = MisiPermanenAsean::where('nama_misi_permanen_asean_id', $item['nama_misi_permanen_asean_id'])->first();
                 $idMitra = $mitra?->id_mitra;
                 unset($item['nama_misi_permanen_asean_id']);
+            } elseif (array_key_exists('nama_non_perwakilan_negara_asing', $item)) {
+                $mitra = NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $item['nama_non_perwakilan_negara_asing'])->first();
+                $idMitra = $mitra?->id_mitra;
+                unset($item['nama_non_perwakilan_negara_asing']);
             }
 
-            if (!$idMitra) {
+            if (! $idMitra) {
                 continue;
             }
 

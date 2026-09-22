@@ -2,43 +2,53 @@
 
 namespace Database\Seeders;
 
-use App\Models\Undangan;
 use App\Models\KedutaanBesar;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
+use App\Models\NonPerwakilanNegaraAsing;
+use App\Models\Undangan;
 use Illuminate\Database\Seeder;
 
-class UndanganPart1Seeder extends Seeder
+class UndanganSeeder extends Seeder
 {
     /**
      * Sumber data: sheet "Undangan (UD)" pada spreadsheet Data Paradiplomasi
-     * Jakarta 2026 - KHUSUS baris dengan mitra Kedutaan Besar, Misi Asing untuk
-     * ASEAN, dan Misi Permanen ASEAN (modul mitra yang sudah tersedia).
+     * Jakarta 2026 - SELURUH baris, mencakup keempat jenis mitra.
      *
-     * Baris dengan mitra Non Perwakilan Negara Asing (mis. Persatuan Insinyur
-     * Indonesia, World Economic Forum, ITS Indonesia, PGRI, Taipei Economic
-     * and Trade Office/TETO) TIDAK disimpan di sini karena modul/tabel Non
-     * Perwakilan Negara Asing belum dibuat - lihat UndanganPart2Seeder.
+     * Seeder ini adalah hasil penggabungan UndanganPart1Seeder (mitra Kedutaan
+     * Besar, Misi Asing untuk ASEAN, Misi Permanen ASEAN) dan UndanganPart2Seeder
+     * (mitra Non Perwakilan Negara Asing). Pemisahan Part1/Part2 dahulu diperlukan
+     * karena modul Non Perwakilan Negara Asing belum dibuat, sehingga data Part2
+     * hanya berstatus draft dan tidak pernah di-insert. Modul tersebut kini sudah
+     * tersedia beserta seeder mitranya (NonPerwakilanNegaraAsingSeeder), sehingga
+     * kedua bagian digabung menjadi satu seeder per modul.
      *
      * PENTING - relasi ke mitra:
      * Migration tb_undangan tetap menggunakan SATU kolom foreign key
      * `id_mitra` (mengarah ke tb_mitra, tabel supertype generalisasi-spesialisasi
-     * dari KedutaanBesar / MisiAsingAsean / MisiPermanenAsean). Agar seeder ini
-     * tidak bergantung pada urutan insert tb_mitra, array $data di bawah TIDAK
-     * menuliskan angka id_mitra secara hardcode - setiap baris menyimpan nama
-     * resmi mitra sesuai kolom identitasnya masing-masing
-     * (nama_kedutaan_besar_id / nama_misi_asing_asean_id /
-     * nama_misi_permanen_asean_id), mengikuti ejaan resmi pada seeder mitra
-     * terkait (bukan istilah bebas pada sheet acuan). Nama tersebut kemudian
-     * di-lookup ke tabel anak terkait untuk mengambil `id_mitra` (kolom yang
-     * sudah ada langsung di tabel anak). Baris yang mitra-nya tidak ditemukan
-     * akan di-skip (continue) agar seeder tidak gagal total.
+     * dari KedutaanBesar / MisiAsingAsean / MisiPermanenAsean /
+     * NonPerwakilanNegaraAsing). Agar seeder ini tidak bergantung pada urutan
+     * insert tb_mitra, array $data di bawah TIDAK menuliskan angka id_mitra secara
+     * hardcode - setiap baris menyimpan nama resmi mitra sesuai kolom identitasnya
+     * masing-masing (nama_kedutaan_besar_id / nama_misi_asing_asean_id /
+     * nama_misi_permanen_asean_id / nama_non_perwakilan_negara_asing), mengikuti
+     * ejaan resmi pada seeder mitra terkait (bukan istilah bebas pada sheet acuan).
+     * Nama tersebut kemudian di-lookup ke tabel anak terkait untuk mengambil
+     * `id_mitra` (kolom yang sudah ada langsung di tabel anak). Baris yang
+     * mitra-nya tidak ditemukan akan di-skip (continue) agar seeder tidak gagal
+     * total.
      *
      * Penyesuaian ejaan dari sheet acuan ke seeder mitra (migration/seeder
      * mitra sebagai sumber kebenaran):
      *   - "Kedutaan Besar FInlandia" (sheet, typo kapitalisasi) -> "Kedutaan Besar Finlandia" (seeder mitra)
      *   - "Kedutaan Besar Polandia" (sheet) -> "Kedutaan Besar Republik Polandia" (seeder mitra)
      *   - "Delegasi Uni Eropa" (sheet) -> "Misi Uni Eropa untuk ASEAN" (seeder mitra, tabel Misi Asing ASEAN)
+     *
+     * Normalisasi data Part2 terhadap skema tb_undangan (data Part2 sebelumnya
+     * berupa draft mentah dan belum pernah divalidasi ke kolom):
+     *   - tanggal_selesai yang pada sheet berisi teks status ("Berjalan")
+     *     -> disimpan sebagai null, karena kolomnya bertipe date. Informasi
+     *     statusnya sudah terwakili pada kolom status_undangan.
      *
      * Field yang sengaja dikosongkan sesuai arahan: file_dokumen, nama_pic,
      * nomor_pic. Kolom catatan diseragamkan menjadi placeholder instruksi
@@ -296,6 +306,71 @@ class UndanganPart1Seeder extends Seeder
                 'nama_pic' => null,
                 'nomor_pic' => null,
             ],
+            [
+                'nama_non_perwakilan_negara_asing' => 'Persatuan Insinyur Indonesia',
+                'acara' => '<p>Undangan Persatuan Insinyur Indonesia untuk menghadiri Stakeholders Networking World Engineering Day</p>',
+                'rangkuman' => '<p>Melalui Surat No. 126/WED-PII/II/2026 tanggal 3 Februari 2026, Persatuan Insinyur Indonesia (PII) mengundang Gubernur untuk menghadiri Stakeholders Networking World Engineering Day 2026 Pada tanggal 04 Februari 2026</p><p>Acara ini dilaksanakan dalam rangka penyelenggaraan World Engineering Day for Sustainable Development 2026 (WED 2026) yang dilaksanakan pada tanggal 3–5 Maret 2026 di Jakarta dengan Persatuan Insinyur Indonesia (PII) sebagai penyelenggara, yang sekaligus merupakan Peluncuran (Launching) WED 2026 bersama Ketua Umum PII Dr.-Ing. Ir. Ilham Akbar Habibie, MBA, IPU., ASEAN Eng.</p><p>Acara telah dihadiri oleh Biro Kerja Sama Daerah.</p>',
+                'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',
+                'file_dokumen' => null,
+                'tanggal_diterima' => '2026-02-03',
+                'tanggal_selesai' => '2026-02-04',
+                'triwulan_undangan' => 'TW I',
+                'status_undangan' => 'Selesai',
+                'nama_pic' => null,
+                'nomor_pic' => null,
+            ],
+            [
+                'nama_non_perwakilan_negara_asing' => 'World Economic Forum',
+                'acara' => '<p>Undangan menghadiri World Economic Forum di Dalian, RRT</p>',
+                'rangkuman' => '<p>Melalui surat tanggal 17 Maret 2026, Mr. Alois Zwingli, Presiden dan CEO World Economic Forum, beserta Mr. Maroun Kairouz, Managing Director World Economic Forum mengundang Gubernur DKI Jakarta untuk berpartisipasi dalam World Economic Forum tanggal 23 s.d. 25 Juni 2026 di Dalian, RRT.</p>',
+                'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',
+                'file_dokumen' => null,
+                'tanggal_diterima' => '2026-03-25',
+                'tanggal_selesai' => '2026-03-25',
+                'triwulan_undangan' => 'TW I',
+                'status_undangan' => 'Regret',
+                'nama_pic' => null,
+                'nomor_pic' => null,
+            ],
+            [
+                'nama_non_perwakilan_negara_asing' => 'ITS Indonesia',
+                'acara' => '<p>Permohonan audiensi Penyelenggara Indonesia International Transport Summit (IITS) 2026 kepada Gubernur DKI Jakarta, sekaligus undangan kepada Gubernur DKI Jakarta untuk hadir dan memberikan sambutan pada IITS 2026.</p>',
+                'rangkuman' => '<p>President ITS Indonesia menyampaikan surat kepada Gubernur DKI Jakarta Nomor 145/SU/ITS-IND/PRES/VI/2026 tanggal 18 Juni 2026 perihal Permohonan Audiensi Penyelenggara Indonesia International Transport Summit (IITS) 2026, dan undangan kepada Gubernur DKI Jakarta untuk hadir dan memberikan sambutan.</p><p>Surat dimaksud telah didisposisi kepada Dinas Perhubungan, yang telah menyelenggarakan rapat Koordinasi tanggal 22 Juli 2026 Pukul 13:00 untuk menerima Audiensi President ITS Indonesia.</p><p>Acara telah dilaksanakan pada 26 s.d. 27 Agustus 2026.</p>',
+                'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',
+                'file_dokumen' => null,
+                'tanggal_diterima' => '2026-06-18',
+                'tanggal_selesai' => '2026-08-27',
+                'triwulan_undangan' => 'TW III',
+                'status_undangan' => 'Selesai',
+                'nama_pic' => null,
+                'nomor_pic' => null,
+            ],
+            [
+                'nama_non_perwakilan_negara_asing' => 'Persatuan Guru Republik Indonesia (PGRI)',
+                'acara' => '<p>Permohonan audiensi, sekaligus undangan untuk menyampaikan Sambutan Selamat Datang, dan Permohonan Dukungan dan Tarian Pembukaan dan Penutupan pada The 10th Education International Asia Pacific (EIAP) Regional Conference</p>',
+                'rangkuman' => '<p>Menindaklanjuti Surat Ketua Umum Pengurus Besar Persatuan Guru Republik Indonesia (PGRI) Nomor 586/Um/PB/XXIII/2026 tanggal 21 Juli 2026 kepada Gubernur DKI Jakarta serta menindaklanjuti audiensi antara Gubernur DKI Jakarta dengan Perwakilan Persatuan Guru Republik Indonesia (PGRI) pada tanggal 24 Juli 2026, disampaikan bahwa PGRI bermitra dengan Education International Asia Pacific (EIAP) untuk menyelenggarakan the 10th Education International Asia Pacific (EIAP) akan dilaksanakan pada tanggal 13–15 Oktober 2026.</p><p>Berkenaan dengan ini, Gubernur DKI Jakarta diharapkan dapat menyampaikan Sambutan Selamat Datang pada 19 Oktober, 09:00 WIB di Hotel Shangri-La Jakarta. Diharapkan juga agar Provinsi DKI Jakarta dapat memberikan dukungan berupa tarian pembukaan dan penutupan pada acara dimaksud.</p><p>Biro Kerja Sama Daerah telah melaksanakan rapat koordinasi pada tanggal 4 Agustus 2026, dengan hasil bahwa Dinas Kebudayaan akan mengupayakan dukungan tarian, Dinas PPKUKM akan mengupayakan dukungan booth UMKM, dan Dinas Pariwisata dan Ekonomi Kreatif akan mengupayakan dukungan City Tour.</p><p>Dukungan-dukungan dimaksud memerlukan surat permohonan dari PGRI.</p>',
+                'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',
+                'file_dokumen' => null,
+                'tanggal_diterima' => '2026-07-21',
+                'tanggal_selesai' => null,  // sheet: "Berjalan"
+                'triwulan_undangan' => 'TW III',
+                'status_undangan' => 'Berjalan',
+                'nama_pic' => null,
+                'nomor_pic' => null,
+            ],
+            [
+                'nama_non_perwakilan_negara_asing' => 'Taipei Economic and Trade Office (TETO)',
+                'acara' => '<p>Undangan untuk menghadiri acara Double Tenth Day di Hotel Borobudur, Jakarta</p>',
+                'rangkuman' => '<p>Taipei Economic and Trade Office (TETO) mengirimkan undangan untuk menghadiri Double Tenth Day pada tanggal 7 Oktober 2026 di Hotel Borobudur, Jakarta.</p><p>Double Tenth Day (10 Oktober) adalah Hari Nasional Taiwan yang memperingati Pemberontakan Wuchang tahun 1911. Peristiwa ini memicu Revolusi Xinhai yang menggulingkan Dinasti Qing dan melahirkan Republik Tiongkok. Hari libur ini dirayakan dengan upacara bendera, pidato kenegaraan, parade militer, pertunjukan budaya, dan pesta kembang api.</p><p>Berkenaan dengan kebijakan One China Policy, diperlukan kehati-hatian dalam menghadiri acara ini.</p><p>Gubernur Provinsi DKI Jakarta dikonfirmasi tidak hadir dan mengirimkan karangan bunga per 14 September 2026.</p>',
+                'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',
+                'file_dokumen' => null,
+                'tanggal_diterima' => '2026-09-04',
+                'tanggal_selesai' => null,  // sheet: "Berjalan"
+                'triwulan_undangan' => 'TW III',
+                'status_undangan' => 'Berjalan',
+                'nama_pic' => null,
+                'nomor_pic' => null,
+            ],
         ];
 
         foreach ($data as $item) {
@@ -313,9 +388,13 @@ class UndanganPart1Seeder extends Seeder
                 $mitra = MisiPermanenAsean::where('nama_misi_permanen_asean_id', $item['nama_misi_permanen_asean_id'])->first();
                 $idMitra = $mitra?->id_mitra;
                 unset($item['nama_misi_permanen_asean_id']);
+            } elseif (array_key_exists('nama_non_perwakilan_negara_asing', $item)) {
+                $mitra = NonPerwakilanNegaraAsing::where('nama_non_perwakilan_negara_asing', $item['nama_non_perwakilan_negara_asing'])->first();
+                $idMitra = $mitra?->id_mitra;
+                unset($item['nama_non_perwakilan_negara_asing']);
             }
 
-            if (!$idMitra) {
+            if (! $idMitra) {
                 continue;
             }
 

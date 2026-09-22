@@ -119,7 +119,7 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **[Kedutaan besar](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=0#gid=0)**
 - **[Misi Asing untuk ASEAN](https://docs.google.com/spreadsheets/d/1nAn8AkgiNSYgMRTfvMZNAjQAZ0yNjTrt/edit?gid=1497379427)**
 - **[Misi Permanen Negara ASEAN](https://docs.google.com/spreadsheets/d/1nAn8AkgiNSYgMRTfvMZNAjQAZ0yNjTrt/edit?gid=1288212522)**
-- **Non Perwakilan Negara Asing:** Data belum tersedia.
+- **Non Perwakilan Negara Asing:** *tidak punya sheet tersendiri* — Biro KSD belum menyediakannya. Daftar mitranya **diturunkan** dari kolom "Mitra" pada kelima sheet Riwayat Diplomasi di bawah, yaitu seluruh nama yang tidak mengikuti pola penamaan "Kedutaan Besar …", "Misi … untuk ASEAN", atau "Misi Permanen … untuk ASEAN". Hasil turunan tersebut menjadi satu-satunya sumber data mitra Non-PNA saat ini dan tercatat di `NonPerwakilanNegaraAsingSeeder` (27 mitra, lengkap dengan catatan koreksi terhadap sheet acuan). Jika kelak Biro KSD menerbitkan sheet khusus Non-PNA, sheet tersebut yang menjadi sumber kebenaran dan seeder ini perlu direkonsiliasi terhadapnya.
 - **[Kerjasama](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=349452470)**
 - **[Kolaborasi](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=908759696)**
 - **[Undangan](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=1980990669)**

@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 
-            # Modul Kedutaan Besar
+            // Modul Kedutaan Besar
             KedutaanBesarPart1Seeder::class,
             KedutaanBesarPart2Seeder::class,
             KedutaanBesarPart3Seeder::class,
@@ -23,16 +23,21 @@ class DatabaseSeeder extends Seeder
             KedutaanBesarPart10Seeder::class,
             KedutaanBesarPart11Seeder::class,
 
-            # Modul Misi Asing dan Misi Permanen
+            // Modul Misi Asing dan Misi Permanen
             MisiAsingAseanSeeder::class,
             MisiPermanenAseanSeeder::class,
 
-            # Modul Riwayat Diplomasi - Kerjasama 
+            // Modul Non Perwakilan Negara Asing
+            // WAJIB sebelum seluruh seeder Riwayat Diplomasi di bawah, karena
+            // seeder tersebut me-lookup id_mitra berdasarkan nama mitra Non-PNA.
+            NonPerwakilanNegaraAsingSeeder::class,
+
+            // Modul Riwayat Diplomasi
             KerjasamaSeeder::class,
-            KolaborasiPart1Seeder::class,
-            UndanganPart1Seeder::class,
-            AudiensiPart1Seeder::class,
-            KunjunganPart1Seeder::class,
+            KolaborasiSeeder::class,
+            UndanganSeeder::class,
+            AudiensiSeeder::class,
+            KunjunganSeeder::class,
             AcaraDKISeeder::class,
         ]);
     }
