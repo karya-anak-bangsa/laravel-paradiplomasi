@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             UndanganPart1Seeder::class,
             AudiensiPart1Seeder::class,
             KunjunganPart1Seeder::class,
+            AcaraDKISeeder::class,
         ]);
     }
 }
