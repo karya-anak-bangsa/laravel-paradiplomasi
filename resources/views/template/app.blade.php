@@ -55,6 +55,20 @@
                 font-family: "Inter", "Roboto", "Quicksand", sans-serif !important;
                 font-size: .875rem !important;
             }
+
+            /* Select2 height fix: select2-bootstrap-5-theme's own min-height calc
+               (~35px) tidak sama dengan tinggi ".form-select" bawaan Tabler (40px,
+               dari padding .5625rem/1rem + line-height 1.25rem + border), sehingga
+               dropdown "Nama Mitra" (select2) terlihat lebih pendek dibanding
+               dropdown "Tipe Mitra" (select biasa) di sebelahnya. Samakan tingginya. */
+            .select2-container--bootstrap-5 .select2-selection--single {
+                height: calc(1.25rem + 1.125rem + 2px) !important;
+                padding: .5625rem 3rem .5625rem 1rem !important;
+            }
+
+            .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+                line-height: 1.25rem !important;
+            }
         </style>
 
         @stack('styles')
