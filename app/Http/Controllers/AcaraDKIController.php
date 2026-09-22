@@ -52,7 +52,10 @@ class AcaraDKIController extends Controller
 
     public function store(StoreAcaraDKIRequest $request)
     {
-        AcaraDKI::create($request->validated());
+        $data = $request->validated();
+
+        $acaraDki = AcaraDKI::create(collect($data)->except('mitra')->all());
+        $acaraDki->mitra()->attach($this->pivotMitra($data['mitra']));
 
         return redirect()->route('acara-dki.index')->with('notify', [
             'type' => 'success',
@@ -70,7 +73,10 @@ class AcaraDKIController extends Controller
 
     public function update(UpdateAcaraDKIRequest $request, AcaraDKI $acaraDki)
     {
-        $acaraDki->update($request->validated());
+        $data = $request->validated();
+
+        $acaraDki->update(collect($data)->except('mitra')->all());
+        $acaraDki->mitra()->sync($this->pivotMitra($data['mitra']));
 
         return redirect()->route('acara-dki.index')->with('notify', [
             'type' => 'success',
@@ -107,5 +113,15 @@ class AcaraDKIController extends Controller
             ->get(['id_mitra', 'nama_non_perwakilan_negara_asing']);
 
         return [$kedutaanBesar, $misiAsingAsean, $misiPermanenAsean, $nonPerwakilanNegaraAsing];
+    }
+
+    private function pivotMitra(array $mitra): array
+    {
+        return collect($mitra)->mapWithKeys(fn (array $row) => [
+            $row['id_mitra'] => [
+                'status_kehadiran' => $row['status_kehadiran'],
+                'keterangan_kehadiran' => $row['keterangan_kehadiran'] ?? null,
+            ],
+        ])->all();
     }
 }

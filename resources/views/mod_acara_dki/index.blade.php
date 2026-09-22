@@ -15,24 +15,24 @@
     <x-page-body-table title="Daftar acara DKI">
         <x-slot name="thead">
             <tr>
-                <th data-orderable="true" style="width:20%" class="text-start">Mitra</th>
-                <th data-orderable="true" style="width:25%" class="text-start">Acara DKI</th>
-                <th data-orderable="true" style="width:15%" class="text-center">Tanggal Diterima</th>
-                <th data-orderable="true" style="width:15%" class="text-center">Tanggal Selesai</th>
-                <th data-orderable="true" style="width:15%" class="text-center">Status</th>
-                <th data-orderable="true" style="width:10%" class="text-center">Aksi</th>
+                <th data-orderable="true" style="width:18%" class="text-start">Acara DKI</th>
+                <th data-orderable="true" style="width:15%" class="text-start">Pelaksana</th>
+                <th data-orderable="true" style="width:14%" class="text-center">Mitra</th>
+                <th data-orderable="true" style="width:13%" class="text-center">Tanggal Diterima</th>
+                <th data-orderable="true" style="width:13%" class="text-center">Tanggal Selesai</th>
+                <th data-orderable="true" style="width:12%" class="text-center">Status</th>
+                <th data-orderable="true" style="width:15%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
             @foreach ($acaraDki as $item)
                 <tr>
-                    <td class="text-start">
-                        <div class="d-flex align-items-center">
-                            <x-mitra-icon :mitra="$item->mitra" />
-                            <span class="fw-bold">{{ $item->mitra->nama_mitra ?? $item->mitra->nama_resmi_mitra }}</span>
-                        </div>
-                    </td>
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
+                    <td class="text-start">{{ $item->pelaksana ?? '-' }}</td>
+                    <td class="text-center">
+                        <span class="badge bg-blue-lt">{{ $item->mitra->count() }} Diundang</span>
+                        <span class="badge bg-success-lt">{{ $item->mitra->where('pivot.status_kehadiran', 'Hadir')->count() }} Hadir</span>
+                    </td>
                     <td class="text-center">{{ $item->tanggal_diterima_display }}</td>
                     <td class="text-center">{!! $item->tanggal_selesai_display !!}</td>
                     <td class="text-center">

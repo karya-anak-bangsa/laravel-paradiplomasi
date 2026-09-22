@@ -24,7 +24,6 @@
         {{-- Vendor library base CSS (loaded BEFORE tabler-vendors.min.css, since tabler-vendors provides
              Tabler-themed overrides on top of these libraries' own structural CSS) --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.css') }}" />
-        <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/css/tom-select.min.css') }}" />
 
         {{-- Tabler theme layers (must load AFTER the vendor libs above so Tabler's overrides win) --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-vendors.min.css') }}" />
@@ -32,13 +31,31 @@
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-socials.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-core-1.4.0/dist/css/tabler-payments.min.css') }}" />
 
-        {{-- Plugin Stylesheets (FontAwesome, DataTables, Simple Notify — not themed by tabler-vendors) --}}
+        {{-- Plugin Stylesheets (FontAwesome, DataTables, Select2, Simple Notify — not themed by tabler-vendors) --}}
         <link rel="stylesheet" href="{{ asset('template-plugins/fontawesome-6.7.2/css/all.min.css') }}" />
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify/dist/simple-notify.css" />
 
         {{-- Custom Stylesheet (always last, so it can override anything above) --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
+
+        {{-- Select2 typography fix: select2-bootstrap-5-theme hardcodes font-size:1rem on
+             ".select2-results__options .select2-results__option" (and similar rules), which
+             we cannot edit directly since it ships from a CDN — !important is used deliberately
+             here to guarantee this Tabler-based layout's Inter/.875rem typography wins over it. --}}
+        <style>
+            .select2-container--bootstrap-5 .select2-selection,
+            .select2-container--bootstrap-5 .select2-selection__rendered,
+            .select2-container--bootstrap-5 .select2-search__field,
+            .select2-container--bootstrap-5 .select2-results__option,
+            .select2-container--bootstrap-5 .select2-results__group,
+            .select2-dropdown {
+                font-family: "Inter", "Roboto", "Quicksand", sans-serif !important;
+                font-size: .875rem !important;
+            }
+        </style>
 
         @stack('styles')
     </head>
@@ -86,16 +103,13 @@
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
 
-        {{-- Tom Select: library JS immediately followed by its own init block --}}
-        <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/libs/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
+        {{-- Select2: library JS immediately followed by its own init block --}}
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('select.tom-select').forEach(function(select) {
-                    new TomSelect(select, {
-                        create: false,
-                        allowEmptyOption: false,
-                        plugins: ['dropdown_input'],
-                    });
+                $('select.select2').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
                 });
             });
         </script>

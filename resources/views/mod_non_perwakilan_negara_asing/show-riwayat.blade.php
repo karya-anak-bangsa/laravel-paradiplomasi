@@ -628,10 +628,11 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 30%" class="text-start">Acara DKI</th>
-                                <th style="width: 12%" class="text-start">Tanggal Diterima</th>
-                                <th style="width: 12%" class="text-start">Tanggal Selesai</th>
+                                <th style="width: 25%" class="text-start">Acara DKI</th>
+                                <th style="width: 10%" class="text-start">Tanggal Diterima</th>
+                                <th style="width: 10%" class="text-start">Tanggal Selesai</th>
                                 <th style="width: 10%" class="text-center">Status</th>
+                                <th style="width: 12%" class="text-center">Status Kehadiran</th>
                                 <th style="width: 15%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -642,6 +643,15 @@
                                     <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                     <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
                                     <td class="text-center">{{ $item->status_acara_dki }}</td>
+                                    <td class="text-center">
+                                        <span class="badge {{ match ($item->pivot->status_kehadiran) {
+                                            'Hadir' => 'bg-success-lt',
+                                            'Tidak Hadir' => 'bg-danger-lt',
+                                            default => 'bg-blue-lt',
+                                        } }}">
+                                            {{ $item->pivot->status_kehadiran }}
+                                        </span>
+                                    </td>
                                     <td class="text-center">
                                         <a href="{{ route('acara-dki.edit', $item->id_acara_dki) }}" class="btn btn-icon btn-warning">
                                             <i class="fa-solid fa-pen"></i>
@@ -708,6 +718,9 @@
                                         </div>
                                     </div>
 
+                                    <div class="hr-text hr-text-start">Pelaksana</div>
+                                    <div class="mb-3">{{ $item->pelaksana ?? '-' }}</div>
+
                                     <div class="hr-text hr-text-start">Status & Jadwal</div>
                                     <div class="datagrid align-items-center mb-3">
                                         <div class="datagrid-item">
@@ -725,6 +738,10 @@
                                         <div class="datagrid-item">
                                             <div class="datagrid-title">Status Acara DKI</div>
                                             <div class="datagrid-content">{{ $item->status_acara_dki }}</div>
+                                        </div>
+                                        <div class="datagrid-item">
+                                            <div class="datagrid-title">Status Kehadiran</div>
+                                            <div class="datagrid-content">{{ $item->pivot->status_kehadiran }}</div>
                                         </div>
                                     </div>
 

@@ -2,7 +2,7 @@
 
     <label class="form-label" for="{{ $name }}">@if ($required)<span class="text-danger">*</span>@endif{{ $label }}</label>
 
-    <select class="form-select border-dark {{ $searchable ? 'tom-select' : '' }}" name="{{ $name }}" id="{{ $name }}">
+    <select class="form-select border-dark {{ $searchable ? 'select2' : '' }}" name="{{ $name }}" id="{{ $name }}">
         <option value="" selected>{{ $placeholder }}</option>
         @foreach ($options as $optionValue => $optionLabel)
             <option value="{{ $optionValue }}" @selected(old($name, $value) == $optionValue)>{{ $optionLabel }}</option>

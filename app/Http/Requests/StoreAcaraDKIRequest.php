@@ -14,7 +14,7 @@ class StoreAcaraDKIRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_mitra' => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
+            'pelaksana' => ['required', 'string', 'max:255'],
             'acara_dki' => ['required', 'string'],
             'rangkuman' => ['required', 'string'],
             'catatan' => ['required', 'string'],
@@ -24,13 +24,17 @@ class StoreAcaraDKIRequest extends FormRequest
             'tanggal_akhir_pelaksanaan' => ['nullable', 'date', 'after_or_equal:tanggal_awal_pelaksanaan'],
             'triwulan_acara_dki' => ['required', 'in:TW I,TW II,TW III,TW IV'],
             'status_acara_dki' => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
+            'mitra' => ['required', 'array', 'min:1'],
+            'mitra.*.id_mitra' => ['required', 'integer', 'distinct', 'exists:tb_mitra,id_mitra'],
+            'mitra.*.status_kehadiran' => ['required', 'in:Diundang,Hadir,Tidak Hadir'],
+            'mitra.*.keterangan_kehadiran' => ['nullable', 'string'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'id_mitra' => 'Nama Negara',
+            'pelaksana' => 'Pelaksana',
             'acara_dki' => 'Acara DKI',
             'rangkuman' => 'Rangkuman',
             'catatan' => 'Catatan',
@@ -40,6 +44,10 @@ class StoreAcaraDKIRequest extends FormRequest
             'tanggal_akhir_pelaksanaan' => 'Tanggal Akhir Pelaksanaan',
             'triwulan_acara_dki' => 'Triwulan',
             'status_acara_dki' => 'Status Acara DKI',
+            'mitra' => 'Mitra',
+            'mitra.*.id_mitra' => 'Nama Mitra',
+            'mitra.*.status_kehadiran' => 'Status Kehadiran',
+            'mitra.*.keterangan_kehadiran' => 'Keterangan Kehadiran',
         ];
     }
 }

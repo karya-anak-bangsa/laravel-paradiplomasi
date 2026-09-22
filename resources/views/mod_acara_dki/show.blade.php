@@ -16,29 +16,57 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Rincian Acara DKI - {{ $acaraDki->mitra->nama_mitra ?? $acaraDki->mitra->nama_resmi_mitra }}</h3>
+                    <h3 class="card-title">Rincian Acara DKI - {{ $acaraDki->judul_ringkas }}</h3>
                 </div>
                 <div class="card-body">
 
-                    {{-- id_mitra --}}
-                    <div class="hr-text hr-text-start">Mitra</div>
-                    <div class="datagrid align-items-center mb-3">
-                        <div class="datagrid-item">
-                            <div class="datagrid-content d-flex align-items-center">
-                                <x-mitra-icon :mitra="$acaraDki->mitra" />
-                                <span class="fw-bold">{{ $acaraDki->mitra->nama_mitra ?? $acaraDki->mitra->nama_resmi_mitra }}</span>
-                            </div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Tipe Mitra</div>
-                            <div class="datagrid-content">{{ $acaraDki->mitra->tipe_mitra->value }}</div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Nama Resmi</div>
-                            <div class="datagrid-content">{{ $acaraDki->mitra->nama_resmi_mitra ?? '-' }}</div>
-                        </div>
+                    {{-- pelaksana --}}
+                    <div class="hr-text hr-text-start">Pelaksana</div>
+                    <div class="mb-3">{{ $acaraDki->pelaksana ?? '-' }}</div>
+                    {{-- pelaksana --}}
+
+                    {{-- mitra --}}
+                    <div class="hr-text hr-text-start">Daftar Mitra</div>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">Mitra</th>
+                                    <th class="text-start">Tipe Mitra</th>
+                                    <th class="text-center">Status Kehadiran</th>
+                                    <th class="text-start">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($acaraDki->mitra as $mitra)
+                                    <tr>
+                                        <td class="text-start">
+                                            <div class="d-flex align-items-center">
+                                                <x-mitra-icon :mitra="$mitra" />
+                                                <span class="fw-bold">{{ $mitra->nama_mitra ?? $mitra->nama_resmi_mitra }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-start">{{ $mitra->tipe_mitra->value }}</td>
+                                        <td class="text-center">
+                                            <span class="badge {{ match ($mitra->pivot->status_kehadiran) {
+                                                'Hadir' => 'bg-success-lt',
+                                                'Tidak Hadir' => 'bg-danger-lt',
+                                                default => 'bg-blue-lt',
+                                            } }}">
+                                                {{ $mitra->pivot->status_kehadiran }}
+                                            </span>
+                                        </td>
+                                        <td class="text-start">{{ $mitra->pivot->keterangan_kehadiran ?? '-' }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-secondary">Belum ada mitra yang diundang.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
-                    {{-- id_mitra --}}
+                    {{-- mitra --}}
 
                     {{-- acara_dki --}}
                     <div class="hr-text hr-text-start">Acara DKI</div>
