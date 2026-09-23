@@ -46,7 +46,7 @@ class AcaraDKIController extends Controller
         $data = $request->validated();
 
         $acaraDki = AcaraDKI::create(collect($data)->except('mitra')->all());
-        $acaraDki->mitra()->attach($this->pivotMitra($data['mitra']));
+        $acaraDki->mitra()->attach($this->pivotMitra($data['mitra'] ?? []));
 
         return redirect()->route('acara-dki.index')->with('notify', [
             'type' => 'success',
@@ -67,7 +67,7 @@ class AcaraDKIController extends Controller
         $data = $request->validated();
 
         $acaraDki->update(collect($data)->except('mitra')->all());
-        $acaraDki->mitra()->sync($this->pivotMitra($data['mitra']));
+        $acaraDki->mitra()->sync($this->pivotMitra($data['mitra'] ?? []));
 
         return redirect()->route('acara-dki.index')->with('notify', [
             'type' => 'success',
@@ -83,5 +83,24 @@ class AcaraDKIController extends Controller
             'type' => 'success',
             'message' => 'Data acara DKI berhasil dinonaktifkan.',
         ]);
+    }
+
+    /**
+     * Ubah input form `mitra[]` (satu baris per mitra) menjadi payload
+     * attach/sync tb_acara_dki_mitra: [id_mitra => atribut pivot].
+     *
+     * @param  array<int, array<string, mixed>>  $mitra
+     * @return array<int, array<string, mixed>>
+     */
+    private function pivotMitra(array $mitra): array
+    {
+        return collect($mitra)
+            ->mapWithKeys(fn (array $baris) => [
+                (int) $baris['id_mitra'] => [
+                    'status_kehadiran' => $baris['status_kehadiran'],
+                    'keterangan_kehadiran' => $baris['keterangan_kehadiran'] ?? null,
+                ],
+            ])
+            ->all();
     }
 }

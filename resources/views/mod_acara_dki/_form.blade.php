@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-lg-12 mb-3">
-        <label class="form-label"><span class="text-danger">*</span>Mitra yang Diundang</label>
+        <label class="form-label">Mitra yang Diundang</label>
         <div class="table-responsive">
             <table class="table table-bordered align-middle mb-2">
                 <thead>
@@ -27,6 +27,10 @@
         <button type="button" id="tambah-baris-mitra" class="btn btn-outline-primary btn-sm">
             <i class="fa-solid fa-plus me-1"></i>Tambah Mitra
         </button>
+        <div class="form-hint mt-2">
+            Boleh dikosongkan — mis. acara yang dibatalkan/ditunda sehingga tidak dihadiri mitra manapun,
+            atau data undangannya belum dikurasi.
+        </div>
         @error('mitra')
             <div class="invalid-feedback d-block">{{ $message }}</div>
         @enderror
@@ -239,11 +243,11 @@
                     terapkanTipe(this.value, null);
                 });
 
+                // baris terakhir pun boleh dihapus: acara tanpa mitra sama sekali
+                // adalah kondisi yang sah (lihat hint di bawah tabel).
                 tombolHapus.addEventListener('click', function() {
-                    if (tbody.querySelectorAll('.baris-mitra').length > 1) {
-                        $selectMitra.select2('destroy');
-                        baris.remove();
-                    }
+                    $selectMitra.select2('destroy');
+                    baris.remove();
                 });
 
                 return {
@@ -279,9 +283,14 @@
             });
 
             const dataAwal = @json($mitraTerpilihAwal);
+            const formTambah = @json(! isset($acaraDki));
+
             if (dataAwal.length) {
                 dataAwal.forEach(tambahBaris);
-            } else {
+            } else if (formTambah) {
+                // hanya di halaman tambah satu baris kosong disediakan otomatis;
+                // di halaman ubah, acara yang memang tidak punya mitra ditampilkan
+                // apa adanya sebagai tabel kosong.
                 tambahBaris(null);
             }
         })();

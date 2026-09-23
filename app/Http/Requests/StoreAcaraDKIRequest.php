@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Concerns\NormalizesMitraInput;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAcaraDKIRequest extends FormRequest
 {
+    use NormalizesMitraInput;
+
     public function authorize(): bool
     {
         return true;
@@ -24,7 +27,7 @@ class StoreAcaraDKIRequest extends FormRequest
             'tanggal_akhir_pelaksanaan' => ['nullable', 'date', 'after_or_equal:tanggal_awal_pelaksanaan'],
             'triwulan_acara_dki' => ['required', 'in:TW I,TW II,TW III,TW IV'],
             'status_acara_dki' => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
-            'mitra' => ['required', 'array', 'min:1'],
+            'mitra' => ['nullable', 'array'],
             'mitra.*.id_mitra' => ['required', 'integer', 'distinct', 'exists:tb_mitra,id_mitra'],
             'mitra.*.status_kehadiran' => ['required', 'in:Diundang,Hadir,Tidak Hadir'],
             'mitra.*.keterangan_kehadiran' => ['nullable', 'string'],

@@ -28,9 +28,16 @@
                 <tr>
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
                     <td class="text-center">
-                        <span class="badge bg-blue-lt d-block mb-1">{{ $item->mitra->where('pivot.status_kehadiran', 'Diundang')->count() }} Diundang</span>
-                        <span class="badge bg-success-lt d-block mb-1">{{ $item->mitra->where('pivot.status_kehadiran', 'Hadir')->count() }} Hadir</span>
-                        <span class="badge bg-danger-lt d-block">{{ $item->mitra->where('pivot.status_kehadiran', 'Tidak Hadir')->count() }} Tidak Hadir</span>
+                        @if ($item->mitra->isEmpty())
+                            {{-- acara tanpa mitra sama sekali (dibatalkan/ditunda, atau
+                                 data undangannya belum dikurasi) ditandai terpisah supaya
+                                 tidak terbaca sebagai tiga hitungan nol. --}}
+                            <span class="badge bg-secondary-lt d-block">Belum ada mitra</span>
+                        @else
+                            <span class="badge bg-blue-lt d-block mb-1">{{ $item->mitra->where('pivot.status_kehadiran', 'Diundang')->count() }} Diundang</span>
+                            <span class="badge bg-success-lt d-block mb-1">{{ $item->mitra->where('pivot.status_kehadiran', 'Hadir')->count() }} Hadir</span>
+                            <span class="badge bg-danger-lt d-block">{{ $item->mitra->where('pivot.status_kehadiran', 'Tidak Hadir')->count() }} Tidak Hadir</span>
+                        @endif
                     </td>
                     <td class="text-center">{{ $item->tanggal_diterima_display }}</td>
                     <td class="text-center">{!! $item->tanggal_selesai_display !!}</td>
