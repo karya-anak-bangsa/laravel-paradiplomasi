@@ -27,6 +27,9 @@ class UpdateMisiAsingAseanRequest extends FormRequest
             'kecamatan' => ['nullable', 'string'],
             'kota' => ['nullable', 'string'],
             'kode_pos' => ['nullable', 'string'],
+            'website' => ['nullable', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
         ];
     }
 
@@ -46,6 +49,9 @@ class UpdateMisiAsingAseanRequest extends FormRequest
             'kecamatan' => 'Kecamatan',
             'kota' => 'Kota',
             'kode_pos' => 'Kode Pos',
+            'website' => 'Website',
+            'latitude' => 'Latitude',
+            'longitude' => 'Longitude',
         ];
     }
 }

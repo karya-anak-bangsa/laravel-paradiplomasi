@@ -33,11 +33,16 @@ class MisiAsingAsean extends Model
         'kecamatan',
         'kota',
         'kode_pos',
+        'website',
+        'latitude',
+        'longitude',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
     ];
 
     // WAJIB — dipanggil oleh trait BelongsToMitra saat record baru dibuat

@@ -82,6 +82,24 @@
 
     <div class="col-lg-6 mb-3">
         <x-form-input-text
+            label="Latitude"
+            name="latitude"
+            placeholder="Contoh: -6.1751"
+            hint="Pastikan nilai latitude memiliki empat angka dibelakang koma"
+            :value="$misiAsingAsean->latitude ?? null" />
+    </div>
+
+    <div class="col-lg-6 mb-3">
+        <x-form-input-text
+            label="Longitude"
+            name="longitude"
+            placeholder="Contoh: 106.8650"
+            hint="Pastikan nilai longitude memiliki empat angka dibelakang koma"
+            :value="$misiAsingAsean->longitude ?? null" />
+    </div>
+
+    <div class="col-lg-6 mb-3">
+        <x-form-input-text
             label="Telepon Kantor"
             name="telepon_kantor"
             placeholder="Contoh: 021-1234567, 021-7654321"
@@ -96,6 +114,14 @@
             placeholder="Contoh: info@misi.org, protokol@misi.org"
             hint="Pisahkan dengan koma jika lebih dari satu email."
             :value="$misiAsingAsean->email_kantor ?? null" />
+    </div>
+
+    <div class="col-lg-12 mb-3">
+        <x-form-input-text
+            label="Website"
+            name="website"
+            placeholder="https://"
+            :value="$misiAsingAsean->website ?? null" />
     </div>
 
     <div class="col-lg-2 mb-3">

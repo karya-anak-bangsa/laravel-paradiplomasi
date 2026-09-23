@@ -33,10 +33,9 @@ class AcaraDKISeeder extends Seeder
      * Baris tanpa mitra terkonfirmasi (Djakarta Ennichi 2026 - dibatalkan, Jakarta
      * Future Festival 2026 - kehadiran belum dikonfirmasi ulang oleh Bappeda,
      * Jakarta Investment Forum - kehadiran belum dikonfirmasi ulang oleh Dinas
-     * PM-PTSP) DIIMPOR TANPA baris pivot mitra. Ini melewati validasi form ('mitra'
-     * => min:1 pada Store/UpdateAcaraDKIRequest) karena seeder menulis langsung ke
-     * model, bukan lewat HTTP request — pengecualian yang disengaja khusus untuk
-     * migrasi data historis ini.
+     * PM-PTSP) DIIMPOR TANPA baris pivot mitra. Ini sejalan dengan validasi form
+     * ('mitra' => ['nullable', 'array'] pada Store/UpdateAcaraDKIRequest): acara
+     * boleh tercatat tanpa satu pun mitra.
      *
      * Organisasi internasional yang muncul sebagai penghadir pada baris "Resepsi
      * HUT ke-499 Jakarta" (Breathe Cities/C40 Cities, ICLEI Indonesia, UCLG ASPAC,
@@ -56,6 +55,16 @@ class AcaraDKISeeder extends Seeder
      *     Agustus 2028 (typo jelas — tidak konsisten dengan tanggal_diterima 18
      *     Agustus 2026 dan tanggal pelaksanaan 28 Agustus 2026 pada baris yang
      *     sama) -> dikoreksi menjadi 2026-08-28.
+     *   - Baris "Resepsi HUT ke-499 Jakarta": Kedutaan Besar Persatuan Emirat Arab
+     *     semula tertulis DUA KALI, yaitu pada daftar hadir setingkat Duta Besar
+     *     DAN pada daftar hadir setingkat CdA/Wakil. Keduanya menunjuk id_mitra
+     *     yang sama, sehingga entri kedua diam-diam menimpa yang pertama saat
+     *     attach() dan satu baris pivot hilang tanpa peringatan (76 entri -> 75
+     *     baris). Entri ganda dihapus dan yang dipertahankan adalah versi
+     *     CdA/Wakil, sesuai konfirmasi Biro KSD. Catatan untuk penyuntingan
+     *     berikutnya: satu mitra hanya boleh muncul SEKALI per acara — tb_acara_dki_mitra
+     *     meng-unique-kan (id_acara_dki, id_mitra) dan form menegakkannya lewat
+     *     rule 'mitra.*.id_mitra' => distinct.
      *
      * Nama resmi Kedutaan Besar mengikuti ejaan pada seeder mitra
      * (nama_kedutaan_besar_id di KedutaanBesarPart1-11Seeder), bukan istilah bebas
@@ -399,12 +408,6 @@ class AcaraDKISeeder extends Seeder
                     [
                         'type' => 'kedutaan_besar',
                         'nama' => 'Kedutaan Besar Perancis',
-                        'status_kehadiran' => 'Hadir',
-                        'keterangan_kehadiran' => null,
-                    ],
-                    [
-                        'type' => 'kedutaan_besar',
-                        'nama' => 'Kedutaan Besar Persatuan Emirat Arab',
                         'status_kehadiran' => 'Hadir',
                         'keterangan_kehadiran' => null,
                     ],

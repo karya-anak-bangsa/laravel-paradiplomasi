@@ -21,6 +21,19 @@ class Kolaborasi extends Model
 
     protected $primaryKey = 'id_kolaborasi';
 
+    /**
+     * `file_dokumen`, `nama_pic`, `nomor_pic` sengaja BELUM dikumpulkan lewat aplikasi
+     * (arahan Biro KSD): tidak ada input di _form.blade.php, tidak ada rule
+     * validasi di Store/UpdateKolaborasiRequest, dan tidak ditampilkan di halaman show —
+     * jadi nilainya selalu null kecuali diisi lewat seeder.
+     *
+     * Ketiga kolom itu tetap didaftarkan di sini karena kolomnya sudah ada di
+     * migration dan siap dipakai begitu Biro KSD memutuskan mengumpulkannya.
+     * Ini keputusan bisnis yang ditunda, BUKAN kolom yang terlupakan — jangan
+     * dihapus dari migration hanya karena terlihat tidak terpakai.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
         'id_mitra',
         'kolaborasi',

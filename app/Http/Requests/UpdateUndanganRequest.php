@@ -16,9 +16,9 @@ class UpdateUndanganRequest extends FormRequest
         return [
             'id_mitra' => ['required', 'integer', 'exists:tb_mitra,id_mitra'],
             'acara' => ['required', 'string'],
-            'rangkuman' => ['nullable', 'string'],
-            'catatan' => ['nullable', 'string'],
-            'tanggal_diterima' => ['nullable', 'date'],
+            'rangkuman' => ['required', 'string'],
+            'catatan' => ['required', 'string'],
+            'tanggal_diterima' => ['required', 'date'],
             'tanggal_selesai' => ['nullable', 'date', 'after_or_equal:tanggal_diterima'],
             'triwulan_undangan' => ['required', 'in:TW I,TW II,TW III,TW IV'],
             'status_undangan' => ['required', 'in:Berjalan,Selesai,Tunda,Batal,Regret'],
@@ -34,8 +34,8 @@ class UpdateUndanganRequest extends FormRequest
             'catatan' => 'Catatan',
             'tanggal_diterima' => 'Tanggal Diterima',
             'tanggal_selesai' => 'Tanggal Selesai',
-            'status_undangan' => 'Status Undangan',
             'triwulan_undangan' => 'Triwulan',
+            'status_undangan' => 'Status Undangan',
         ];
     }
 }

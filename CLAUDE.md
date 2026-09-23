@@ -215,6 +215,8 @@ Konsekuensi lain:
 
 ### 9.4 Konvensi Form & Validasi
 - Setiap field wajib diisi **wajib** diberi tanda bintang merah (`<span class="text-danger">*</span>`) pada label-nya — berlaku di semua modul Kerjasama–Acara DKI, ditegakkan lewat prop `:required="true"` pada komponen `x-form-input-*`.
+- **`Store…Request` dan `Update…Request` satu modul harus IDENTIK** (kecuali nama kelasnya). Alasannya: `create` dan `edit` memakai `_form.blade.php` yang sama, jadi bintang merah yang muncul di halaman Ubah adalah janji yang ditagihkan ke `Update…Request`. Kalau `update` dilonggarkan jadi `nullable`, admin bisa mengosongkan field yang label-nya bertanda wajib — dan untuk `tanggal_diterima` itu berarti barisnya lenyap dari filter tahun serta melayang di urutan index. Cek dengan `diff` saat menambah/mengubah aturan validasi.
+- **Kolom baru di migration wajib ikut ditambahkan ke `$fillable`, rule request, dan `_form.blade.php` sekaligus.** Seeder BUKAN alat verifikasi untuk ini: `php artisan db:seed` berjalan di dalam `Model::unguarded()`, sehingga kolom yang tidak ada di `$fillable` tetap terisi lewat seeder tapi diam-diam gagal lewat form. Kalau datanya ada di DB namun tidak bisa diubah dari halaman Ubah, inilah penyebabnya.
 - Dropdown dengan opsi banyak (mis. pemilihan mitra) **wajib** pakai Select2 (`.select2`, tema `bootstrap-5`), bukan `<select>` polos.
 - Dropdown Select2 di dalam elemen yang overflow-scroll (mis. tabel responsive) **wajib** di-set `dropdownParent: $(document.body)` supaya tidak terpotong.
 
