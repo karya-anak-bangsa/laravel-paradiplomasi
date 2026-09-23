@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKedutaanBesarRequest;
 use App\Http\Requests\UpdateKedutaanBesarRequest;
 use App\Models\KedutaanBesar;
 
 class KedutaanBesarController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
@@ -70,8 +73,7 @@ class KedutaanBesarController extends Controller
 
     public function destroy(KedutaanBesar $kedutaanBesar)
     {
-        $kedutaanBesar->update(['is_active' => false]);
-        $kedutaanBesar->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($kedutaanBesar);
 
         return redirect()->route('kedutaan-besar.index')->with('notify', [
             'type' => 'success',

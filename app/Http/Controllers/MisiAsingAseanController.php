@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreMisiAsingAseanRequest;
 use App\Http\Requests\UpdateMisiAsingAseanRequest;
 use App\Models\MisiAsingAsean;
 
 class MisiAsingAseanController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $misiAsingAsean = MisiAsingAsean::where('is_active', true)->orderBy('nama_negara')->get();
@@ -70,8 +73,7 @@ class MisiAsingAseanController extends Controller
 
     public function destroy(MisiAsingAsean $misiAsingAsean)
     {
-        $misiAsingAsean->update(['is_active' => false]);
-        $misiAsingAsean->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($misiAsingAsean);
 
         return redirect()->route('misi-asing-asean.index')->with('notify', [
             'type' => 'success',

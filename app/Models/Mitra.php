@@ -32,46 +32,54 @@ class Mitra extends Model
     //
     // Nama tiap relasi di bawah WAJIB sama dengan TipeMitra::relasi(), karena
     // accessor di bawah dan eager-load di controller menurunkannya dari enum.
+    //
+    // Kedelapannya memakai withTrashed() dengan alasan yang sama seperti
+    // ReferencesMitra::mitra(): riwayat diplomasi yang masih aktif tetap harus
+    // bisa menampilkan nama mitranya meski mitra itu sudah dihapus (subtype dan
+    // supertype-nya ter-soft-delete berbarengan lewat BelongsToMitra). Tanpa
+    // ini, accessor nama_resmi_mitra/label_mitra di bawah akan mengembalikan
+    // null untuk mitra yang sudah dihapus — termasuk saat modul Restore Data
+    // menampilkan kembali data tersebut.
     // --------------------------------------------------------------------------
 
     public function kedutaanBesar(): HasOne
     {
-        return $this->hasOne(KedutaanBesar::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(KedutaanBesar::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function misiAsingAsean(): HasOne
     {
-        return $this->hasOne(MisiAsingAsean::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(MisiAsingAsean::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function misiPermanenAsean(): HasOne
     {
-        return $this->hasOne(MisiPermanenAsean::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(MisiPermanenAsean::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function nonPerwakilanNegaraAsing(): HasOne
     {
-        return $this->hasOne(NonPerwakilanNegaraAsing::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(NonPerwakilanNegaraAsing::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function pemprovDki(): HasOne
     {
-        return $this->hasOne(PemprovDki::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(PemprovDki::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function kbri(): HasOne
     {
-        return $this->hasOne(Kbri::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(Kbri::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function kjri(): HasOne
     {
-        return $this->hasOne(Kjri::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(Kjri::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function ptri(): HasOne
     {
-        return $this->hasOne(Ptri::class, 'id_mitra', 'id_mitra');
+        return $this->hasOne(Ptri::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     // --------------------------------------------------------------------------

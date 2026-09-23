@@ -29,9 +29,12 @@ class DashboardController extends Controller
             'jumlah' => $tipe->modelClass()::where('is_active', true)->count(),
         ]);
 
-        // Kelompok Riwayat Diplomasi tetap ditulis eksplisit: keenam modul ini
-        // tidak punya enum pemersatu, dan tiap modul punya ikon, warna kartu,
-        // serta warna irisan donat sendiri.
+        // Kelompok Riwayat Diplomasi masih ditulis eksplisit karena butuh satu
+        // metadata yang tidak ada di App\Enums\ModulDiplomasi, yaitu warna irisan
+        // donat (`warnaChart`) — hanya dipakai di dashboard. Label, ikon, warna
+        // kartu, dan route-nya sudah ada di enum tersebut dan nilainya disamakan;
+        // kalau kelak warnaChart dipindah ke enum, blok ini bisa diturunkan dari
+        // ModulDiplomasi::cases() seperti $akumulasiMitra di atas.
         $akumulasiRiwayat = collect([
             ['label' => 'Kerjasama', 'ikon' => 'folder-closed', 'warna' => 'green', 'route' => 'kerjasama.index', 'warnaChart' => 'primary', 'model' => Kerjasama::class],
             ['label' => 'Kolaborasi', 'ikon' => 'thumbs-up', 'warna' => 'yellow', 'route' => 'kolaborasi.index', 'warnaChart' => 'yellow', 'model' => Kolaborasi::class],

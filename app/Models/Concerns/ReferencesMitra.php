@@ -17,8 +17,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait ReferencesMitra
 {
+    /**
+     * `withTrashed()` dipasang karena riwayat diplomasi bersifat HISTORIS:
+     * sebuah kerjasama yang masih aktif tetap harus menampilkan nama mitranya
+     * meski mitra itu sendiri sudah dinonaktifkan/dihapus (baris tb_mitra-nya
+     * ter-soft-delete). Tanpa ini, index & halaman rincian kelima modul akan
+     * gagal membaca $item->mitra->nama_resmi_mitra begitu mitranya dihapus.
+     */
     public function mitra(): BelongsTo
     {
-        return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra');
+        return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 }

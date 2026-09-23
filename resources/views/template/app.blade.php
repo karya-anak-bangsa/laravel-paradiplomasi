@@ -233,6 +233,12 @@
                         confirmButtonColor: '#dc3545',
                         confirmButtonText: 'Ya, Hapus!',
                     },
+                    restore: {
+                        text: 'Apakah Anda yakin ingin memulihkan data ini? Data akan aktif kembali di modul aslinya.',
+                        icon: 'question',
+                        confirmButtonColor: '#206bc4',
+                        confirmButtonText: 'Ya, Pulihkan!',
+                    },
                 };
 
                 document.querySelectorAll('.confirm-submit').forEach(function(form) {

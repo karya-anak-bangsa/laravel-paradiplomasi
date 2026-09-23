@@ -17,6 +17,7 @@ use App\Http\Controllers\MisiPermanenAseanController;
 use App\Http\Controllers\NonPerwakilanNegaraAsingController;
 use App\Http\Controllers\PemprovDkiController;
 use App\Http\Controllers\PtriController;
+use App\Http\Controllers\RestoreDataController;
 use App\Http\Controllers\TanggalPentingController;
 use App\Http\Controllers\UndanganController;
 // other
@@ -57,6 +58,13 @@ Route::middleware('cek.auth')->group(function () {
         Route::resource('acara-dki', AcaraDKIController::class)->except(['index', 'show']);
         Route::view('akun-pengguna', 'mod_akun_pengguna.index')->name('akun-pengguna.index');
         Route::view('riwayat-aktivitas', 'mod_riwayat_aktivitas.index')->name('riwayat-aktivitas.index');
+
+        // Restore Data bukan resource: datanya berasal dari 14 modul sekaligus,
+        // jadi tidak ada satu model pun yang bisa dijadikan route binding.
+        // Segmen {grup}/{modul} divalidasi terhadap TipeMitra & ModulDiplomasi
+        // di App\Support\DataTerhapus.
+        Route::get('restore-data', [RestoreDataController::class, 'index'])->name('restore-data.index');
+        Route::put('restore-data/{grup}/{modul}/{id}', [RestoreDataController::class, 'update'])->name('restore-data.update');
     });
 
     // admin & guest, cuma boleh lihat

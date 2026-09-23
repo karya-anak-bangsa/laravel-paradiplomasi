@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKjriRequest;
 use App\Http\Requests\UpdateKjriRequest;
 use App\Models\Kjri;
@@ -15,6 +16,8 @@ use App\Models\Kjri;
  */
 class KjriController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $kjri = Kjri::where('is_active', true)->orderBy('nama_kjri')->get();
@@ -77,8 +80,7 @@ class KjriController extends Controller
 
     public function destroy(Kjri $kjri)
     {
-        $kjri->update(['is_active' => false]);
-        $kjri->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($kjri);
 
         return redirect()->route('kjri.index')->with('notify', [
             'type' => 'success',

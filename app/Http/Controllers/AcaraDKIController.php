@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TipeMitra;
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreAcaraDKIRequest;
 use App\Http\Requests\UpdateAcaraDKIRequest;
 use App\Models\AcaraDKI;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 class AcaraDKIController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index(Request $request)
     {
         $acaraDki = AcaraDKI::with(TipeMitra::relasiMitra())
@@ -77,7 +80,7 @@ class AcaraDKIController extends Controller
 
     public function destroy(AcaraDKI $acaraDki)
     {
-        $acaraDki->update(['is_active' => false]);
+        $this->nonaktifkan($acaraDki);
 
         return redirect()->route('acara-dki.index')->with('notify', [
             'type' => 'success',

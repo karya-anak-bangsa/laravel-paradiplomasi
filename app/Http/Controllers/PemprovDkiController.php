@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StorePemprovDkiRequest;
 use App\Http\Requests\UpdatePemprovDkiRequest;
 use App\Models\PemprovDki;
@@ -15,6 +16,8 @@ use App\Models\PemprovDki;
  */
 class PemprovDkiController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $pemprovDki = PemprovDki::where('is_active', true)->orderBy('nama_pemprov_dki')->get();
@@ -77,8 +80,7 @@ class PemprovDkiController extends Controller
 
     public function destroy(PemprovDki $pemprovDki)
     {
-        $pemprovDki->update(['is_active' => false]);
-        $pemprovDki->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($pemprovDki);
 
         return redirect()->route('pemprov-dki.index')->with('notify', [
             'type' => 'success',

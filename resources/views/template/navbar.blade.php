@@ -81,7 +81,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('akun-pengguna.index') }}">Akun Pengguna</a>
                                         <a class="dropdown-item" href="{{ route('riwayat-aktivitas.index') }}">Riwayat Aktivitas</a>
-                                        <a class="dropdown-item" href="">Restore Data</a>
+                                        <a class="dropdown-item" href="{{ route('restore-data.index') }}">Restore Data</a>
                                     </div>
                                 </li>
                             @endif

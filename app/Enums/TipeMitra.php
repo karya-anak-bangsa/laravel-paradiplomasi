@@ -198,6 +198,22 @@ enum TipeMitra: string
     }
 
     /**
+     * Cari tipe berdasarkan slug-nya, mis. untuk memvalidasi segmen URL pada
+     * modul Restore Data. Kembalikan null bila slug tidak dikenal, supaya
+     * pemanggilnya bisa abort(404) alih-alih menebak-nebak.
+     */
+    public static function dariSlug(?string $slug): ?self
+    {
+        foreach (self::cases() as $tipe) {
+            if ($tipe->slug() === $slug) {
+                return $tipe;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Daftar relasi untuk eager-load dari sisi Riwayat Diplomasi, mis.
      * with(TipeMitra::relasiMitra()) agar accessor nama_resmi_mitra tidak N+1.
      *

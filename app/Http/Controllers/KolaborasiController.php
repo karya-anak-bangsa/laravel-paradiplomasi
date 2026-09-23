@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TipeMitra;
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKolaborasiRequest;
 use App\Http\Requests\UpdateKolaborasiRequest;
 use App\Models\Kolaborasi;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 class KolaborasiController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index(Request $request)
     {
         $kolaborasi = Kolaborasi::with(TipeMitra::relasiMitra())
@@ -71,7 +74,7 @@ class KolaborasiController extends Controller
 
     public function destroy(Kolaborasi $kolaborasi)
     {
-        $kolaborasi->update(['is_active' => false]);
+        $this->nonaktifkan($kolaborasi);
 
         return redirect()->route('kolaborasi.index')->with('notify', [
             'type' => 'success',

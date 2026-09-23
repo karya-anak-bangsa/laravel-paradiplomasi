@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreNonPerwakilanNegaraAsingRequest;
 use App\Http\Requests\UpdateNonPerwakilanNegaraAsingRequest;
 use App\Models\NonPerwakilanNegaraAsing;
 
 class NonPerwakilanNegaraAsingController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)->orderBy('nama_non_perwakilan_negara_asing')->get();
@@ -70,8 +73,7 @@ class NonPerwakilanNegaraAsingController extends Controller
 
     public function destroy(NonPerwakilanNegaraAsing $nonPerwakilanNegaraAsing)
     {
-        $nonPerwakilanNegaraAsing->update(['is_active' => false]);
-        $nonPerwakilanNegaraAsing->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($nonPerwakilanNegaraAsing);
 
         return redirect()->route('non-perwakilan-negara-asing.index')->with('notify', [
             'type' => 'success',

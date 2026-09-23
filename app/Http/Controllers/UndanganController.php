@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TipeMitra;
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreUndanganRequest;
 use App\Http\Requests\UpdateUndanganRequest;
 use App\Models\Undangan;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 class UndanganController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index(Request $request)
     {
         $undangan = Undangan::with(TipeMitra::relasiMitra())
@@ -71,7 +74,7 @@ class UndanganController extends Controller
 
     public function destroy(Undangan $undangan)
     {
-        $undangan->update(['is_active' => false]);
+        $this->nonaktifkan($undangan);
 
         return redirect()->route('undangan.index')->with('notify', [
             'type' => 'success',

@@ -44,9 +44,16 @@ trait BelongsToMitra
         });
     }
 
+    /**
+     * `withTrashed()` WAJIB di sini: saat record anak di-soft-delete, baris
+     * tb_mitra pasangannya ikut di-soft-delete oleh hook di atas. Tanpa
+     * withTrashed, relasi ini akan mengembalikan null untuk record yang sudah
+     * dihapus — sehingga hook `restored` gagal memulihkan tb_mitra dan modul
+     * Restore Data tidak bisa mengaktifkan kembali supertype-nya.
+     */
     public function mitra()
     {
-        return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra');
+        return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     // setiap model anak WAJIB override method ini untuk menentukan tipe_mitra-nya

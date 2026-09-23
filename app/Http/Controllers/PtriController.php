@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StorePtriRequest;
 use App\Http\Requests\UpdatePtriRequest;
 use App\Models\Ptri;
@@ -15,6 +16,8 @@ use App\Models\Ptri;
  */
 class PtriController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $ptri = Ptri::where('is_active', true)->orderBy('nama_ptri')->get();
@@ -77,8 +80,7 @@ class PtriController extends Controller
 
     public function destroy(Ptri $ptri)
     {
-        $ptri->update(['is_active' => false]);
-        $ptri->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($ptri);
 
         return redirect()->route('ptri.index')->with('notify', [
             'type' => 'success',

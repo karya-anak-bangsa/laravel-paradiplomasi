@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TipeMitra;
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKunjunganRequest;
 use App\Http\Requests\UpdateKunjunganRequest;
 use App\Models\Kunjungan;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 class KunjunganController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index(Request $request)
     {
         $kunjungan = Kunjungan::with(TipeMitra::relasiMitra())
@@ -71,7 +74,7 @@ class KunjunganController extends Controller
 
     public function destroy(Kunjungan $kunjungan)
     {
-        $kunjungan->update(['is_active' => false]);
+        $this->nonaktifkan($kunjungan);
 
         return redirect()->route('kunjungan.index')->with('notify', [
             'type' => 'success',

@@ -1,6 +1,6 @@
 # Proyek Web Paradiplomasi Pemda DKI
 
-_Terakhir diperbarui: 23 September 2026 — penambahan 4 modul mitra (Pemprov DKI, KBRI, KJRI, PTRI) dan refactor metadata tipe mitra ke `App\Enums\TipeMitra`._
+_Terakhir diperbarui: 23 September 2026 — penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
 
 ## 1. Deskripsi Singkat
 <p align="justify">
@@ -22,13 +22,14 @@ Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, N
 
   Kedelapannya adalah *subtype* dari satu supertype `tb_mitra` — lihat Bagian 3. Perhatikan bedanya **Kedutaan Besar** (kedubes negara asing di Jakarta) dan **KBRI** (kedutaan besar RI di luar negeri): dua jenis mitra yang berbeda, bukan duplikat.
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan (proses bisnis identik, 1 baris = 1 mitra), dan Acara DKI (proses bisnis berbeda, 1 acara = banyak mitra — lihat Bagian 4).
-- **Modul Administrator:** Akun Pengguna, Riwayat Aktivitas.
+- **Modul Administrator:** Akun Pengguna, Riwayat Aktivitas, Restore Data.
 - **Modul Pendukung:** Tanggal Penting (kalender read-only, tidak punya tabel sendiri).
 
 | Nama Modul | Nama Tabel | Aksi | Keterangan |
 |---|---|---|---|
 | `Akun Pengguna` | `Hardcode dari AuthController` | login dan logout | View index (`mod_akun_pengguna.index`) sudah ada, tapi backend CRUD/listing pengguna belum diimplementasikan. |
 | `Riwayat Aktivitas` | `belum dibuat` | - | View index sudah ada namun eksplisit berlabel **"Log Aktivitas Pengguna (Placeholder)"** — belum ada pencatatan log sungguhan. |
+| `Restore Data` | *(tidak ada tabel sendiri)* | lihat, cari, pulihkan | **Sudah berfungsi.** Menampilkan seluruh data ter-soft-delete dari 14 modul (8 Mitra + 6 Riwayat Diplomasi) dan mengaktifkannya kembali **satu per satu** — tidak ada aksi massal. Daftar modulnya diturunkan dari `TipeMitra` + `ModulDiplomasi` lewat `App\Support\DataTerhapus`, jadi modul baru otomatis ikut terpantau. Lihat Bagian 9.3. |
 | `Kedutaan Besar` | `tb_kedutaan_besar` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | ex. Kedutaan Besar Australia. "Hapus" = nonaktifkan (`is_active = false`), bukan hapus permanen. |
 | `Misi Asing ASEAN` | `tb_misi_asing_asean` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | ex. Misi Australia untuk ASEAN |
 | `Misi Permanen ASEAN` | `tb_misi_permanen_asean` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | ex. Misi Permanen Republik Singapura |
@@ -66,6 +67,14 @@ Metadata tampilan (`ikon`/`warna`/`labelSingkat`) sengaja ikut ditaruh di enum, 
 
 **Semua kode yang perlu tahu "ada tipe mitra apa saja" WAJIB menurunkannya dari enum ini, jangan menulis daftarnya sendiri.** Yang sudah mengikuti: `Mitra::subtype()`/`nama_resmi_mitra`/`label_mitra`, eager-load di 6 controller Riwayat Diplomasi, `App\Support\DaftarMitra`, komponen `x-mitra-picker` / `x-mitra-icon` / `x-mitra-ringkas`, form Acara DKI, dan trait seeder `ResolvesMitra`. Konsekuensinya menambah jenis mitra ke-9 **tidak perlu menyisir** berkas-berkas itu satu per satu.
 
+### `App\Enums\ModulDiplomasi` — padanan `TipeMitra` untuk 6 modul Riwayat Diplomasi
+
+Kalau `TipeMitra` mendaftar *pihak* yang berdiplomasi, `ModulDiplomasi` mendaftar *peristiwa*-nya: `Kerjasama`, `Kolaborasi`, `Undangan`, `Audiensi`, `Kunjungan`, `AcaraDki`. Metadata per case: `slug()`, `modelClass()`, `kolomJudul()`, `kolomStatus()`, `routeIndex()`, `ikon()`, `warna()`, `berbasisMitraTunggal()` (false hanya untuk Acara DKI — lihat Bagian 4), plus `dariSlug()`.
+
+⚠️ **Kolom judul tidak senama dengan modulnya** — hanya Kerjasama, Kolaborasi, dan Acara DKI yang begitu; sisanya `tb_undangan.acara`, `tb_audiensi.topik`, `tb_kunjungan.perihal`. Karena itu `kolomJudul()`/`kolomStatus()` **meneruskan** `$judulColumn`/`$statusColumn` milik model (lewat getter publik di `HasDiplomasiProfileAccessors`), bukan menyalin daftarnya. Jangan ubah jadi `match` berisi nama kolom — itu membuat dua daftar yang bisa saling melenceng. Untuk menampilkan judul, pakai accessor `judul_ringkas` yang sudah ada.
+
+Dibuat untuk modul Restore Data, yang harus menyisir **seluruh** modul pemilik `is_active` + `deleted_at`. Aturannya sama seperti `TipeMitra`: **kode yang perlu tahu "ada modul Riwayat Diplomasi apa saja" turunkan dari enum ini**, jangan menulis daftarnya sendiri. Satu pengecualian yang masih ada: blok `$akumulasiRiwayat` di `DashboardController` — butuh `warnaChart` yang belum ada di enum, dan sudah diberi komentar penjelas di tempatnya.
+
 ### Trait kunci
 
 | Trait | Dipakai oleh | Fungsi |
@@ -76,6 +85,7 @@ Metadata tampilan (`ikon`/`warna`/`labelSingkat`) sengaja ikut ditaruh di enum, 
 | `HasMitraProfileAccessors` | 3 subtype berbasis negara | Accessor UI bersama: `telepon_kantor`/`email_kantor` (string dipisah koma) → array, label & warna badge status aktif. Tidak dipakai subtype "nama + keterangan" karena mereka tidak punya kolom-kolom itu. |
 | `ResolvesMitra` (namespace `Database\Seeders\Concerns`) | 6 seeder Riwayat Diplomasi | Menerjemahkan kolom nama mitra pada baris data seeder (`nama_kbri`, `nama_pemprov_dki`, dst) menjadi `id_mitra`. Kolom yang dikenali diturunkan dari `TipeMitra::kolomNama()`. |
 | `HasDiplomasiFieldOptions` / `HasDiplomasiFilter` / `HasDiplomasiProfileAccessors` | Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI | Konstanta dropdown (`STATUS_OPTIONS`, `TRIWULAN_OPTIONS`), scope filter (`filterStatus`, `filterTahun`, `tahunTersedia`), accessor tampilan bersama (`statusBadgeColor`, `judulRingkas`, `tanggalDiterimaDisplay`, dst). |
+| `MenonaktifkanData` (namespace `App\Http\Controllers\Concerns`) | `destroy()` di 14 controller (8 Mitra + 6 Riwayat Diplomasi) | Satu-satunya tempat pola "hapus" = nonaktifkan + soft delete diimplementasikan. `nonaktifkan()` untuk Riwayat Diplomasi, `nonaktifkanMitra()` untuk subtype Mitra (ikut menonaktifkan `tb_mitra`). Lihat Bagian 9.3. |
 
 ### Aturan wajib saat menambah modul baru yang menunjuk ke Mitra
 
@@ -186,11 +196,22 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **View (Blade):** Setiap modul dalam folder terpisah dengan struktur standar: `index.blade.php`, `show.blade.php`, `create.blade.php`, `edit.blade.php`, dan `_form.blade.php`.
 - **Variabel & Method:** camelCase (contoh: `$daftarKedutaan`, `getDaftarKedutaan()`).
 
-### 9.3 Pola "Hapus" = Nonaktifkan, Bukan Hapus Permanen
-Tombol "hapus" di **seluruh** modul (Mitra & Riwayat Diplomasi) **tidak** melakukan delete data. Method `destroy()` hanya melakukan `update(['is_active' => false])`. Konsekuensinya:
-- Baris tetap ada di database dan tetap muncul di relasi manapun yang **tidak** memfilter `is_active` — karena itu setiap relasi baru dari sisi Mitra ke modul Riwayat Diplomasi **wajib** ditambahkan `->where('is_active', true)` (lihat `HasRiwayatDiplomasi`).
-- Soft delete Eloquent (`deleted_at`) tetap dipasang di semua tabel sebagai lapisan kedua, tapi bukan mekanisme yang dipicu tombol "hapus" — baru relevan untuk operasi force-delete/cleanup data di masa depan.
-- `tb_mitra` (supertype) ikut dinonaktifkan/di-restore otomatis mengikuti subtype-nya lewat `BelongsToMitra`.
+### 9.3 Pola "Hapus" = Nonaktifkan + Soft Delete, Bukan Hapus Permanen
+Tombol "hapus" di **seluruh** modul (Mitra & Riwayat Diplomasi) **tidak pernah** menghapus data. Method `destroy()` memanggil trait `App\Http\Controllers\Concerns\MenonaktifkanData` (`nonaktifkan()` untuk Riwayat Diplomasi, `nonaktifkanMitra()` untuk subtype Mitra), yang melakukan **dua** hal:
+
+1. `is_active = false` — status bisnisnya: data hilang dari index modul, dropdown mitra, kartu dashboard, dan tab Riwayat Diplomasi.
+2. `deleted_at` terisi (soft delete Eloquent) — **catatan kapan** data dihapus, sekaligus penanda bahwa baris itu layak muncul di **Pengaturan Sistem > Restore Data**.
+
+Keduanya tetap terpisah karena perannya beda: `is_active` menentukan data tampil atau tidak, `deleted_at` mencatat jejak penghapusan. Jangan panggil `update(['is_active' => false])` langsung di controller baru — pakai trait di atas, supaya `deleted_at` tidak terlewat dan datanya tidak "hilang" dari modul Restore Data.
+
+Konsekuensi lain:
+- Setiap relasi baru dari sisi Mitra ke modul Riwayat Diplomasi **wajib** ditambahkan `->where('is_active', true)` (lihat `HasRiwayatDiplomasi`).
+- Sebaliknya, setiap relasi dari **data historis ke Mitra** wajib `->withTrashed()` — sudah dipasang di `ReferencesMitra::mitra()`, `AcaraDKI::mitra()`, kedelapan `hasOne` di `Mitra`, dan `BelongsToMitra::mitra()`. Alasannya: kerjasama yang masih aktif tetap harus menampilkan nama mitranya walau mitra itu sudah dihapus. Kalau lupa, `$item->mitra->nama_resmi_mitra` jadi null dan halaman index/rincian modul Riwayat Diplomasi error begitu ada mitra yang dihapus.
+- `tb_mitra` (supertype) ikut dinonaktifkan/dipulihkan otomatis mengikuti subtype-nya lewat `BelongsToMitra` (hook `deleted`/`restored`).
+- Pemulihannya — kebalikan dari trait di atas — ada di `App\Support\DataTerhapus::pulihkan()`: `is_active` dikembalikan true dan `deleted_at` dikosongkan dalam satu operasi simpan. Catatan teknis: `restore()` memakai `save()` sehingga atribut lain ikut tersimpan, sedangkan `delete()` pada model bersoft-delete **hanya** menulis `deleted_at` + `updated_at` — itu sebabnya penonaktifan butuh dua query, pemulihan cukup satu.
+- **Force delete tidak dipanggil dari mana pun.** Tidak ada jalur di aplikasi yang bisa menghilangkan data dari database secara permanen.
+
+**Batasan yang masih ada:** halaman Restore Data bisa menjawab *kapan* data dihapus, tapi belum bisa menjawab *siapa* yang menghapusnya — tabel tidak punya kolom pengguna dan login masih hardcode di `AuthController`. Jejak pelaku baru mungkin setelah ada tabel akun pengguna sungguhan + modul Riwayat Aktivitas.
 
 ### 9.4 Konvensi Form & Validasi
 - Setiap field wajib diisi **wajib** diberi tanda bintang merah (`<span class="text-danger">*</span>`) pada label-nya — berlaku di semua modul Kerjasama–Acara DKI, ditegakkan lewat prop `:required="true"` pada komponen `x-form-input-*`.
@@ -218,7 +239,8 @@ Sebelum menulis blade baru, cek dulu apakah komponen di atas sudah mengakomodasi
 - **Strict Pint Formatting**: Jalankan atau pastikan kode mematuhi standar PSR-12 dan Laravel Pint sebelum mengusulkan perubahan.
 - **Localization**: Pesan validasi, notifikasi status, dan label antarmuka menggunakan bahasa Indonesia (`resources/lang/id` atau `lang/id`).
 - **Jangan sederhanakan pola arsitektur tanpa memahami alasan bisnisnya** — khususnya pola supertype-subtype Mitra (Bagian 3) dan pola pivot Acara DKI (Bagian 4). Keduanya sengaja berbeda dari pola default, bukan inkonsistensi yang perlu "diperbaiki".
-- **Jangan menulis daftar tipe mitra secara hardcode di mana pun** — turunkan dari `App\Enums\TipeMitra` (Bagian 3). Rantai `if/elseif`, `match`, atau daftar `<option>` yang menyebut tipe mitra satu per satu adalah tanda pola ini dilanggar.
+- **Jangan menulis daftar tipe mitra secara hardcode di mana pun** — turunkan dari `App\Enums\TipeMitra` (Bagian 3). Rantai `if/elseif`, `match`, atau daftar `<option>` yang menyebut tipe mitra satu per satu adalah tanda pola ini dilanggar. Aturan yang sama berlaku untuk daftar modul Riwayat Diplomasi lewat `App\Enums\ModulDiplomasi`.
+- **`destroy()` wajib lewat trait `MenonaktifkanData`**, jangan `update(['is_active' => false])` langsung (Bagian 9.3) — kalau `deleted_at` tidak terisi, datanya tidak akan muncul di Pengaturan Sistem > Restore Data dan praktis tidak bisa dipulihkan admin.
 - **Pengecualian yang disengaja:** ranking "Mitra Diplomatik Paling Aktif" di dashboard **hanya** mencakup Kedutaan Besar, Misi Asing ASEAN, dan Misi Permanen ASEAN. Mitra Non-PNA, Pemprov DKI, KBRI, KJRI, dan PTRI sengaja tidak diperingkat — ranking ini mengukur keaktifan mitra diplomatik asing, bukan seluruh pihak yang pernah berinteraksi dengan Biro KSD. Jangan "melengkapi" daftar ini memakai `TipeMitra::cases()`.
 - **Filter `is_active` wajib** setiap kali menambah relasi baru dari Mitra/subtype ke modul Riwayat Diplomasi manapun (lihat Bagian 9.3) — kalau lupa, data yang sudah "dihapus" akan tetap muncul di tab Riwayat Diplomasi pada halaman profil mitra.
 - **Cek komponen Blade & trait Concerns yang sudah ada** (Bagian 9.5) sebelum menulis kode baru yang berpotensi duplikat.

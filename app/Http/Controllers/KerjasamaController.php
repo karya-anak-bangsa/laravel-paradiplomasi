@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TipeMitra;
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKerjasamaRequest;
 use App\Http\Requests\UpdateKerjasamaRequest;
 use App\Models\Kerjasama;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 class KerjasamaController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index(Request $request)
     {
         $kerjasama = Kerjasama::with(TipeMitra::relasiMitra())
@@ -71,7 +74,7 @@ class KerjasamaController extends Controller
 
     public function destroy(Kerjasama $kerjasama)
     {
-        $kerjasama->update(['is_active' => false]);
+        $this->nonaktifkan($kerjasama);
 
         return redirect()->route('kerjasama.index')->with('notify', [
             'type' => 'success',

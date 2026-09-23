@@ -21,6 +21,24 @@ use Illuminate\Support\Carbon;
  */
 trait HasDiplomasiProfileAccessors
 {
+    /**
+     * Nama kolom judul & status milik model ini, dibuka ke publik supaya
+     * App\Enums\ModulDiplomasi bisa meneruskannya tanpa menyalin daftarnya.
+     *
+     * Kolom judul TIDAK selalu senama dengan modulnya — `tb_undangan.acara`,
+     * `tb_audiensi.topik`, `tb_kunjungan.perihal` — jadi menebak namanya dari
+     * nama modul adalah sumber bug yang nyata.
+     */
+    public function kolomJudul(): string
+    {
+        return $this->judulColumn;
+    }
+
+    public function kolomStatus(): string
+    {
+        return $this->statusColumn;
+    }
+
     protected function statusBadgeColor(): Attribute
     {
         return Attribute::make(

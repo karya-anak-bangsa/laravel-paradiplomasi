@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TipeMitra;
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreAudiensiRequest;
 use App\Http\Requests\UpdateAudiensiRequest;
 use App\Models\Audiensi;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 
 class AudiensiController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index(Request $request)
     {
         $audiensi = Audiensi::with(TipeMitra::relasiMitra())
@@ -71,7 +74,7 @@ class AudiensiController extends Controller
 
     public function destroy(Audiensi $audiensi)
     {
-        $audiensi->update(['is_active' => false]);
+        $this->nonaktifkan($audiensi);
 
         return redirect()->route('audiensi.index')->with('notify', [
             'type' => 'success',

@@ -49,10 +49,15 @@ class AcaraDKI extends Model
      * ReferencesMitra (dipakai 5 modul Riwayat Diplomasi lain) karena
      * satu Acara DKI bisa melibatkan banyak mitra sekaligus, masing-masing
      * dengan status kehadirannya sendiri (lihat AcaraDkiMitra::pivot).
+     *
+     * `withTrashed()` menjaga daftar peserta acara tetap utuh: mitra yang
+     * dihapus setelah acara berlangsung tetap tercatat pernah diundang/hadir,
+     * sama alasannya dengan ReferencesMitra::mitra().
      */
     public function mitra(): BelongsToMany
     {
         return $this->belongsToMany(Mitra::class, 'tb_acara_dki_mitra', 'id_acara_dki', 'id_mitra')
+            ->withTrashed()
             ->using(AcaraDkiMitra::class)
             ->withPivot('status_kehadiran', 'keterangan_kehadiran')
             ->withTimestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKbriRequest;
 use App\Http\Requests\UpdateKbriRequest;
 use App\Models\Kbri;
@@ -15,6 +16,8 @@ use App\Models\Kbri;
  */
 class KbriController extends Controller
 {
+    use MenonaktifkanData;
+
     public function index()
     {
         $kbri = Kbri::where('is_active', true)->orderBy('nama_kbri')->get();
@@ -77,8 +80,7 @@ class KbriController extends Controller
 
     public function destroy(Kbri $kbri)
     {
-        $kbri->update(['is_active' => false]);
-        $kbri->mitra->update(['is_active' => false]);
+        $this->nonaktifkanMitra($kbri);
 
         return redirect()->route('kbri.index')->with('notify', [
             'type' => 'success',
