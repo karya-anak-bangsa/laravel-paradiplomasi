@@ -12,7 +12,6 @@ use App\Models\Kunjungan;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
 use App\Models\Undangan;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -134,35 +133,5 @@ class DashboardController extends Controller
             'pieSeriesPerModul',
             'mitraAktif',
         ));
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 }

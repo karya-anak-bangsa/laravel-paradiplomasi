@@ -35,7 +35,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Modul-Modul di Paradiplomasi Jakarta
 // ------------------------------------------------------------------------------------------------- #
 Route::middleware('cek.auth')->group(function () {
-    Route::resource('dashboard', DashboardController::class);
+    // dashboard & tanggal penting hanya punya halaman index (kalender Tanggal
+    // Penting read-only, diturunkan dari Acara DKI), jadi tidak perlu resource penuh
+    Route::resource('dashboard', DashboardController::class)->only(['index']);
 
     // khusus admin, boleh CRUD penuh
     Route::middleware('cek.admin')->group(function () {
@@ -53,7 +55,6 @@ Route::middleware('cek.auth')->group(function () {
         Route::resource('audiensi', AudiensiController::class)->except(['index', 'show']);
         Route::resource('kunjungan', KunjunganController::class)->except(['index', 'show']);
         Route::resource('acara-dki', AcaraDKIController::class)->except(['index', 'show']);
-        Route::resource('tanggal-penting', TanggalPentingController::class)->except(['index', 'show']);
         Route::view('akun-pengguna', 'mod_akun_pengguna.index')->name('akun-pengguna.index');
         Route::view('riwayat-aktivitas', 'mod_riwayat_aktivitas.index')->name('riwayat-aktivitas.index');
     });
@@ -73,5 +74,5 @@ Route::middleware('cek.auth')->group(function () {
     Route::resource('audiensi', AudiensiController::class)->only(['index', 'show']);
     Route::resource('kunjungan', KunjunganController::class)->only(['index', 'show']);
     Route::resource('acara-dki', AcaraDKIController::class)->only(['index', 'show']);
-    Route::resource('tanggal-penting', TanggalPentingController::class)->only(['index', 'show']);
+    Route::resource('tanggal-penting', TanggalPentingController::class)->only(['index']);
 });

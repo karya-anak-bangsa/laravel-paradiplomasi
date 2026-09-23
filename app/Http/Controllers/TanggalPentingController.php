@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcaraDKI;
-use Illuminate\Http\Request;
 
 class TanggalPentingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Kalender read-only: satu-satunya aksi modul ini. Tanggal Penting tidak
+     * punya tabel sendiri, isinya diturunkan dari rentang pelaksanaan Acara DKI
+     * yang masih aktif — karena itu route-nya pun cuma `index`.
      */
     public function index()
     {
@@ -24,53 +25,5 @@ class TanggalPentingController extends Controller
             ]);
 
         return view('mod_tanggal_penting.index', compact('acaraDkiEvents'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
