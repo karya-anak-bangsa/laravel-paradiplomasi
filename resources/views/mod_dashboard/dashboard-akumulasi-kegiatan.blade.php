@@ -27,7 +27,7 @@
                 <div class="row row-cards mb-4">
                     @foreach ($akumulasiMitra as $mitra)
                         <x-stat-card
-                            class="col-lg-3 col-sm-6"
+                            class="col-lg-4 col-sm-6"
                             :jumlah="$mitra->jumlah"
                             :label="$mitra->label"
                             :ikon="$mitra->ikon"

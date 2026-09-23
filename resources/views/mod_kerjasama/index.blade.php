@@ -34,8 +34,8 @@
                         </div>
                     </td>
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
-                    <td class="text-center">{{ $item->tanggal_diterima_display }}</td>
-                    <td class="text-center">{!! $item->tanggal_selesai_display !!}</td>
+                    <td class="text-center" data-order="{{ $item->tanggal_diterima_order }}">{{ $item->tanggal_diterima_display }}</td>
+                    <td class="text-center" data-order="{{ $item->tanggal_selesai_order }}">{!! $item->tanggal_selesai_display !!}</td>
                     <td class="text-center">
                         <span class="badge {{ $item->status_badge_color }}">
                             {{ $item->status_kerjasama }}

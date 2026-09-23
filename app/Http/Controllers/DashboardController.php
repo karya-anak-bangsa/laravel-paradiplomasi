@@ -21,9 +21,17 @@ class DashboardController extends Controller
         // Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta — kelompok
         // Mitra diturunkan dari TipeMitra, sehingga jenis mitra baru otomatis
         // muncul di dashboard tanpa menyentuh controller maupun blade-nya.
+        //
+        // KBRI/KJRI/PTRI diberi awalan "Mitra " dan ikonnya diseragamkan jadi
+        // "landmark" khusus di kartu ini — bukan lewat TipeMitra::labelSingkat()
+        // / ikon(), supaya modul Restore Data (yang memakai method sama) tidak
+        // ikut berubah.
         $akumulasiMitra = collect(TipeMitra::cases())->map(fn (TipeMitra $tipe) => (object) [
-            'label' => $tipe->labelSingkat(),
-            'ikon' => $tipe->ikon(),
+            'label' => match ($tipe) {
+                TipeMitra::Kbri, TipeMitra::Kjri, TipeMitra::Ptri => 'Mitra '.$tipe->labelSingkat(),
+                default => $tipe->labelSingkat(),
+            },
+            'ikon' => 'landmark',
             'warna' => $tipe->warna(),
             'route' => $tipe->routeIndex(),
             'jumlah' => $tipe->modelClass()::where('is_active', true)->count(),

@@ -29,11 +29,11 @@ enum TipeMitra: string
     case KedutaanBesar = 'Kedutaan Besar';
     case MisiAsingAsean = 'Misi Asing untuk ASEAN';
     case MisiPermanenAsean = 'Misi Permanen Negara ASEAN';
-    case NonPNA = 'Non Perwakilan Negara Asing';
-    case PemprovDki = 'Pemerintah Provinsi DKI Jakarta';
     case Kbri = 'Kedutaan Besar Republik Indonesia (KBRI)';
     case Kjri = 'Konsulat Jenderal Republik Indonesia (KJRI)';
     case Ptri = 'Perutusan Tetap Republik Indonesia (PTRI)';
+    case PemprovDki = 'Pemerintah Provinsi DKI Jakarta';
+    case NonPNA = 'Non Perwakilan Negara Asing';
 
     /**
      * Kunci teknis tipe mitra — dipakai sebagai value <option> pada dropdown
@@ -45,11 +45,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'kedutaan_besar',
             self::MisiAsingAsean => 'misi_asing_asean',
             self::MisiPermanenAsean => 'misi_permanen_asean',
-            self::NonPNA => 'non_pna',
-            self::PemprovDki => 'pemprov_dki',
             self::Kbri => 'kbri',
             self::Kjri => 'kjri',
             self::Ptri => 'ptri',
+            self::PemprovDki => 'pemprov_dki',
+            self::NonPNA => 'non_pna',
         };
     }
 
@@ -64,11 +64,11 @@ enum TipeMitra: string
             self::KedutaanBesar => KedutaanBesar::class,
             self::MisiAsingAsean => MisiAsingAsean::class,
             self::MisiPermanenAsean => MisiPermanenAsean::class,
-            self::NonPNA => NonPerwakilanNegaraAsing::class,
-            self::PemprovDki => PemprovDki::class,
             self::Kbri => Kbri::class,
             self::Kjri => Kjri::class,
             self::Ptri => Ptri::class,
+            self::PemprovDki => PemprovDki::class,
+            self::NonPNA => NonPerwakilanNegaraAsing::class,
         };
     }
 
@@ -81,11 +81,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'kedutaanBesar',
             self::MisiAsingAsean => 'misiAsingAsean',
             self::MisiPermanenAsean => 'misiPermanenAsean',
-            self::NonPNA => 'nonPerwakilanNegaraAsing',
-            self::PemprovDki => 'pemprovDki',
             self::Kbri => 'kbri',
             self::Kjri => 'kjri',
             self::Ptri => 'ptri',
+            self::PemprovDki => 'pemprovDki',
+            self::NonPNA => 'nonPerwakilanNegaraAsing',
         };
     }
 
@@ -99,11 +99,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'nama_kedutaan_besar_id',
             self::MisiAsingAsean => 'nama_misi_asing_asean_id',
             self::MisiPermanenAsean => 'nama_misi_permanen_asean_id',
-            self::NonPNA => 'nama_non_perwakilan_negara_asing',
-            self::PemprovDki => 'nama_pemprov_dki',
             self::Kbri => 'nama_kbri',
             self::Kjri => 'nama_kjri',
             self::Ptri => 'nama_ptri',
+            self::PemprovDki => 'nama_pemprov_dki',
+            self::NonPNA => 'nama_non_perwakilan_negara_asing',
         };
     }
 
@@ -135,11 +135,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'Kedutaan Besar',
             self::MisiAsingAsean => 'Misi Asing ASEAN',
             self::MisiPermanenAsean => 'Misi Permanen ASEAN',
-            self::NonPNA => 'Mitra Non-PNA',
-            self::PemprovDki => 'Pemprov DKI Jakarta',
             self::Kbri => 'KBRI',
             self::Kjri => 'KJRI',
             self::Ptri => 'PTRI',
+            self::PemprovDki => 'Pemprov DKI Jakarta',
+            self::NonPNA => 'Mitra Non-PNA',
         };
     }
 
@@ -153,11 +153,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'kedutaan-besar.index',
             self::MisiAsingAsean => 'misi-asing-asean.index',
             self::MisiPermanenAsean => 'misi-permanen-asean.index',
-            self::NonPNA => 'non-perwakilan-negara-asing.index',
-            self::PemprovDki => 'pemprov-dki.index',
             self::Kbri => 'kbri.index',
             self::Kjri => 'kjri.index',
             self::Ptri => 'ptri.index',
+            self::PemprovDki => 'pemprov-dki.index',
+            self::NonPNA => 'non-perwakilan-negara-asing.index',
         };
     }
 
@@ -175,11 +175,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'landmark',
             self::MisiAsingAsean => 'flag',
             self::MisiPermanenAsean => 'flag-checkered',
-            self::NonPNA => 'building-columns',
-            self::PemprovDki => 'city',
             self::Kbri => 'building-flag',
             self::Kjri => 'passport',
             self::Ptri => 'earth-asia',
+            self::PemprovDki => 'city',
+            self::NonPNA => 'building-columns',
         };
     }
 
@@ -189,11 +189,11 @@ enum TipeMitra: string
             self::KedutaanBesar => 'blue',
             self::MisiAsingAsean => 'azure',
             self::MisiPermanenAsean => 'indigo',
-            self::NonPNA => 'purple',
-            self::PemprovDki => 'teal',
             self::Kbri => 'cyan',
             self::Kjri => 'lime',
             self::Ptri => 'pink',
+            self::PemprovDki => 'teal',
+            self::NonPNA => 'purple',
         };
     }
 

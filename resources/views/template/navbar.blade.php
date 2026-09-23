@@ -20,12 +20,11 @@
                                     <a class="dropdown-item" href="{{ route('kedutaan-besar.index') }}">Kedutaan Besar</a>
                                     <a class="dropdown-item" href="{{ route('misi-asing-asean.index') }}">Misi Asing untuk ASEAN</a>
                                     <a class="dropdown-item" href="{{ route('misi-permanen-asean.index') }}">Misi Permanen Negara ASEAN</a>
-                                    <a class="dropdown-item" href="{{ route('non-perwakilan-negara-asing.index') }}">Mitra Non-PNA</a>
-                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('kbri.index') }}">Mitra KBRI</a>
+                                    <a class="dropdown-item" href="{{ route('kjri.index') }}">Mitra KJRI</a>
+                                    <a class="dropdown-item" href="{{ route('ptri.index') }}">Mitra PTRI</a>
                                     <a class="dropdown-item" href="{{ route('pemprov-dki.index') }}">Pemprov DKI Jakarta</a>
-                                    <a class="dropdown-item" href="{{ route('kbri.index') }}">KBRI</a>
-                                    <a class="dropdown-item" href="{{ route('kjri.index') }}">KJRI</a>
-                                    <a class="dropdown-item" href="{{ route('ptri.index') }}">PTRI</a>
+                                    <a class="dropdown-item" href="{{ route('non-perwakilan-negara-asing.index') }}">Mitra Non-PNA</a>
                                 </div>
                             </li>
                             <li class="nav-item @yield('nav-kerjasama')">

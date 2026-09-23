@@ -75,4 +75,32 @@ trait HasDiplomasiProfileAccessors
                 : '<span class="text-danger">Masih Berjalan</span>',
         );
     }
+
+    /**
+     * Nilai tanggal berformat ISO (`Y-m-d`) untuk atribut `data-order` DataTables
+     * pada index.blade.php — *_display di atas memformat tanggal sebagai
+     * "d M Y" (mis. "02 Jul 2026") yang salah urut kalau disortir DataTables
+     * apa adanya (angka tanggal di depan dibaca duluan, bulan & tahun
+     * terabaikan). DataTables otomatis memakai `data-order` untuk pengurutan
+     * tanpa mengubah tampilan sel.
+     */
+    protected function tanggalDiterimaOrder(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->tanggal_diterima?->format('Y-m-d') ?? '',
+        );
+    }
+
+    /**
+     * Sama seperti tanggalDiterimaOrder() di atas, untuk kolom Tanggal Selesai.
+     * Baris yang "Masih Berjalan" (belum ada tanggal selesai) diberi string
+     * kosong supaya selalu berada di ujung urutan tanggal, bukan tercampur di
+     * tengah data yang sudah selesai.
+     */
+    protected function tanggalSelesaiOrder(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->tanggal_selesai?->format('Y-m-d') ?? '',
+        );
+    }
 }
