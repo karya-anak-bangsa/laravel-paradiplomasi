@@ -13,7 +13,7 @@ class NonPerwakilanNegaraAsingController extends Controller
 
     public function index()
     {
-        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::where('is_active', true)->orderBy('nama_non_perwakilan_negara_asing')->get();
+        $nonPerwakilanNegaraAsing = NonPerwakilanNegaraAsing::daftarIndex()->get();
 
         return view('mod_non_perwakilan_negara_asing.index', compact('nonPerwakilanNegaraAsing'));
     }

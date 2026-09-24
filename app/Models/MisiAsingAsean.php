@@ -50,4 +50,17 @@ class MisiAsingAsean extends Model
     {
         return TipeMitra::MisiAsingAsean->value;
     }
+
+    /**
+     * Kolom ekspor mengikuti mod_misi_asing_asean/index.blade.php — nama
+     * ID/EN dua baris dalam satu sel.
+     */
+    public static function kolomEkspor(): array
+    {
+        return [
+            'Negara' => fn (self $item) => $item->nama_negara,
+            'Nama Misi Resmi' => fn (self $item) => collect([$item->nama_misi_asing_asean_id, $item->nama_misi_asing_asean_en])->filter()->implode("\n") ?: null,
+            'Nama Diplomat' => fn (self $item) => $item->nama_diplomat,
+        ];
+    }
 }

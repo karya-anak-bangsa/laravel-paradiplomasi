@@ -20,7 +20,7 @@ class KantorDagangAsingController extends Controller
 
     public function index()
     {
-        $kantorDagangAsing = KantorDagangAsing::where('is_active', true)->orderBy('nama_kantor_dagang_asing')->get();
+        $kantorDagangAsing = KantorDagangAsing::daftarIndex()->get();
 
         return view('mod_kantor_dagang_asing.index', compact('kantorDagangAsing'));
     }

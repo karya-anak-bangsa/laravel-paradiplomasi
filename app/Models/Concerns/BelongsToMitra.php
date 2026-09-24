@@ -2,7 +2,11 @@
 
 namespace App\Models\Concerns;
 
+use App\Enums\TipeMitra;
 use App\Models\Mitra;
+use Closure;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static void creating(\Closure|string $callback)
@@ -54,6 +58,38 @@ trait BelongsToMitra
     public function mitra()
     {
         return $this->belongsTo(Mitra::class, 'id_mitra', 'id_mitra')->withTrashed();
+    }
+
+    /**
+     * Query tabel index modul mitra — dipakai juga oleh ekspor Excel/PDF
+     * (App\Support\EksporMitra), supaya file yang diunduh dijamin sama
+     * dengan tabel. Mitra berbasis negara diurutkan menurut negaranya,
+     * sisanya menurut nama resmi.
+     */
+    public function scopeDaftarIndex(Builder $query): void
+    {
+        $tipe = TipeMitra::from(static::tipeMitra());
+
+        $query->where('is_active', true)
+            ->orderBy($tipe->berbasisNegara() ? 'nama_negara' : $tipe->kolomNama());
+    }
+
+    /**
+     * Kolom file ekspor, dikunci label header — sengaja sama dengan tabel
+     * index modulnya (tanpa kolom Aksi), bedanya keterangan ditulis utuh.
+     * Bawaan ini untuk mitra "nama + keterangan"; subtype yang tabel
+     * index-nya berbeda meng-override method ini.
+     *
+     * @return array<string, Closure(Model): mixed>
+     */
+    public static function kolomEkspor(): array
+    {
+        $kolomNama = TipeMitra::from(static::tipeMitra())->kolomNama();
+
+        return [
+            'Nama' => fn (Model $item) => $item->{$kolomNama},
+            'Keterangan' => fn (Model $item) => $item->keterangan,
+        ];
     }
 
     // setiap model anak WAJIB override method ini untuk menentukan tipe_mitra-nya

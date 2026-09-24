@@ -127,11 +127,13 @@
                         <th colspan="{{ $kolom['colspan'] }}" rowspan="{{ $kolom['rowspan'] }}">{{ $kolom['label'] }}</th>
                     @endforeach
                 </tr>
-                <tr>
-                    @foreach ($header['bawah'] as $label)
-                        <th>{{ $label }}</th>
-                    @endforeach
-                </tr>
+                @if ($header['bawah'] !== [])
+                    <tr>
+                        @foreach ($header['bawah'] as $label)
+                            <th>{{ $label }}</th>
+                        @endforeach
+                    </tr>
+                @endif
             </thead>
             <tbody>
                 @forelse ($daftarBaris as $baris)
@@ -139,13 +141,14 @@
                          satu sel: dompdf tidak bisa memecah satu baris tabel ke dua halaman,
                          sehingga acara dengan puluhan mitra akan terpotong di bawah kertas.
                          Kolom lain hanya diisi di <tr> pertama (bukan rowspan — lebar kolom
-                         dompdf menyusut di halaman lanjutan kalau pakai rowspan). --}}
+                         dompdf menyusut di halaman lanjutan kalau pakai rowspan). Alasan
+                         kehadiran sengaja tidak dicetak di PDF — hanya di Excel. --}}
                     @php($jumlahTr = max(1, ...array_map(fn ($nilai) => is_array($nilai) ? count($nilai) : 1, array_values($baris))))
                     @for ($i = 0; $i < $jumlahTr; $i++)
                         <tr>
                             @foreach ($baris as $label => $nilai)
                                 <td @class([
-                                    'tengah' => in_array($label, \App\Support\EksporDiplomasi::KOLOM_SEMPIT),
+                                    'tengah' => in_array($label, \App\Support\DaftarEkspor::KOLOM_SEMPIT),
                                     'sambung-atas' => $i > 0,
                                     'sambung-bawah' => $i < $jumlahTr - 1,
                                 ])>
@@ -153,14 +156,15 @@
                                         @if ($nilai === [])
                                             {{ \App\Support\EksporDiplomasi::TANPA_MITRA }}
                                         @else
-                                            {{ $i + 1 }}). {{ $nilai[$i] }}
+                                            {{ $i + 1 }}). {{ \App\Support\EksporDiplomasi::teksUndangan($nilai[$i], denganAlasan: false) }}
                                         @endif
                                     @elseif ($i > 0)
                                         {{-- lanjutan: sudah ditulis di <tr> pertama --}}
                                     @elseif ($nilai instanceof \DateTimeInterface)
                                         {{ $nilai->format('d M Y') }}
                                     @else
-                                        {{ $nilai ?? '-' }}
+                                        {{-- "\n" = nilai dua baris, mis. nama ID + EN pada daftar mitra --}}
+                                        {!! nl2br(e($nilai ?? '-')) !!}
                                     @endif
                                 </td>
                             @endforeach

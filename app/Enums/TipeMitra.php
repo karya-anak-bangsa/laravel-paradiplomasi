@@ -175,6 +175,18 @@ enum TipeMitra: string
     }
 
     /**
+     * URL unduhan daftar mitra tipe ini, dipakai x-tombol-ekspor. Padanan
+     * ModulDiplomasi::urlEkspor(); $filter diabaikan karena index mitra
+     * tidak punya filter.
+     *
+     * @param  'excel'|'pdf'  $format
+     */
+    public function urlEkspor(string $format, array $filter = []): string
+    {
+        return route('ekspor.mitra.'.$format, ['tipe' => $this->slug()]);
+    }
+
+    /**
      * Ikon Font Awesome (tanpa awalan "fa-solid fa-") dan warna Tabler untuk
      * penanda visual tipe ini di dashboard.
      *

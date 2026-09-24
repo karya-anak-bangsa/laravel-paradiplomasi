@@ -20,7 +20,7 @@ class PusatKebudayaanAsingController extends Controller
 
     public function index()
     {
-        $pusatKebudayaanAsing = PusatKebudayaanAsing::where('is_active', true)->orderBy('nama_pusat_kebudayaan_asing')->get();
+        $pusatKebudayaanAsing = PusatKebudayaanAsing::daftarIndex()->get();
 
         return view('mod_pusat_kebudayaan_asing.index', compact('pusatKebudayaanAsing'));
     }

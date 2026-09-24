@@ -20,7 +20,7 @@ class PemprovDkiController extends Controller
 
     public function index()
     {
-        $pemprovDki = PemprovDki::where('is_active', true)->orderBy('nama_pemprov_dki')->get();
+        $pemprovDki = PemprovDki::daftarIndex()->get();
 
         return view('mod_pemprov_dki.index', compact('pemprovDki'));
     }

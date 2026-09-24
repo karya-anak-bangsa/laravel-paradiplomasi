@@ -13,7 +13,7 @@ class MisiPermanenAseanController extends Controller
 
     public function index()
     {
-        $misiPermanenAsean = MisiPermanenAsean::where('is_active', true)->orderBy('nama_negara')->get();
+        $misiPermanenAsean = MisiPermanenAsean::daftarIndex()->get();
 
         return view('mod_misi_permanen_asean.index', compact('misiPermanenAsean'));
     }

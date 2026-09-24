@@ -7,6 +7,9 @@
 
 @section('page-content')
     <x-page-body-table>
+        <x-slot name="actions">
+            <x-tombol-ekspor :modul="App\Enums\TipeMitra::PerwakilanRi" />
+        </x-slot>
         <x-slot name="thead">
             <tr>
                 <th style="width: 30%">Nama</th>

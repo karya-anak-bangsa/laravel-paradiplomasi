@@ -13,7 +13,7 @@ class KedutaanBesarController extends Controller
 
     public function index()
     {
-        $kedutaanBesar = KedutaanBesar::where('is_active', true)->orderBy('nama_negara')->get();
+        $kedutaanBesar = KedutaanBesar::daftarIndex()->get();
 
         return view('mod_kedutaan_besar.index', compact('kedutaanBesar'));
     }

@@ -50,11 +50,31 @@
                                     value="{{ old('email') }}" placeholder="Alamat email Anda" autocomplete="off" />
                             </div>
 
-                            {{-- password --}}
+                            {{-- password + tombol mata untuk menampilkan/menyembunyikan isinya --}}
                             <div class="mb-3">
-                                <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                                    value="{{ old('password') }}" placeholder="Kata sandi Anda" autocomplete="off" />
+                                <label class="form-label" for="password">Password</label>
+                                <div class="input-group input-group-flat">
+                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
+                                        value="{{ old('password') }}" placeholder="Kata sandi Anda" autocomplete="off" />
+                                    <span class="input-group-text">
+                                        <button type="button" id="toggle-password" class="link-secondary border-0 bg-transparent p-0"
+                                            title="Tampilkan password" aria-label="Tampilkan password" aria-pressed="false">
+                                            {{-- ikon mata (Tabler Icons "eye") — tampil saat password tersembunyi --}}
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-mata" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                            </svg>
+                                            {{-- ikon mata dicoret (Tabler Icons "eye-off") — tampil saat password terlihat --}}
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-mata d-none" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+                                                <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" />
+                                                <path d="M3 3l18 18" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
 
                             {{-- remember me --}}
@@ -82,6 +102,22 @@
 
         {{-- scripts tabler 1.4.0 --}}
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
+
+        {{-- tampilkan/sembunyikan password --}}
+        <script>
+            document.getElementById('toggle-password').addEventListener('click', function () {
+                const input = document.getElementById('password');
+                const terlihat = input.type === 'password';
+                const label = terlihat ? 'Sembunyikan password' : 'Tampilkan password';
+
+                input.type = terlihat ? 'text' : 'password';
+                this.querySelectorAll('.icon-mata').forEach((ikon) => ikon.classList.toggle('d-none'));
+                this.setAttribute('aria-pressed', terlihat);
+                this.setAttribute('aria-label', label);
+                this.title = label;
+                input.focus();
+            });
+        </script>
 
     </body>
 

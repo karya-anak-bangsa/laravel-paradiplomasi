@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Support\DaftarEkspor;
 use App\Support\EksporDiplomasi;
 use DateTimeInterface;
 use Maatwebsite\Excel\Concerns\FromArray;
@@ -22,9 +23,13 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, WithColumnFormatting, WithColumnWidths, WithCustomValueBinder, WithEvents, WithFreezePane, WithHeadings, WithStyles, WithTitle
+/**
+ * File Excel sebuah DaftarEkspor — daftar Riwayat Diplomasi maupun daftar
+ * Mitra. Isi & kolomnya ditentukan DaftarEkspor, kelas ini hanya format.
+ */
+class DaftarExport extends DefaultValueBinder implements FromArray, WithColumnFormatting, WithColumnWidths, WithCustomValueBinder, WithEvents, WithFreezePane, WithHeadings, WithStyles, WithTitle
 {
-    public function __construct(private EksporDiplomasi $ekspor) {}
+    public function __construct(private DaftarEkspor $ekspor) {}
 
     /**
      * Semua teks ditulis apa adanya sebagai teks. Bawaan PhpSpreadsheet
@@ -48,11 +53,15 @@ class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, Wi
     {
         // Tanggal diubah ke nilai serial Excel supaya bisa diurutkan/difilter
         // sebagai tanggal di Excel, bukan sebagai teks. Daftar Undangan Acara
-        // DKI ditulis satu mitra per baris di dalam sel.
+        // DKI ditulis satu mitra per baris di dalam sel, lengkap dengan alasan
+        // kehadirannya (PDF sengaja tanpa alasan).
         return array_map(fn (array $baris) => array_values(array_map(
             fn ($nilai) => match (true) {
                 $nilai instanceof DateTimeInterface => Date::dateTimeToExcel($nilai),
-                is_array($nilai) => implode("\n", $nilai) ?: EksporDiplomasi::TANPA_MITRA,
+                is_array($nilai) => implode("\n", array_map(
+                    fn (array $undangan) => EksporDiplomasi::teksUndangan($undangan, denganAlasan: true),
+                    $nilai,
+                )) ?: EksporDiplomasi::TANPA_MITRA,
                 default => $nilai ?? '-',
             },
             $baris,
@@ -66,7 +75,7 @@ class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, Wi
 
     public function title(): string
     {
-        return $this->ekspor->modul->value;
+        return $this->ekspor->namaSheet();
     }
 
     public function freezePane(): string
@@ -76,14 +85,16 @@ class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, Wi
 
     public function columnFormats(): array
     {
-        return $this->perKolom(fn (string $label) => in_array($label, EksporDiplomasi::KOLOM_TANGGAL) ? 'dd/mm/yyyy' : null);
+        return $this->perKolom(fn (string $label) => in_array($label, DaftarEkspor::KOLOM_TANGGAL) ? 'dd/mm/yyyy' : null);
     }
 
     public function columnWidths(): array
     {
         return $this->perKolom(fn (string $label) => match ($label) {
             'No' => 6,
+            'Tipe' => 10,
             'Status' => 14,
+            'Negara' => 22,
             'Tanggal Diterima', 'Tanggal Selesai' => 18,
             default => 60,
         });
@@ -110,8 +121,8 @@ class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, Wi
     }
 
     /**
-     * Petakan tiap label header ke huruf kolom Excel (A, B, ...). Urutan
-     * kolom Acara DKI berbeda dari 5 modul lain, jadi hurufnya tidak di-hardcode.
+     * Petakan tiap label header ke huruf kolom Excel (A, B, ...). Urutan &
+     * jumlah kolom berbeda per modul, jadi hurufnya tidak di-hardcode.
      */
     private function perKolom(callable $nilai): array
     {

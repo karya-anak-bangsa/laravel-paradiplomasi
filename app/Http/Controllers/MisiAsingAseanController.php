@@ -13,7 +13,7 @@ class MisiAsingAseanController extends Controller
 
     public function index()
     {
-        $misiAsingAsean = MisiAsingAsean::where('is_active', true)->orderBy('nama_negara')->get();
+        $misiAsingAsean = MisiAsingAsean::daftarIndex()->get();
 
         return view('mod_misi_asing_asean.index', compact('misiAsingAsean'));
     }

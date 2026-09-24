@@ -3,10 +3,8 @@
 namespace App\Support;
 
 use App\Enums\ModulDiplomasi;
-use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 /**
  * Isi file ekspor (Excel & PDF) daftar Riwayat Diplomasi. Kolomnya sengaja
@@ -16,16 +14,8 @@ use Illuminate\Support\Str;
  * Perbedaan Acara DKI (banyak mitra per acara, lihat CLAUDE.md Bagian 4)
  * diwakili ModulDiplomasi::berbasisMitraTunggal(), bukan if per nama modul.
  */
-class EksporDiplomasi
+class EksporDiplomasi extends DaftarEkspor
 {
-    /** Induk kolom tanggal pada header dua tingkat PDF ("Tanggal" → Diterima | Selesai). */
-    public const GRUP_TANGGAL = 'Tanggal';
-
-    public const KOLOM_TANGGAL = [self::GRUP_TANGGAL.' Diterima', self::GRUP_TANGGAL.' Selesai'];
-
-    /** Kolom berisi nilai pendek, dirata-tengah di PDF & dibuat sempit di Excel. */
-    public const KOLOM_SEMPIT = ['No', ...self::KOLOM_TANGGAL, 'Status'];
-
     public const TANPA_MITRA = 'Belum ada mitra';
 
     private Collection $data;
@@ -48,76 +38,45 @@ class EksporDiplomasi
         return 'Status: '.($this->status ?? 'Semua Status').' | Tahun: '.($this->tahun ?? 'Semua Tahun');
     }
 
-    public function namaFile(string $ekstensi): string
+    public function namaSheet(): string
     {
-        return 'daftar_'.$this->modul->slug().'_'.Waktu::sekarang()->format('Ymd_His').'.'.$ekstensi;
+        return $this->modul->value;
     }
 
     /**
-     * @return list<string>
-     */
-    public function header(): array
-    {
-        return ['No', ...array_keys($this->kolom())];
-    }
-
-    /**
-     * Header dua tingkat khusus PDF: kolom tanggal dikelompokkan di bawah
-     * satu sel "Tanggal" (colspan), kolom lainnya memanjang dua baris
-     * (rowspan). Excel tetap memakai header() satu tingkat supaya autofilter
-     * dan freeze pane-nya sederhana.
+     * Satu undangan Acara DKI sebagai teks: "Nama Mitra (Status)", plus
+     * alasannya bila $denganAlasan. Excel mencantumkan alasan (selnya lebar
+     * dan alasan penting untuk analisis pola kehadiran); PDF tidak, supaya
+     * kolom Daftar Undangan tetap ringkas (arahan user, 25 Sep 2026).
      *
-     * @return array{atas: list<array{label: string, colspan: int, rowspan: int}>, bawah: list<string>}
+     * @param  array{mitra: string, kehadiran: string, alasan: ?string}  $undangan
      */
-    public function headerBertingkat(): array
+    public static function teksUndangan(array $undangan, bool $denganAlasan): string
     {
-        $atas = [];
-        $bawah = [];
+        $kehadiran = $undangan['kehadiran'];
 
-        foreach ($this->header() as $label) {
-            if (! in_array($label, self::KOLOM_TANGGAL)) {
-                $atas[] = ['label' => $label, 'colspan' => 1, 'rowspan' => 2];
-
-                continue;
-            }
-
-            if ($bawah === []) {
-                $atas[] = ['label' => self::GRUP_TANGGAL, 'colspan' => count(self::KOLOM_TANGGAL), 'rowspan' => 1];
-            }
-
-            $bawah[] = Str::after($label, self::GRUP_TANGGAL.' ');
+        if ($denganAlasan && $undangan['alasan']) {
+            $kehadiran .= ' – '.$undangan['alasan'];
         }
 
-        return ['atas' => $atas, 'bawah' => $bawah];
+        return "{$undangan['mitra']} ({$kehadiran})";
     }
 
-    /**
-     * Satu array per baris, dikunci label header. Tanggal dibiarkan berupa
-     * objek tanggal supaya Excel bisa menyimpannya sebagai tanggal sungguhan,
-     * dan Daftar Undangan berupa array supaya tiap format memilih cara
-     * menampilkannya sendiri (Excel: satu mitra per baris di dalam sel; PDF:
-     * satu mitra per <tr> bernomor, karena dompdf tidak bisa memecah satu
-     * baris tabel ke dua halaman). Array kosong = acara belum punya mitra.
-     *
-     * @return list<array<string, mixed>>
-     */
-    public function baris(): array
+    protected function slug(): string
     {
-        $kolom = $this->kolom();
+        return $this->modul->slug();
+    }
 
-        return $this->data->values()->map(fn (Model $item, int $i) => [
-            'No' => $i + 1,
-            ...array_map(fn (Closure $nilai) => $nilai($item), $kolom),
-        ])->all();
+    protected function data(): Collection
+    {
+        return $this->data;
     }
 
     /**
      * Urutan kolom mengikuti index.blade.php: Mitra dulu untuk 5 modul
      * berbasis mitra tunggal, judul acara dulu untuk Acara DKI.
-     *
-     * @return array<string, Closure(Model): mixed>
      */
-    private function kolom(): array
+    protected function kolom(): array
     {
         $mitra = $this->modul->berbasisMitraTunggal()
             ? ['Mitra' => fn (Model $item) => $item->mitra->nama_resmi_mitra]
@@ -138,20 +97,20 @@ class EksporDiplomasi
     }
 
     /**
-     * Nama mitra beserta status kehadirannya (+ alasannya, bila ada).
+     * Daftar Undangan berupa array supaya tiap format memilih cara
+     * menampilkannya sendiri (Excel: satu mitra per baris di dalam sel,
+     * lengkap dengan alasan; PDF: satu mitra per <tr> bernomor tanpa alasan,
+     * karena dompdf tidak bisa memecah satu baris tabel ke dua halaman).
+     * Array kosong = acara belum punya mitra. Teksnya lewat teksUndangan().
      *
-     * @return list<string>
+     * @return list<array{mitra: string, kehadiran: string, alasan: ?string}>
      */
     private function daftarUndangan(Model $acara): array
     {
-        return $acara->mitra->map(function (Model $mitra) {
-            $kehadiran = $mitra->pivot->status_kehadiran;
-
-            if ($mitra->pivot->keterangan_kehadiran) {
-                $kehadiran .= ' – '.$mitra->pivot->keterangan_kehadiran;
-            }
-
-            return "{$mitra->nama_resmi_mitra} ({$kehadiran})";
-        })->all();
+        return $acara->mitra->map(fn (Model $mitra) => [
+            'mitra' => $mitra->nama_resmi_mitra,
+            'kehadiran' => $mitra->pivot->status_kehadiran,
+            'alasan' => $mitra->pivot->keterangan_kehadiran,
+        ])->all();
     }
 }

@@ -9,6 +9,9 @@
 {{-- content --}}
 @section('page-content')
     <x-page-body-table>
+        <x-slot name="actions">
+            <x-tombol-ekspor :modul="App\Enums\TipeMitra::KedutaanBesar" />
+        </x-slot>
         <x-slot name="thead">
             <tr>
                 <th style="width: 20%">Negara</th>

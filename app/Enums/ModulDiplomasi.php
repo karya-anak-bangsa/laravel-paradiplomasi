@@ -156,6 +156,18 @@ enum ModulDiplomasi: string
     }
 
     /**
+     * URL unduhan daftar modul ini, dipakai x-tombol-ekspor. Padanan
+     * TipeMitra::urlEkspor().
+     *
+     * @param  'excel'|'pdf'  $format
+     * @param  array{status?: string, tahun?: string}  $filter
+     */
+    public function urlEkspor(string $format, array $filter = []): string
+    {
+        return route('ekspor.'.$format, ['modul' => $this->slug(), ...$filter]);
+    }
+
+    /**
      * Nama resource route modul ini di routes/web.php.
      */
     private function prefixRoute(): string

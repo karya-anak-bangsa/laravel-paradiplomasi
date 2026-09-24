@@ -49,4 +49,17 @@ class KedutaanBesar extends Model
     {
         return TipeMitra::KedutaanBesar->value;
     }
+
+    /**
+     * Kolom ekspor mengikuti mod_kedutaan_besar/index.blade.php — nama
+     * ID/EN dan nama/jabatan diplomat masing-masing dua baris dalam satu sel.
+     */
+    public static function kolomEkspor(): array
+    {
+        return [
+            'Negara' => fn (self $item) => $item->nama_negara,
+            'Nama Kedutaan' => fn (self $item) => collect([$item->nama_kedutaan_besar_id, $item->nama_kedutaan_besar_en])->filter()->implode("\n") ?: null,
+            'Nama Diplomat' => fn (self $item) => collect([$item->nama_diplomat, $item->jabatan_diplomat])->filter()->implode("\n") ?: null,
+        ];
+    }
 }

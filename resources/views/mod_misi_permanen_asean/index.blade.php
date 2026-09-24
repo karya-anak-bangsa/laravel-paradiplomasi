@@ -7,6 +7,9 @@
 
 @section('page-content')
     <x-page-body-table>
+        <x-slot name="actions">
+            <x-tombol-ekspor :modul="App\Enums\TipeMitra::MisiPermanenAsean" />
+        </x-slot>
         <x-slot name="thead">
             <tr>
                 <th style="width: 20%">Negara</th>

@@ -62,6 +62,19 @@ class PerwakilanRi extends Model
     }
 
     /**
+     * Kolom ekspor mengikuti mod_perwakilan_ri/index.blade.php — kolom
+     * bawaan BelongsToMitra ditambah kode jenis perwakilan.
+     */
+    public static function kolomEkspor(): array
+    {
+        return [
+            'Nama' => fn (self $item) => $item->nama_perwakilan_ri,
+            'Tipe' => fn (self $item) => $item->tipe_perwakilan_ri,
+            'Keterangan' => fn (self $item) => $item->keterangan,
+        ];
+    }
+
+    /**
      * Label lengkap jenis perwakilan, mis. "Konsulat Jenderal Republik
      * Indonesia (KJRI)" untuk kode "KJRI".
      */

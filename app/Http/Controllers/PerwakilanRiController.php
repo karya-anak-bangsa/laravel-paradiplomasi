@@ -20,7 +20,7 @@ class PerwakilanRiController extends Controller
 
     public function index()
     {
-        $perwakilanRi = PerwakilanRi::where('is_active', true)->orderBy('nama_perwakilan_ri')->get();
+        $perwakilanRi = PerwakilanRi::daftarIndex()->get();
 
         return view('mod_perwakilan_ri.index', compact('perwakilanRi'));
     }

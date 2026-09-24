@@ -2,12 +2,14 @@
 
 // halaman auth
 use App\Enums\ModulDiplomasi;
+use App\Enums\TipeMitra;
 use App\Http\Controllers\AcaraDKIController;
 // halaman backend
 use App\Http\Controllers\AudiensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EksporDiplomasiController;
+use App\Http\Controllers\EksporMitraController;
 use App\Http\Controllers\KantorDagangAsingController;
 use App\Http\Controllers\KedutaanBesarController;
 use App\Http\Controllers\KerjasamaController;
@@ -92,6 +94,17 @@ Route::middleware('cek.auth')->group(function () {
         ->prefix('ekspor/{modul}')
         ->where(['modul' => implode('|', array_map(fn (ModulDiplomasi $modul) => $modul->slug(), ModulDiplomasi::cases()))])
         ->name('ekspor.')
+        ->group(function () {
+            Route::get('excel', 'excel')->name('excel');
+            Route::get('pdf', 'pdf')->name('pdf');
+        });
+
+    // Ekspor Excel/PDF daftar Mitra: satu pasang route untuk kedelapan tipe,
+    // segmen {tipe} dibatasi ke slug App\Enums\TipeMitra.
+    Route::controller(EksporMitraController::class)
+        ->prefix('ekspor/mitra/{tipe}')
+        ->where(['tipe' => implode('|', array_map(fn (TipeMitra $tipe) => $tipe->slug(), TipeMitra::cases()))])
+        ->name('ekspor.mitra.')
         ->group(function () {
             Route::get('excel', 'excel')->name('excel');
             Route::get('pdf', 'pdf')->name('pdf');
