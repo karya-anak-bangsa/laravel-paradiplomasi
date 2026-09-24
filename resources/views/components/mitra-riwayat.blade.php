@@ -18,75 +18,34 @@
       $sebutan — kata benda untuk pesan kosong, mis. "kedutaan ini" / "misi ini".
 
     Lima modul pertama (Kerjasama-Kunjungan) proses bisnisnya identik sehingga
-    dirender dari satu konfigurasi. Acara DKI dirender terpisah karena relasinya
+    dirender dari satu perulangan. Acara DKI dirender terpisah karena relasinya
     many-to-many dan membawa kolom pivot status_kehadiran (lihat CLAUDE.md
     Bagian 4).
+
+    Daftar modul, nama relasi, dan nama kolomnya diturunkan dari
+    App\Enums\ModulDiplomasi — jangan ditulis ulang di sini (CLAUDE.md Bagian 3).
+
+    Tombol Ubah hanya untuk admin; route edit dijaga middleware cek.admin,
+    jadi tanpa pengecekan ini guest melihat tombol yang berujung 403.
 --}}
 
 @php
-    $daftarModul = [
-        [
-            'relasi' => 'kerjasama',
-            'label' => 'Kerjasama',
-            'judulLabel' => 'Kerjasama',
-            'judulKolom' => 'kerjasama',
-            'route' => 'kerjasama',
-            'pk' => 'id_kerjasama',
-            'statusKolom' => 'status_kerjasama',
-            'triwulanKolom' => 'triwulan_kerjasama',
-        ],
-        [
-            'relasi' => 'kolaborasi',
-            'label' => 'Kolaborasi',
-            'judulLabel' => 'Kolaborasi',
-            'judulKolom' => 'kolaborasi',
-            'route' => 'kolaborasi',
-            'pk' => 'id_kolaborasi',
-            'statusKolom' => 'status_kolaborasi',
-            'triwulanKolom' => 'triwulan_kolaborasi',
-        ],
-        [
-            'relasi' => 'undangan',
-            'label' => 'Undangan',
-            'judulLabel' => 'Acara',
-            'judulKolom' => 'acara',
-            'route' => 'undangan',
-            'pk' => 'id_undangan',
-            'statusKolom' => 'status_undangan',
-            'triwulanKolom' => 'triwulan_undangan',
-        ],
-        [
-            'relasi' => 'audiensi',
-            'label' => 'Audiensi',
-            'judulLabel' => 'Topik',
-            'judulKolom' => 'topik',
-            'route' => 'audiensi',
-            'pk' => 'id_audiensi',
-            'statusKolom' => 'status_audiensi',
-            'triwulanKolom' => 'triwulan_audiensi',
-        ],
-        [
-            'relasi' => 'kunjungan',
-            'label' => 'Kunjungan',
-            'judulLabel' => 'Perihal',
-            'judulKolom' => 'perihal',
-            'route' => 'kunjungan',
-            'pk' => 'id_kunjungan',
-            'statusKolom' => 'status_kunjungan',
-            'triwulanKolom' => 'triwulan_kunjungan',
-        ],
-    ];
+    $daftarModul = array_filter(
+        \App\Enums\ModulDiplomasi::cases(),
+        fn (\App\Enums\ModulDiplomasi $modul) => $modul->berbasisMitraTunggal(),
+    );
 
     $induk = $mitra->mitra;
     $namaTampil = $induk->label_mitra;
+    $isAdmin = session('auth_role') === 'admin';
 @endphp
 
 <div class="mb-0">
     <ul class="nav nav-tabs" data-bs-toggle="tabs" role="tablist">
         @foreach ($daftarModul as $i => $modul)
             <li class="nav-item" role="presentation">
-                <a href="#tab-{{ $modul['relasi'] }}" class="nav-link @if ($i === 0) active @endif"
-                    data-bs-toggle="tab" role="tab">{{ $modul['label'] }}</a>
+                <a href="#tab-{{ $modul->relasi() }}" class="nav-link @if ($i === 0) active @endif"
+                    data-bs-toggle="tab" role="tab">{{ $modul->value }}</a>
             </li>
         @endforeach
         <li class="nav-item" role="presentation">
@@ -98,15 +57,23 @@
 
         {{-- Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan --}}
         @foreach ($daftarModul as $i => $modul)
-            <div class="tab-pane @if ($i === 0) active show @endif" id="tab-{{ $modul['relasi'] }}" role="tabpanel">
-                @php $daftarItem = $mitra->{$modul['relasi']}; @endphp
+            @php
+                $relasi = $modul->relasi();
+                $label = $modul->value;
+                $judulLabel = $modul->labelJudul();
+                $judulKolom = $modul->kolomJudul();
+                $statusKolom = $modul->kolomStatus();
+                $triwulanKolom = $modul->kolomTriwulan();
+                $daftarItem = $mitra->{$relasi};
+            @endphp
+            <div class="tab-pane @if ($i === 0) active show @endif" id="tab-{{ $relasi }}" role="tabpanel">
 
                 @if ($daftarItem->isNotEmpty())
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th style="width: 30%" class="text-start">{{ $modul['label'] }}</th>
+                                    <th style="width: 30%" class="text-start">{{ $label }}</th>
                                     <th style="width: 12%" class="text-start">Tanggal Diterima</th>
                                     <th style="width: 12%" class="text-start">Tanggal Selesai</th>
                                     <th style="width: 10%" class="text-center">Status</th>
@@ -116,16 +83,18 @@
                             <tbody>
                                 @foreach ($daftarItem as $item)
                                     <tr>
-                                        <td class="text-start">{{ str($item->{$modul['judulKolom']})->stripTags() }}</td>
+                                        <td class="text-start">{{ str($item->{$judulKolom})->stripTags() }}</td>
                                         <td class="text-start">{{ $item->tanggal_diterima?->format('d M Y') ?? '-' }}</td>
                                         <td class="text-start">{{ $item->tanggal_selesai?->format('d M Y') ?? 'Masih berjalan' }}</td>
-                                        <td class="text-center">{{ $item->{$modul['statusKolom']} }}</td>
+                                        <td class="text-center">{{ $item->{$statusKolom} }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route($modul['route'] . '.edit', $item->{$modul['pk']}) }}" class="btn btn-icon btn-warning">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </a>
+                                            @if ($isAdmin)
+                                                <a href="{{ route($modul->routeEdit(), $item) }}" class="btn btn-icon btn-warning">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </a>
+                                            @endif
                                             <button type="button" class="btn btn-icon btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#modal-{{ $modul['relasi'] }}-{{ $item->{$modul['pk']} }}">
+                                                data-bs-toggle="modal" data-bs-target="#modal-{{ $relasi }}-{{ $item->getKey() }}">
                                                 <i class="fa-solid fa-eye"></i>
                                             </button>
                                         </td>
@@ -136,26 +105,26 @@
                     </div>
 
                     @foreach ($daftarItem as $item)
-                        <div class="modal modal-blur fade" id="modal-{{ $modul['relasi'] }}-{{ $item->{$modul['pk']} }}"
+                        <div class="modal modal-blur fade" id="modal-{{ $relasi }}-{{ $item->getKey() }}"
                             tabindex="-1" role="dialog" aria-hidden="true"
                             data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h3 class="modal-title">Rincian {{ $modul['label'] }} - {{ $namaTampil }}</h3>
+                                        <h3 class="modal-title">Rincian {{ $label }} - {{ $namaTampil }}</h3>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
 
                                         <x-mitra-ringkas :mitra="$induk" />
 
-                                        <div class="hr-text hr-text-start">{{ $modul['judulLabel'] }}</div>
+                                        <div class="hr-text hr-text-start">{{ $judulLabel }}</div>
                                         <div class="mb-3">
                                             <div class="border rounded p-3">
-                                                @if ($item->{$modul['judulKolom']})
-                                                    {!! $item->{$modul['judulKolom']} !!}
+                                                @if ($item->{$judulKolom})
+                                                    {!! $item->{$judulKolom} !!}
                                                 @else
-                                                    <p class="text-secondary mb-0">Belum ada catatan {{ strtolower($modul['judulLabel']) }}.</p>
+                                                    <p class="text-secondary mb-0">Belum ada catatan {{ strtolower($judulLabel) }}.</p>
                                                 @endif
                                             </div>
                                         </div>
@@ -186,11 +155,11 @@
                                             </div>
                                             <div class="datagrid-item">
                                                 <div class="datagrid-title">Triwulan</div>
-                                                <div class="datagrid-content">{{ $item->{$modul['triwulanKolom']} }}</div>
+                                                <div class="datagrid-content">{{ $item->{$triwulanKolom} }}</div>
                                             </div>
                                             <div class="datagrid-item">
-                                                <div class="datagrid-title">Status {{ $modul['label'] }}</div>
-                                                <div class="datagrid-content">{{ $item->{$modul['statusKolom']} }}</div>
+                                                <div class="datagrid-title">Status {{ $label }}</div>
+                                                <div class="datagrid-content">{{ $item->{$statusKolom} }}</div>
                                             </div>
                                         </div>
 
@@ -203,7 +172,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="text-danger mb-0">Belum ada riwayat {{ strtolower($modul['label']) }} untuk {{ $sebutan }}.</p>
+                    <p class="text-danger mb-0">Belum ada riwayat {{ strtolower($label) }} untuk {{ $sebutan }}.</p>
                 @endif
             </div>
         @endforeach
@@ -240,9 +209,11 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ route('acara-dki.edit', $item->id_acara_dki) }}" class="btn btn-icon btn-warning">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
+                                        @if ($isAdmin)
+                                            <a href="{{ route('acara-dki.edit', $item->id_acara_dki) }}" class="btn btn-icon btn-warning">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                        @endif
                                         <button type="button" class="btn btn-icon btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#modal-acara-dki-{{ $item->id_acara_dki }}">
                                             <i class="fa-solid fa-eye"></i>

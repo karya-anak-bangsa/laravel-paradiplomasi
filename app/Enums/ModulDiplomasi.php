@@ -118,15 +118,55 @@ enum ModulDiplomasi: string
         return $this !== self::AcaraDki;
     }
 
-    public function routeIndex(): string
+    /**
+     * Kolom triwulan (TW I–IV). Keenam migration konsisten menamainya
+     * "triwulan_" + nama tabel tanpa awalan "tb_", jadi diturunkan dari
+     * nama tabel model — bukan ditebak dari nama modul.
+     */
+    public function kolomTriwulan(): string
+    {
+        return 'triwulan_'.str((new ($this->modelClass()))->getTable())->after('tb_');
+    }
+
+    /**
+     * Nama relasi di App\Models\Concerns\HasRiwayatDiplomasi (sisi Mitra) —
+     * padanan TipeMitra::relasi(). Dipakai tab Riwayat Diplomasi pada halaman
+     * profil mitra (komponen x-mitra-riwayat).
+     */
+    public function relasi(): string
     {
         return match ($this) {
-            self::Kerjasama => 'kerjasama.index',
-            self::Kolaborasi => 'kolaborasi.index',
-            self::Undangan => 'undangan.index',
-            self::Audiensi => 'audiensi.index',
-            self::Kunjungan => 'kunjungan.index',
-            self::AcaraDki => 'acara-dki.index',
+            self::Kerjasama => 'kerjasama',
+            self::Kolaborasi => 'kolaborasi',
+            self::Undangan => 'undangan',
+            self::Audiensi => 'audiensi',
+            self::Kunjungan => 'kunjungan',
+            self::AcaraDki => 'acaraDki',
+        };
+    }
+
+    public function routeIndex(): string
+    {
+        return $this->prefixRoute().'.index';
+    }
+
+    public function routeEdit(): string
+    {
+        return $this->prefixRoute().'.edit';
+    }
+
+    /**
+     * Nama resource route modul ini di routes/web.php.
+     */
+    private function prefixRoute(): string
+    {
+        return match ($this) {
+            self::Kerjasama => 'kerjasama',
+            self::Kolaborasi => 'kolaborasi',
+            self::Undangan => 'undangan',
+            self::Audiensi => 'audiensi',
+            self::Kunjungan => 'kunjungan',
+            self::AcaraDki => 'acara-dki',
         };
     }
 

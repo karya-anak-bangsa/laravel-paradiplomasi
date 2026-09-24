@@ -69,11 +69,11 @@ Metadata tampilan (`ikon`/`warna`/`labelSingkat`) sengaja ikut ditaruh di enum, 
 
 ### `App\Enums\ModulDiplomasi` — padanan `TipeMitra` untuk 6 modul Riwayat Diplomasi
 
-Kalau `TipeMitra` mendaftar *pihak* yang berdiplomasi, `ModulDiplomasi` mendaftar *peristiwa*-nya: `Kerjasama`, `Kolaborasi`, `Undangan`, `Audiensi`, `Kunjungan`, `AcaraDki`. Metadata per case: `slug()`, `modelClass()`, `kolomJudul()`, `kolomStatus()`, `labelJudul()` (label kolom judul di tabel index & file ekspor), `routeIndex()`, `ikon()`, `warna()`, `berbasisMitraTunggal()` (false hanya untuk Acara DKI — lihat Bagian 4), plus `dariSlug()`.
+Kalau `TipeMitra` mendaftar *pihak* yang berdiplomasi, `ModulDiplomasi` mendaftar *peristiwa*-nya: `Kerjasama`, `Kolaborasi`, `Undangan`, `Audiensi`, `Kunjungan`, `AcaraDki`. Metadata per case: `slug()`, `modelClass()`, `kolomJudul()`, `kolomStatus()`, `labelJudul()` (label kolom judul di tabel index & file ekspor), `kolomTriwulan()`, `relasi()` (nama relasi di `HasRiwayatDiplomasi`, padanan `TipeMitra::relasi()`), `routeIndex()`, `routeEdit()`, `ikon()`, `warna()`, `berbasisMitraTunggal()` (false hanya untuk Acara DKI — lihat Bagian 4), plus `dariSlug()`.
 
 ⚠️ **Kolom judul tidak senama dengan modulnya** — hanya Kerjasama, Kolaborasi, dan Acara DKI yang begitu; sisanya `tb_undangan.acara`, `tb_audiensi.topik`, `tb_kunjungan.perihal`. Karena itu `kolomJudul()`/`kolomStatus()` **meneruskan** `$judulColumn`/`$statusColumn` milik model (lewat getter publik di `HasDiplomasiProfileAccessors`), bukan menyalin daftarnya. Jangan ubah jadi `match` berisi nama kolom — itu membuat dua daftar yang bisa saling melenceng. Untuk menampilkan judul, pakai accessor `judul_ringkas` yang sudah ada.
 
-Dibuat untuk modul Restore Data, yang harus menyisir **seluruh** modul pemilik `is_active` + `deleted_at`. Aturannya sama seperti `TipeMitra`: **kode yang perlu tahu "ada modul Riwayat Diplomasi apa saja" turunkan dari enum ini**, jangan menulis daftarnya sendiri. Satu pengecualian yang masih ada: blok `$akumulasiRiwayat` di `DashboardController` — butuh `warnaChart` yang belum ada di enum, dan sudah diberi komentar penjelas di tempatnya.
+Dibuat untuk modul Restore Data, yang harus menyisir **seluruh** modul pemilik `is_active` + `deleted_at`. Aturannya sama seperti `TipeMitra`: **kode yang perlu tahu "ada modul Riwayat Diplomasi apa saja" turunkan dari enum ini**, jangan menulis daftarnya sendiri. Yang sudah mengikuti: `DataTerhapus` (Restore Data), `EksporDiplomasi` + route ekspor, dan komponen `x-mitra-riwayat` (tab riwayat di profil mitra). Satu pengecualian yang masih ada: blok `$akumulasiRiwayat` di `DashboardController` — butuh `warnaChart` yang belum ada di enum, dan sudah diberi komentar penjelas di tempatnya.
 
 ### Trait kunci
 
@@ -181,6 +181,7 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
   - Ukuran PDF dijaga kecil (±50–60 KB): font subsetting diaktifkan di `EksporDiplomasiController`, dan kop memakai `public/img/dki-jakarta-kop.png` (159×180 px), bukan `dki-jakarta.webp` (1200×1355 px) — dompdf menyematkan gambar dalam resolusi aslinya, sehingga logo besar saja menambah ±700 KB per file.
   - Alurnya: tombol di `x-page-body-filter` → route `ekspor.excel` / `ekspor.pdf` (`/ekspor/{slug ModulDiplomasi}/{excel|pdf}`, satu pasang route untuk keenam modul) → `EksporDiplomasiController` → `App\Support\EksporDiplomasi` (satu-satunya tempat yang menentukan kolom & isi file) → `App\Exports\RiwayatDiplomasiExport` / view `ekspor.riwayat-diplomasi-pdf`.
   - Kolom ekspor sengaja **sama dengan tabel index** (arahan user), bedanya judul ditulis utuh dan Acara DKI mencantumkan nama mitra + status kehadiran. Kalau kolom index berubah, ubah juga `EksporDiplomasi::kolom()`.
+  - Semua teks di Excel ditulis sebagai teks (`RiwayatDiplomasiExport::bindValue()`), bukan lewat binder bawaan PhpSpreadsheet yang menganggap teks berawalan `=` sebagai rumus — mencegah *formula injection* dari judul/nama yang diketik pengguna. Jangan hapus binder ini.
   - Batasan dompdf yang sudah ditemui: `counter(pages)` di CSS selalu "0" (nomor halaman dicetak lewat canvas di `EksporDiplomasiController::nomorHalaman()`), dan satu baris tabel tidak bisa dipecah ke dua halaman — karena itu Daftar Undangan di PDF ditulis menyambung dengan `; `, bukan satu mitra per baris seperti di Excel.
 
 ---
@@ -235,7 +236,8 @@ Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-texta
 **`x-page-body-filter`** — kartu filter Status & Tahun di index 6 modul Riwayat Diplomasi. Props: `statusOptions`, `tahunOptions`, `modul` (opsional, case `App\Enums\ModulDiplomasi`; kalau diisi, muncul tombol ekspor Excel & PDF yang membawa filter aktif). Tombol tampil untuk admin maupun guest.
 
 Khusus tiga komponen mitra terakhir:
-- **`x-mitra-riwayat`** — seluruh tab Riwayat Diplomasi (6 tab + modal rinciannya) pada halaman profil mitra. Dipakai oleh **semua** modul mitra. Sebelumnya tiap modul punya salinan `show-riwayat.blade.php` sendiri sepanjang ±800 baris; keempat salinan itu sudah dihapus. Props: `:mitra` (model subtype dengan keenam relasi ter-load) dan `sebutan` (kata benda untuk pesan kosong, mis. `"kedutaan ini"`).
+- **`x-mitra-riwayat`** — seluruh tab Riwayat Diplomasi (6 tab + modal rinciannya) pada halaman profil mitra. Dipakai oleh **semua** modul mitra. Sebelumnya tiap modul punya salinan `show-riwayat.blade.php` sendiri sepanjang ±800 baris; keempat salinan itu sudah dihapus. Props: `:mitra` (model subtype dengan keenam relasi ter-load) dan `sebutan` (kata benda untuk pesan kosong, mis. `"kedutaan ini"`). Daftar 5 tab pertama beserta nama relasi/kolomnya diturunkan dari `ModulDiplomasi`; tombol Ubah hanya tampil untuk admin.
+- **Kolom tanggal di tabel `.datatable` wajib diberi `data-order` berformat ISO** (`Y-m-d` atau `Y-m-d H:i:s`). DataTables tidak bisa membaca "02 Jul 2026" / "23 Sep 2026, 09:51 WIB" sebagai tanggal dan akan mengurutkannya sebagai teks (angka hari duluan). Kolom Aksi diberi `data-orderable="false"`.
 - **`x-mitra-ringkas`** — blok identitas mitra di dalam modal rincian. Props: `:mitra` (model `Mitra` supertype).
 - **`x-mitra-picker`** — pemilih mitra dua tingkat (tipe → nama). Prop: `:daftar-mitra` dari `App\Support\DaftarMitra::aktifPerTipe()`.
 

@@ -20,7 +20,7 @@
                 <th data-orderable="true" style="width:10%" class="text-center">Tanggal Diterima</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Tanggal Selesai</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Status</th>
-                <th data-orderable="true" style="width:10%" class="text-center">Aksi</th>
+                <th data-orderable="false" style="width:10%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">

@@ -7,20 +7,42 @@ use DateTimeInterface;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFreezePane;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RiwayatDiplomasiExport implements FromArray, WithColumnFormatting, WithColumnWidths, WithEvents, WithFreezePane, WithHeadings, WithStyles, WithTitle
+class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, WithColumnFormatting, WithColumnWidths, WithCustomValueBinder, WithEvents, WithFreezePane, WithHeadings, WithStyles, WithTitle
 {
     public function __construct(private EksporDiplomasi $ekspor) {}
+
+    /**
+     * Semua teks ditulis apa adanya sebagai teks. Bawaan PhpSpreadsheet
+     * menganggap teks berawalan "=" sebagai rumus, sehingga judul/nama yang
+     * diketik seperti "=HYPERLINK(...)" akan DIJALANKAN Excel saat file dibuka
+     * (formula injection). Angka — kolom No dan tanggal serial Excel — tetap
+     * angka lewat binder bawaan.
+     */
+    public function bindValue(Cell $cell, mixed $value): bool
+    {
+        if (is_string($value)) {
+            $cell->setValueExplicit($value, DataType::TYPE_STRING);
+
+            return true;
+        }
+
+        return parent::bindValue($cell, $value);
+    }
 
     public function array(): array
     {

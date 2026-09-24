@@ -101,8 +101,12 @@
                             <p class="fw-bold mb-0">{{ $item->identitas }}</p>
                             <small class="fst-italic text-primary">{{ $item->keterangan }}</small>
                         </td>
-                        <td class="text-center">{{ $item->dibuat_pada ? $item->dibuat_pada->format('d M Y, H:i').' WIB' : '-' }}</td>
-                        <td class="text-center">
+                        {{-- data-order: DataTables tidak bisa membaca "23 Sep 2026, 09:51 WIB"
+                             sebagai tanggal sehingga mengurutkannya sebagai teks (angka hari
+                             duluan, bulan & tahun terabaikan). Nilai ISO ini dipakai untuk
+                             mengurutkan tanpa mengubah tampilan sel. --}}
+                        <td class="text-center" data-order="{{ $item->dibuat_pada?->format('Y-m-d H:i:s') }}">{{ $item->dibuat_pada ? $item->dibuat_pada->format('d M Y, H:i').' WIB' : '-' }}</td>
+                        <td class="text-center" data-order="{{ $item->dihapus_pada?->format('Y-m-d H:i:s') }}">
                             {{ $item->dihapus_pada ? $item->dihapus_pada->format('d M Y, H:i').' WIB' : '-' }}
                             <small class="d-block text-danger">{{ $item->dihapus_sejak ?? '-' }}</small>
                         </td>
