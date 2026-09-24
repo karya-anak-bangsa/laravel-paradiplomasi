@@ -16,12 +16,7 @@ class KunjunganController extends Controller
 
     public function index(Request $request)
     {
-        $kunjungan = Kunjungan::with(TipeMitra::relasiMitra())
-            ->where('is_active', true)
-            ->filterStatus($request->input('status'))
-            ->filterTahun($request->input('tahun'))
-            ->latest('tanggal_diterima')
-            ->get();
+        $kunjungan = Kunjungan::daftarIndex($request->input('status'), $request->input('tahun'))->get();
 
         return view('mod_kunjungan.index', [
             'kunjungan' => $kunjungan,

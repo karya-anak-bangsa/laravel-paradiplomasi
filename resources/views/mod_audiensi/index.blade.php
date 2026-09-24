@@ -10,7 +10,7 @@
 @endsection
 
 @section('page-content')
-    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" :modul="App\Enums\ModulDiplomasi::Audiensi" />
 
     <x-page-body-table title="Daftar audiensi dengan perwakilan negara asing">
         <x-slot name="thead">

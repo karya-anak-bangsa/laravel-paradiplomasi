@@ -1,6 +1,6 @@
 # Proyek Web Paradiplomasi Pemda DKI
 
-_Terakhir diperbarui: 23 September 2026 — penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
+_Terakhir diperbarui: 25 September 2026 — ekspor Excel/PDF di 6 modul Riwayat Diplomasi (`App\Support\EksporDiplomasi`, scope `daftarIndex()`). Sebelumnya: penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
 
 ## 1. Deskripsi Singkat
 <p align="justify">
@@ -38,12 +38,12 @@ Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, N
 | `KBRI` | `tb_kbri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Kedutaan Besar **RI di luar negeri**. ex. KBRI Tokyo. Jangan tertukar dengan modul `Kedutaan Besar`. |
 | `KJRI` | `tb_kjri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Konsulat Jenderal RI di luar negeri. ex. KJRI Mumbai. |
 | `PTRI` | `tb_ptri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Perutusan Tetap RI pada organisasi internasional. Modul sudah jadi, **datanya belum ada** (lihat `PtriSeeder`). |
-| `Kerjasama` | `tb_kerjasama` | lihat, cari, tambah, ubah, hapus | 1 baris = 1 mitra, via `id_mitra` generik ke `tb_mitra` (lihat Bagian 3). |
-| `Kolaborasi` | `tb_kolaborasi` | lihat, cari, tambah, ubah, hapus | Sama seperti Kerjasama. |
-| `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus | Sama seperti Kerjasama. |
-| `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus | Sama seperti Kerjasama. |
-| `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus | Sama seperti Kerjasama. |
-| `Acara DKI` | `tb_acara_dki` + `tb_acara_dki_mitra` (pivot) | lihat, cari, tambah, ubah, hapus | **Beda pola** — 1 acara bisa punya banyak mitra sekaligus, masing-masing dengan `status_kehadiran` & `keterangan_kehadiran` sendiri. Lihat Bagian 4. |
+| `Kerjasama` | `tb_kerjasama` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | 1 baris = 1 mitra, via `id_mitra` generik ke `tb_mitra` (lihat Bagian 3). |
+| `Kolaborasi` | `tb_kolaborasi` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
+| `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
+| `Audiensi` | `tb_audiensi` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
+| `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
+| `Acara DKI` | `tb_acara_dki` + `tb_acara_dki_mitra` (pivot) | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | **Beda pola** — 1 acara bisa punya banyak mitra sekaligus, masing-masing dengan `status_kehadiran` & `keterangan_kehadiran` sendiri. Lihat Bagian 4. |
 | `Tanggal Penting` | *(tidak ada tabel sendiri)* | lihat | Kalender read-only, diturunkan dari `tanggal_awal_pelaksanaan`–`tanggal_akhir_pelaksanaan` milik Acara DKI yang `is_active`. |
 | `Dashboard` | - | lihat | Kartu akumulasi dua kelompok — **Mitra Biro KSD** (8 kartu, diturunkan dari `TipeMitra` sehingga tipe baru muncul otomatis) dan **Riwayat Diplomasi** (6 kartu + donat perbandingan); tiap kartu menautkan ke index modulnya. Plus peta sebaran kedutaan besar (lat/long), analisis status per modul, dan ranking "Mitra Diplomatik Paling Aktif". |
 
@@ -69,7 +69,7 @@ Metadata tampilan (`ikon`/`warna`/`labelSingkat`) sengaja ikut ditaruh di enum, 
 
 ### `App\Enums\ModulDiplomasi` — padanan `TipeMitra` untuk 6 modul Riwayat Diplomasi
 
-Kalau `TipeMitra` mendaftar *pihak* yang berdiplomasi, `ModulDiplomasi` mendaftar *peristiwa*-nya: `Kerjasama`, `Kolaborasi`, `Undangan`, `Audiensi`, `Kunjungan`, `AcaraDki`. Metadata per case: `slug()`, `modelClass()`, `kolomJudul()`, `kolomStatus()`, `routeIndex()`, `ikon()`, `warna()`, `berbasisMitraTunggal()` (false hanya untuk Acara DKI — lihat Bagian 4), plus `dariSlug()`.
+Kalau `TipeMitra` mendaftar *pihak* yang berdiplomasi, `ModulDiplomasi` mendaftar *peristiwa*-nya: `Kerjasama`, `Kolaborasi`, `Undangan`, `Audiensi`, `Kunjungan`, `AcaraDki`. Metadata per case: `slug()`, `modelClass()`, `kolomJudul()`, `kolomStatus()`, `labelJudul()` (label kolom judul di tabel index & file ekspor), `routeIndex()`, `ikon()`, `warna()`, `berbasisMitraTunggal()` (false hanya untuk Acara DKI — lihat Bagian 4), plus `dariSlug()`.
 
 ⚠️ **Kolom judul tidak senama dengan modulnya** — hanya Kerjasama, Kolaborasi, dan Acara DKI yang begitu; sisanya `tb_undangan.acara`, `tb_audiensi.topik`, `tb_kunjungan.perihal`. Karena itu `kolomJudul()`/`kolomStatus()` **meneruskan** `$judulColumn`/`$statusColumn` milik model (lewat getter publik di `HasDiplomasiProfileAccessors`), bukan menyalin daftarnya. Jangan ubah jadi `match` berisi nama kolom — itu membuat dua daftar yang bisa saling melenceng. Untuk menampilkan judul, pakai accessor `judul_ringkas` yang sudah ada.
 
@@ -84,7 +84,7 @@ Dibuat untuk modul Restore Data, yang harus menyisir **seluruh** modul pemilik `
 | `HasRiwayatDiplomasi` | `Mitra` (supertype) + 8 subtype | Kebalikan dari `ReferencesMitra` — relasi `hasMany` ke 5 modul di atas (**wajib** difilter `is_active`, lihat Bagian 9.3) dan relasi `belongsToMany` khusus `acaraDki()` (lihat Bagian 4). |
 | `HasMitraProfileAccessors` | 3 subtype berbasis negara | Accessor UI bersama: `telepon_kantor`/`email_kantor` (string dipisah koma) → array, label & warna badge status aktif. Tidak dipakai subtype "nama + keterangan" karena mereka tidak punya kolom-kolom itu. |
 | `ResolvesMitra` (namespace `Database\Seeders\Concerns`) | 6 seeder Riwayat Diplomasi | Menerjemahkan kolom nama mitra pada baris data seeder (`nama_kbri`, `nama_pemprov_dki`, dst) menjadi `id_mitra`. Kolom yang dikenali diturunkan dari `TipeMitra::kolomNama()`. |
-| `HasDiplomasiFieldOptions` / `HasDiplomasiFilter` / `HasDiplomasiProfileAccessors` | Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI | Konstanta dropdown (`STATUS_OPTIONS`, `TRIWULAN_OPTIONS`), scope filter (`filterStatus`, `filterTahun`, `tahunTersedia`), accessor tampilan bersama (`statusBadgeColor`, `judulRingkas`, `tanggalDiterimaDisplay`, dst). |
+| `HasDiplomasiFieldOptions` / `HasDiplomasiFilter` / `HasDiplomasiProfileAccessors` | Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI | Konstanta dropdown (`STATUS_OPTIONS`, `TRIWULAN_OPTIONS`), scope filter (`filterStatus`, `filterTahun`, `tahunTersedia`, serta `daftarIndex` — query index yang juga dipakai ekspor Excel/PDF, supaya file yang diunduh dijamin sama dengan tabel), accessor tampilan bersama (`statusBadgeColor`, `judulRingkas`, `tanggalDiterimaDisplay`, dst). |
 | `MenonaktifkanData` (namespace `App\Http\Controllers\Concerns`) | `destroy()` di 14 controller (8 Mitra + 6 Riwayat Diplomasi) | Satu-satunya tempat pola "hapus" = nonaktifkan + soft delete diimplementasikan. `nonaktifkan()` untuk Riwayat Diplomasi, `nonaktifkanMitra()` untuk subtype Mitra (ikut menonaktifkan `tb_mitra`). Lihat Bagian 9.3. |
 
 ### Aturan wajib saat menambah modul baru yang menunjuk ke Mitra
@@ -177,6 +177,10 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **Production Server:** Server Resmi Pemda DKI Jakarta (Diskominfotik)
 - **Build Frontend (Vite):** Tailwind CSS 4 (`@tailwindcss/vite`) — dipakai terbatas, sebagian besar styling masih dari Tabler UI.
 - **Library Frontend via CDN (bukan npm/Vite):** Select2 (`4.1.0-rc.0` + tema `select2-bootstrap-5-theme`), DataTables (`2.1.8`), SweetAlert2, Simple-Notify — semuanya dimuat langsung di `resources/views/template/app.blade.php`. **Jangan** install ulang lewat `npm`, supaya tidak ada dua sumber versi yang berbeda.
+- **Paket Composer untuk ekspor:** `maatwebsite/excel` ^4.0 (Excel, di atas PhpSpreadsheet 5) dan `barryvdh/laravel-dompdf` ^3.1 (PDF). Server testing/production wajib menjalankan `composer install` setelah deploy, dan butuh ekstensi PHP `zip`, `gd` (dengan dukungan WebP untuk logo kop PDF), `xml`, `mbstring`.
+  - Alurnya: tombol di `x-page-body-filter` → route `ekspor.excel` / `ekspor.pdf` (`/ekspor/{slug ModulDiplomasi}/{excel|pdf}`, satu pasang route untuk keenam modul) → `EksporDiplomasiController` → `App\Support\EksporDiplomasi` (satu-satunya tempat yang menentukan kolom & isi file) → `App\Exports\RiwayatDiplomasiExport` / view `ekspor.riwayat-diplomasi-pdf`.
+  - Kolom ekspor sengaja **sama dengan tabel index** (arahan user), bedanya judul ditulis utuh dan Acara DKI mencantumkan nama mitra + status kehadiran. Kalau kolom index berubah, ubah juga `EksporDiplomasi::kolom()`.
+  - Batasan dompdf yang sudah ditemui: `counter(pages)` di CSS selalu "0" (nomor halaman dicetak lewat canvas di `EksporDiplomasiController::nomorHalaman()`), dan satu baris tabel tidak bisa dipecah ke dua halaman — karena itu Daftar Undangan di PDF ditulis menyambung dengan `; `, bukan satu mitra per baris seperti di Excel.
 
 ---
 
@@ -224,6 +228,8 @@ Konsekuensi lain:
 Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-textarea`, `form-input-select`, `form-input-email`, `form-input-password`, `form-input-file`, `page-header`, `page-body-form`, `page-body-show`, `page-body-table`, `page-body-filter`, `show-field`, `stat-card`, `mitra-icon`, `mitra-picker`, `mitra-ringkas`, `mitra-riwayat`.
 
 **`x-stat-card`** — kartu angka dashboard (avatar berikon + jumlah + label). Props: `jumlah`, `label`, `ikon`, `warna`, `route` (opsional; kalau diisi, seluruh kartu jadi area klik lewat `stretched-link`). Kelas grid-nya dioper lewat atribut biasa, mis. `class="col-lg-3 col-sm-6"`.
+
+**`x-page-body-filter`** — kartu filter Status & Tahun di index 6 modul Riwayat Diplomasi. Props: `statusOptions`, `tahunOptions`, `modul` (opsional, case `App\Enums\ModulDiplomasi`; kalau diisi, muncul tombol ekspor Excel & PDF yang membawa filter aktif). Tombol tampil untuk admin maupun guest.
 
 Khusus tiga komponen mitra terakhir:
 - **`x-mitra-riwayat`** — seluruh tab Riwayat Diplomasi (6 tab + modal rinciannya) pada halaman profil mitra. Dipakai oleh **semua** modul mitra. Sebelumnya tiap modul punya salinan `show-riwayat.blade.php` sendiri sepanjang ±800 baris; keempat salinan itu sudah dihapus. Props: `:mitra` (model subtype dengan keenam relasi ter-load) dan `sebutan` (kata benda untuk pesan kosong, mis. `"kedutaan ini"`).

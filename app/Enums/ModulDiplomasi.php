@@ -89,6 +89,23 @@ enum ModulDiplomasi: string
     }
 
     /**
+     * Judul kolom "judul peristiwa" di tabel index & file ekspor. Sama seperti
+     * kolomJudul(), labelnya TIDAK senama dengan modul untuk Undangan, Audiensi,
+     * dan Kunjungan.
+     */
+    public function labelJudul(): string
+    {
+        return match ($this) {
+            self::Kerjasama => 'Kerjasama',
+            self::Kolaborasi => 'Kolaborasi',
+            self::Undangan => 'Acara',
+            self::Audiensi => 'Topik',
+            self::Kunjungan => 'Perihal',
+            self::AcaraDki => 'Acara DKI',
+        };
+    }
+
+    /**
      * True bila satu baris modul ini menunjuk ke TEPAT SATU mitra lewat
      * `id_mitra` (pola ReferencesMitra) — berlaku untuk kelima modul selain
      * Acara DKI, yang justru memakai pivot banyak-mitra.

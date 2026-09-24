@@ -1,11 +1,13 @@
 <?php
 
 // halaman auth
+use App\Enums\ModulDiplomasi;
 use App\Http\Controllers\AcaraDKIController;
 // halaman backend
 use App\Http\Controllers\AudiensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EksporDiplomasiController;
 use App\Http\Controllers\KbriController;
 use App\Http\Controllers\KedutaanBesarController;
 use App\Http\Controllers\KerjasamaController;
@@ -83,4 +85,15 @@ Route::middleware('cek.auth')->group(function () {
     Route::resource('kunjungan', KunjunganController::class)->only(['index', 'show']);
     Route::resource('acara-dki', AcaraDKIController::class)->only(['index', 'show']);
     Route::resource('tanggal-penting', TanggalPentingController::class)->only(['index']);
+
+    // Ekspor Excel/PDF daftar Riwayat Diplomasi: satu pasang route untuk
+    // keenam modul, segmen {modul} dibatasi ke slug App\Enums\ModulDiplomasi.
+    Route::controller(EksporDiplomasiController::class)
+        ->prefix('ekspor/{modul}')
+        ->where(['modul' => implode('|', array_map(fn (ModulDiplomasi $modul) => $modul->slug(), ModulDiplomasi::cases()))])
+        ->name('ekspor.')
+        ->group(function () {
+            Route::get('excel', 'excel')->name('excel');
+            Route::get('pdf', 'pdf')->name('pdf');
+        });
 });

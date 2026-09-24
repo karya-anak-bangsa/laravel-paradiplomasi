@@ -10,7 +10,7 @@
 @endsection
 
 @section('page-content')
-    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" :modul="App\Enums\ModulDiplomasi::Undangan" />
 
     <x-page-body-table title="Daftar undangan dari perwakilan negara asing">
         <x-slot name="thead">

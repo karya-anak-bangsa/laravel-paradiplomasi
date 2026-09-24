@@ -16,12 +16,7 @@ class AcaraDKIController extends Controller
 
     public function index(Request $request)
     {
-        $acaraDki = AcaraDKI::with(TipeMitra::relasiMitra())
-            ->where('is_active', true)
-            ->filterStatus($request->input('status'))
-            ->filterTahun($request->input('tahun'))
-            ->latest('tanggal_diterima')
-            ->get();
+        $acaraDki = AcaraDKI::daftarIndex($request->input('status'), $request->input('tahun'))->get();
 
         return view('mod_acara_dki.index', [
             'acaraDki' => $acaraDki,

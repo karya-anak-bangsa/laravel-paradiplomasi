@@ -10,7 +10,7 @@
 @endsection
 
 @section('page-content')
-    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" :modul="App\Enums\ModulDiplomasi::AcaraDki" />
 
     <x-page-body-table title="Daftar acara DKI">
         <x-slot name="thead">

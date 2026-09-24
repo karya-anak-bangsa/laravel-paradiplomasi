@@ -11,7 +11,7 @@
 
 @section('page-content')
 
-    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" :modul="App\Enums\ModulDiplomasi::Kerjasama" />
 
     <x-page-body-table title="Daftar kerjasama dengan perwakilan negara asing">
         <x-slot name="thead">

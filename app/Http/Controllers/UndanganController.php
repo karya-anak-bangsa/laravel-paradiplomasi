@@ -16,12 +16,7 @@ class UndanganController extends Controller
 
     public function index(Request $request)
     {
-        $undangan = Undangan::with(TipeMitra::relasiMitra())
-            ->where('is_active', true)
-            ->filterStatus($request->input('status'))
-            ->filterTahun($request->input('tahun'))
-            ->latest('tanggal_diterima')
-            ->get();
+        $undangan = Undangan::daftarIndex($request->input('status'), $request->input('tahun'))->get();
 
         return view('mod_undangan.index', [
             'undangan' => $undangan,

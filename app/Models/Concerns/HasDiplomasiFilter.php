@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Enums\TipeMitra;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -24,6 +25,20 @@ trait HasDiplomasiFilter
     public function scopeFilterTahun(Builder $query, ?string $tahun): Builder
     {
         return $query->when($tahun, fn (Builder $q) => $q->whereYear('tanggal_diterima', $tahun));
+    }
+
+    /**
+     * Query daftar di halaman index SEKALIGUS isi file ekspor Excel/PDF.
+     * Disatukan di sini supaya file yang diunduh dijamin sama dengan tabel
+     * yang sedang dilihat (is_active, filter status/tahun, urutan).
+     */
+    public function scopeDaftarIndex(Builder $query, ?string $status, ?string $tahun): Builder
+    {
+        return $query->with(TipeMitra::relasiMitra())
+            ->where('is_active', true)
+            ->filterStatus($status)
+            ->filterTahun($tahun)
+            ->latest('tanggal_diterima');
     }
 
     public static function tahunTersedia(): array
