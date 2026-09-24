@@ -49,9 +49,9 @@ class EksporDiplomasiController extends Controller
         $canvas = $dompdf->getCanvas();
         $font = $dompdf->getFontMetrics()->getFont('DejaVu Sans');
         $teks = 'Halaman {PAGE_NUM} dari {PAGE_COUNT}';
-        $lebar = $dompdf->getFontMetrics()->getTextWidth('Halaman 99 dari 99', $font, 6);
+        $lebar = $dompdf->getFontMetrics()->getTextWidth('Halaman 99 dari 99', $font, 7.5);
 
-        $canvas->page_text($canvas->get_width() - 27 - $lebar, $canvas->get_height() - 22, $teks, $font, 6, [0.39, 0.45, 0.55]);
+        $canvas->page_text($canvas->get_width() - 27 - $lebar, $canvas->get_height() - 26, $teks, $font, 7.5, [0.39, 0.45, 0.55]);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Enums\ModulDiplomasi;
 use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Isi file ekspor (Excel & PDF) daftar Riwayat Diplomasi. Kolomnya sengaja
@@ -17,10 +18,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EksporDiplomasi
 {
-    public const KOLOM_TANGGAL = ['Tanggal Diterima', 'Tanggal Selesai'];
+    /** Induk kolom tanggal pada header dua tingkat PDF ("Tanggal" → Diterima | Selesai). */
+    public const GRUP_TANGGAL = 'Tanggal';
+
+    public const KOLOM_TANGGAL = [self::GRUP_TANGGAL.' Diterima', self::GRUP_TANGGAL.' Selesai'];
 
     /** Kolom berisi nilai pendek, dirata-tengah di PDF & dibuat sempit di Excel. */
     public const KOLOM_SEMPIT = ['No', ...self::KOLOM_TANGGAL, 'Status'];
+
+    public const TANPA_MITRA = 'Belum ada mitra';
 
     private Collection $data;
 
@@ -56,11 +62,42 @@ class EksporDiplomasi
     }
 
     /**
+     * Header dua tingkat khusus PDF: kolom tanggal dikelompokkan di bawah
+     * satu sel "Tanggal" (colspan), kolom lainnya memanjang dua baris
+     * (rowspan). Excel tetap memakai header() satu tingkat supaya autofilter
+     * dan freeze pane-nya sederhana.
+     *
+     * @return array{atas: list<array{label: string, colspan: int, rowspan: int}>, bawah: list<string>}
+     */
+    public function headerBertingkat(): array
+    {
+        $atas = [];
+        $bawah = [];
+
+        foreach ($this->header() as $label) {
+            if (! in_array($label, self::KOLOM_TANGGAL)) {
+                $atas[] = ['label' => $label, 'colspan' => 1, 'rowspan' => 2];
+
+                continue;
+            }
+
+            if ($bawah === []) {
+                $atas[] = ['label' => self::GRUP_TANGGAL, 'colspan' => count(self::KOLOM_TANGGAL), 'rowspan' => 1];
+            }
+
+            $bawah[] = Str::after($label, self::GRUP_TANGGAL.' ');
+        }
+
+        return ['atas' => $atas, 'bawah' => $bawah];
+    }
+
+    /**
      * Satu array per baris, dikunci label header. Tanggal dibiarkan berupa
      * objek tanggal supaya Excel bisa menyimpannya sebagai tanggal sungguhan,
-     * dan Daftar Undangan berupa array supaya tiap format memilih pemisahnya
-     * sendiri (Excel: satu mitra per baris; PDF: menyambung, karena dompdf
-     * tidak bisa memecah satu baris tabel ke dua halaman).
+     * dan Daftar Undangan berupa array supaya tiap format memilih cara
+     * menampilkannya sendiri (Excel: satu mitra per baris di dalam sel; PDF:
+     * satu mitra per <tr> bernomor, karena dompdf tidak bisa memecah satu
+     * baris tabel ke dua halaman). Array kosong = acara belum punya mitra.
      *
      * @return list<array<string, mixed>>
      */
@@ -107,10 +144,6 @@ class EksporDiplomasi
      */
     private function daftarUndangan(Model $acara): array
     {
-        if ($acara->mitra->isEmpty()) {
-            return ['Belum ada mitra'];
-        }
-
         return $acara->mitra->map(function (Model $mitra) {
             $kehadiran = $mitra->pivot->status_kehadiran;
 

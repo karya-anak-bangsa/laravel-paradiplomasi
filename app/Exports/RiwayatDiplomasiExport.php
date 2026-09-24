@@ -52,7 +52,7 @@ class RiwayatDiplomasiExport extends DefaultValueBinder implements FromArray, Wi
         return array_map(fn (array $baris) => array_values(array_map(
             fn ($nilai) => match (true) {
                 $nilai instanceof DateTimeInterface => Date::dateTimeToExcel($nilai),
-                is_array($nilai) => implode("\n", $nilai),
+                is_array($nilai) => implode("\n", $nilai) ?: EksporDiplomasi::TANPA_MITRA,
                 default => $nilai ?? '-',
             },
             $baris,

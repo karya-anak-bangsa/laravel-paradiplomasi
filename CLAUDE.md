@@ -61,7 +61,7 @@ Kenapa pola ini dipakai: 5 modul Riwayat Diplomasi (Kerjasama–Kunjungan) harus
 
 ### `App\Enums\TipeMitra` adalah sumber tunggal metadata tipe mitra
 
-Setiap case enum membawa metadata lengkap tipenya lewat method: `slug()` (kunci teknis dropdown), `modelClass()`, `relasi()` (nama relasi `hasOne` di `Mitra`), `kolomNama()` (nama kolom nama resmi di tabel subtype), `berbasisNegara()`, `labelSingkat()`, `routeIndex()`, `ikon()` & `warna()` (penanda visual dashboard), serta helper statis `relasiMitra()` (daftar relasi untuk eager-load).
+Setiap case enum membawa metadata lengkap tipenya lewat method: `slug()` (kunci teknis dropdown), `modelClass()`, `relasi()` (nama relasi `hasOne` di `Mitra`), `kolomNama()` (nama kolom nama resmi di tabel subtype), `berbasisNegara()`, `labelSingkat()`, `routeIndex()`, `routeShow()` (diturunkan dari `routeIndex()`, dipakai kartu "Mitra Diplomasi Paling Aktif" di dashboard), `ikon()` & `warna()` (penanda visual dashboard), serta helper statis `relasiMitra()` (daftar relasi untuk eager-load).
 
 Metadata tampilan (`ikon`/`warna`/`labelSingkat`) sengaja ikut ditaruh di enum, bukan di blade — supaya dashboard dan navbar tidak perlu menuliskan daftar tipe mitra lagi.
 
@@ -182,7 +182,8 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
   - Alurnya: tombol di `x-page-body-filter` → route `ekspor.excel` / `ekspor.pdf` (`/ekspor/{slug ModulDiplomasi}/{excel|pdf}`, satu pasang route untuk keenam modul) → `EksporDiplomasiController` → `App\Support\EksporDiplomasi` (satu-satunya tempat yang menentukan kolom & isi file) → `App\Exports\RiwayatDiplomasiExport` / view `ekspor.riwayat-diplomasi-pdf`.
   - Kolom ekspor sengaja **sama dengan tabel index** (arahan user), bedanya judul ditulis utuh dan Acara DKI mencantumkan nama mitra + status kehadiran. Kalau kolom index berubah, ubah juga `EksporDiplomasi::kolom()`.
   - Semua teks di Excel ditulis sebagai teks (`RiwayatDiplomasiExport::bindValue()`), bukan lewat binder bawaan PhpSpreadsheet yang menganggap teks berawalan `=` sebagai rumus — mencegah *formula injection* dari judul/nama yang diketik pengguna. Jangan hapus binder ini.
-  - Batasan dompdf yang sudah ditemui: `counter(pages)` di CSS selalu "0" (nomor halaman dicetak lewat canvas di `EksporDiplomasiController::nomorHalaman()`), dan satu baris tabel tidak bisa dipecah ke dua halaman — karena itu Daftar Undangan di PDF ditulis menyambung dengan `; `, bukan satu mitra per baris seperti di Excel.
+  - Batasan dompdf yang sudah ditemui: `counter(pages)` di CSS selalu "0" (nomor halaman dicetak lewat canvas di `EksporDiplomasiController::nomorHalaman()`), dan satu baris tabel tidak bisa dipecah ke dua halaman (baris yang lebih tinggi dari kertas terpotong). Karena itu Daftar Undangan Acara DKI di PDF ditulis **satu mitra per `<tr>`** bernomor `1).`, `2).`, dst. — kolom lain hanya diisi di `<tr>` pertama dan garis antar-`<tr>` dihapus (kelas `sambung-atas`/`sambung-bawah`) supaya tampak satu sel. **Jangan** diganti `rowspan` (lebar kolom menyusut di halaman lanjutan) maupun `<br>` dalam satu sel (terpotong).
+  - Header PDF dua tingkat (`EksporDiplomasi::headerBertingkat()`): kolom tanggal dikelompokkan di bawah "Tanggal" (colspan 2 → Diterima | Selesai), kolom lain rowspan 2. Excel tetap memakai `header()` satu tingkat.
 
 ---
 

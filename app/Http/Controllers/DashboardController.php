@@ -9,8 +9,6 @@ use App\Models\KedutaanBesar;
 use App\Models\Kerjasama;
 use App\Models\Kolaborasi;
 use App\Models\Kunjungan;
-use App\Models\MisiAsingAsean;
-use App\Models\MisiPermanenAsean;
 use App\Models\Undangan;
 use Illuminate\Support\Facades\DB;
 
@@ -109,13 +107,14 @@ class DashboardController extends Controller
         // Konsekuensi teknis: ketiga tipe di bawah pasti punya `kode_negara`,
         // sehingga grid-nya aman memakai `.flag-country-{kode}` langsung tanpa
         // perlu x-mitra-icon.
-        $hitungAktivitas = function ($query, string $labelNamaResmi) {
-            return $query
+        $hitungAktivitas = function (TipeMitra $tipe) {
+            return $tipe->modelClass()::where('is_active', true)
                 ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan', 'acaraDki'])
                 ->get()
                 ->map(fn ($mitra) => (object) [
                     'kode_negara' => $mitra->kode_negara,
-                    'nama_resmi' => $mitra->{$labelNamaResmi},
+                    'nama_resmi' => $mitra->{$tipe->kolomNama()},
+                    'url_profil' => route($tipe->routeShow(), $mitra),
                     'total_aktivitas' => $mitra->kerjasama_count
                         + $mitra->kolaborasi_count
                         + $mitra->undangan_count
@@ -125,9 +124,9 @@ class DashboardController extends Controller
                 ]);
         };
 
-        $mitraAktif = $hitungAktivitas(KedutaanBesar::where('is_active', true), 'nama_kedutaan_besar_id')
-            ->concat($hitungAktivitas(MisiAsingAsean::where('is_active', true), 'nama_misi_asing_asean_id'))
-            ->concat($hitungAktivitas(MisiPermanenAsean::where('is_active', true), 'nama_misi_permanen_asean_id'))
+        $mitraAktif = $hitungAktivitas(TipeMitra::KedutaanBesar)
+            ->concat($hitungAktivitas(TipeMitra::MisiAsingAsean))
+            ->concat($hitungAktivitas(TipeMitra::MisiPermanenAsean))
             ->sortByDesc('total_aktivitas')
             ->take(40)
             ->values();

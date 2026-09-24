@@ -11,6 +11,7 @@ use App\Models\NonPerwakilanNegaraAsing;
 use App\Models\PemprovDki;
 use App\Models\Ptri;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Daftar jenis mitra Biro KSD sekaligus SUMBER TUNGGAL metadata tiap jenis.
@@ -159,6 +160,17 @@ enum TipeMitra: string
             self::PemprovDki => 'pemprov-dki.index',
             self::NonPNA => 'non-perwakilan-negara-asing.index',
         };
+    }
+
+    /**
+     * Nama route show (profil + Riwayat Diplomasi) modul mitra ini, mis. untuk
+     * menjadikan kartu "Mitra Diplomasi Paling Aktif" di dashboard tautan ke
+     * profil mitranya. Diturunkan dari routeIndex() karena kedua route lahir
+     * dari Route::resource yang sama — tidak perlu daftar kedua.
+     */
+    public function routeShow(): string
+    {
+        return Str::replaceLast('.index', '.show', $this->routeIndex());
     }
 
     /**

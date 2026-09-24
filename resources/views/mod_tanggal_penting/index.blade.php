@@ -40,6 +40,21 @@
                 </div>
             </div>
             {{-- card --}}
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fa-solid fa-calendar-check me-1"></i>
+                        Agenda Sebelumnya
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    <div id="agenda-sebelumnya-list" class="list-group list-group-flush">
+                        {{-- diisi otomatis lewat JS berdasarkan data acara yang sudah terlaksana --}}
+                    </div>
+                </div>
+            </div>
+            {{-- card --}}
         </div>
         {{-- col informasi lainnya --}}
 
@@ -54,7 +69,9 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             var calendarEl = document.getElementById('calendar-tanggal-penting');
-            var agendaListEl = document.getElementById('agenda-mendatang-list');
+            var agendaMendatangEl = document.getElementById('agenda-mendatang-list');
+            var agendaSebelumnyaEl = document.getElementById('agenda-sebelumnya-list');
+            var jumlahAgendaDitampilkan = 5;
             var namaBulanSingkat = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
             // data acara DKI yang punya tanggal pelaksanaan, dikirim dari
@@ -124,7 +141,7 @@
 
             calendar.render();
 
-            // ---------- render daftar agenda yang belum terlaksana ----------
+            // ---------- render daftar agenda mendatang & sebelumnya ----------
             function formatTanggalSingkat(tanggal) {
                 return tanggal.getDate() + ' ' + namaBulanSingkat[tanggal.getMonth()];
             }
@@ -141,14 +158,22 @@
                 return formatTanggalSingkat(mulai) + ' - ' + formatTanggalSingkat(selesai);
             }
 
-            // hitung status waktu acara relatif terhadap hari ini: sedang
-            // berlangsung, hari ini, besok, atau H-berapa
+            // hitung status waktu acara relatif terhadap hari ini: sudah lewat
+            // (kemarin / N hari lalu), sedang berlangsung, hari ini, besok, atau H-berapa
             function hitungStatusAgenda(acara) {
                 var hariIni = mulaiHariIni(new Date());
                 var mulai = mulaiHariIni(acara.start);
                 var selesai = mulaiHariIni(acara.end || acara.start);
                 var selisihHari = Math.round((mulai - hariIni) / 86400000);
 
+                if (selesai < hariIni) {
+                    var hariLalu = Math.round((hariIni - selesai) / 86400000);
+
+                    return {
+                        label: hariLalu === 1 ? 'Kemarin' : hariLalu + ' hari lalu',
+                        badgeClass: 'bg-secondary-lt text-secondary'
+                    };
+                }
                 if (hariIni > mulai && hariIni <= selesai) {
                     return {
                         label: 'Berlangsung',
@@ -193,7 +218,9 @@
                 // avatar ikon, warna mengikuti jenis acara (beberapa hari = merah,
                 // selaras dengan banner di kalender; 1 hari = biru)
                 var avatar = document.createElement('span');
-                avatar.className = 'avatar me-3 ' + (acaraBeberapaHari ? 'bg-red-lt' : 'bg-blue-lt');
+                // flex-shrink-0 (juga pada badge): tanpa ini avatar & badge ikut
+                // menyusut dan jadi gepeng ketika judul acaranya panjang
+                avatar.className = 'avatar flex-shrink-0 me-3 ' + (acaraBeberapaHari ? 'bg-red-lt' : 'bg-blue-lt');
                 avatar.innerHTML = '<i class="fa-solid ' +
                     (acaraBeberapaHari ? 'fa-calendar-week' : 'fa-calendar-day') + '"></i>';
 
@@ -214,7 +241,7 @@
 
                 // badge status (H-x / Hari ini / Besok / Berlangsung)
                 var badge = document.createElement('span');
-                badge.className = 'badge ' + status.badgeClass + ' text-nowrap ms-2';
+                badge.className = 'badge flex-shrink-0 ' + status.badgeClass + ' text-nowrap ms-2';
                 badge.textContent = status.label;
 
                 wrapper.appendChild(avatar);
@@ -225,20 +252,47 @@
                 return item;
             }
 
+            function renderDaftarAgenda(listEl, daftarAgenda, pesanKosong) {
+                if (daftarAgenda.length === 0) {
+                    var kosong = document.createElement('div');
+                    kosong.className = 'list-group-item text-secondary text-center py-4';
+                    kosong.textContent = pesanKosong;
+                    listEl.appendChild(kosong);
+                    return;
+                }
+
+                daftarAgenda.forEach(function(acara) {
+                    listEl.appendChild(buatItemAgenda(acara));
+                });
+            }
+
             var hariIniSekarang = mulaiHariIni(new Date());
-            var agendaBelumTerlaksana = acaraDkiEvents
+
+            function sudahSelesai(acara) {
+                return mulaiHariIni(acara.end || acara.start) < hariIniSekarang;
+            }
+
+            // mendatang = belum selesai (termasuk yang sedang berlangsung),
+            // diurutkan dari yang paling dekat dimulai
+            var agendaMendatang = acaraDkiEvents
                 .filter(function(acara) {
-                    var selesai = mulaiHariIni(acara.end || acara.start);
-                    return selesai >= hariIniSekarang;
+                    return !sudahSelesai(acara);
                 })
                 .sort(function(a, b) {
                     return a.start - b.start;
                 })
-                .slice(0, 5); // batasi 5 agenda terdekat
+                .slice(0, jumlahAgendaDitampilkan);
 
-            agendaBelumTerlaksana.forEach(function(acara) {
-                agendaListEl.appendChild(buatItemAgenda(acara));
-            });
+            // sebelumnya = sudah selesai, diurutkan dari yang paling baru selesai
+            var agendaSebelumnya = acaraDkiEvents
+                .filter(sudahSelesai)
+                .sort(function(a, b) {
+                    return b.end - a.end;
+                })
+                .slice(0, jumlahAgendaDitampilkan);
+
+            renderDaftarAgenda(agendaMendatangEl, agendaMendatang, 'Belum terdapat agenda mendatang.');
+            renderDaftarAgenda(agendaSebelumnyaEl, agendaSebelumnya, 'Belum terdapat agenda sebelumnya.');
         });
     </script>
 @endpush
