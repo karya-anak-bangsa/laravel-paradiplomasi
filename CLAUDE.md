@@ -177,7 +177,8 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **Production Server:** Server Resmi Pemda DKI Jakarta (Diskominfotik)
 - **Build Frontend (Vite):** Tailwind CSS 4 (`@tailwindcss/vite`) — dipakai terbatas, sebagian besar styling masih dari Tabler UI.
 - **Library Frontend via CDN (bukan npm/Vite):** Select2 (`4.1.0-rc.0` + tema `select2-bootstrap-5-theme`), DataTables (`2.1.8`), SweetAlert2, Simple-Notify — semuanya dimuat langsung di `resources/views/template/app.blade.php`. **Jangan** install ulang lewat `npm`, supaya tidak ada dua sumber versi yang berbeda.
-- **Paket Composer untuk ekspor:** `maatwebsite/excel` ^4.0 (Excel, di atas PhpSpreadsheet 5) dan `barryvdh/laravel-dompdf` ^3.1 (PDF). Server testing/production wajib menjalankan `composer install` setelah deploy, dan butuh ekstensi PHP `zip`, `gd` (dengan dukungan WebP untuk logo kop PDF), `xml`, `mbstring`.
+- **Paket Composer untuk ekspor:** `maatwebsite/excel` ^4.0 (Excel, di atas PhpSpreadsheet 5) dan `barryvdh/laravel-dompdf` ^3.1 (PDF). Server testing/production wajib menjalankan `composer install` setelah deploy, dan butuh ekstensi PHP `zip`, `gd`, `xml`, `mbstring`. Di Hostinger `proc_open` dimatikan sehingga script `package:discover` bawaan Composer gagal — jalankan `composer install --no-dev --optimize-autoloader --no-scripts`, lalu `php artisan package:discover` dan `php artisan optimize:clear` secara manual.
+  - Ukuran PDF dijaga kecil (±50–60 KB): font subsetting diaktifkan di `EksporDiplomasiController`, dan kop memakai `public/img/dki-jakarta-kop.png` (159×180 px), bukan `dki-jakarta.webp` (1200×1355 px) — dompdf menyematkan gambar dalam resolusi aslinya, sehingga logo besar saja menambah ±700 KB per file.
   - Alurnya: tombol di `x-page-body-filter` → route `ekspor.excel` / `ekspor.pdf` (`/ekspor/{slug ModulDiplomasi}/{excel|pdf}`, satu pasang route untuk keenam modul) → `EksporDiplomasiController` → `App\Support\EksporDiplomasi` (satu-satunya tempat yang menentukan kolom & isi file) → `App\Exports\RiwayatDiplomasiExport` / view `ekspor.riwayat-diplomasi-pdf`.
   - Kolom ekspor sengaja **sama dengan tabel index** (arahan user), bedanya judul ditulis utuh dan Acara DKI mencantumkan nama mitra + status kehadiran. Kalau kolom index berubah, ubah juga `EksporDiplomasi::kolom()`.
   - Batasan dompdf yang sudah ditemui: `counter(pages)` di CSS selalu "0" (nomor halaman dicetak lewat canvas di `EksporDiplomasiController::nomorHalaman()`), dan satu baris tabel tidak bisa dipecah ke dua halaman — karena itu Daftar Undangan di PDF ditulis menyambung dengan `; `, bukan satu mitra per baris seperti di Excel.
@@ -225,7 +226,9 @@ Konsekuensi lain:
 - Dropdown Select2 di dalam elemen yang overflow-scroll (mis. tabel responsive) **wajib** di-set `dropdownParent: $(document.body)` supaya tidak terpotong.
 
 ### 9.5 Komponen Blade yang Sudah Tersedia — Pakai Ulang, Jangan Duplikasi
-Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-textarea`, `form-input-select`, `form-input-email`, `form-input-password`, `form-input-file`, `page-header`, `page-body-form`, `page-body-show`, `page-body-table`, `page-body-filter`, `show-field`, `stat-card`, `mitra-icon`, `mitra-picker`, `mitra-ringkas`, `mitra-riwayat`.
+Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-textarea`, `form-input-select`, `form-input-email`, `form-input-password`, `form-input-file`, `page-header`, `page-body-form`, `page-body-show`, `page-body-table`, `page-body-filter`, `show-field`, `stat-card`, `waktu-akses`, `mitra-icon`, `mitra-picker`, `mitra-ringkas`, `mitra-riwayat`.
+
+**`x-waktu-akses`** — teks "Diakses pada 25 Sep 2026, 02:26 WIB" dalam WIB (lihat Bagian 9.6). Prop: `label` (default `"Diakses pada"`; PDF ekspor memakai `"Diunduh pada"`). Hanya mengeluarkan teks — pembungkusnya (mis. `<small class="text-danger">`) tetap ditulis pemanggil.
 
 **`x-stat-card`** — kartu angka dashboard (avatar berikon + jumlah + label). Props: `jumlah`, `label`, `ikon`, `warna`, `route` (opsional; kalau diisi, seluruh kartu jadi area klik lewat `stretched-link`). Kelas grid-nya dioper lewat atribut biasa, mis. `class="col-lg-3 col-sm-6"`.
 
@@ -240,6 +243,7 @@ Sebelum menulis blade baru, cek dulu apakah komponen di atas sudah mengakomodasi
 
 ### 9.6 Aturan Umum
 - Controller dan model harus tipis, tidak boleh ada logic berat (pindahkan ke trait/service jika perlu dipakai ulang).
+- **Zona waktu: simpan UTC, tampilkan WIB.** `config('app.timezone')` sengaja tetap `UTC` supaya `created_at`/`updated_at`/`deleted_at` lama dan baru konsisten; jam yang ditampilkan ke pengguna dikonversi ke `config('app.timezone_tampilan')` (`Asia/Jakarta`). Jangan tulis `now()->format(...)` atau `$model->created_at->format(...)` polos di view — pakai `App\Support\Waktu::sekarang()` / `Waktu::tampil($timestamp)` atau komponen `<x-waktu-akses />`. Sebelum aturan ini ada, semua label "WIB" di aplikasi sebenarnya jam UTC (terlambat 7 jam). Kolom `date` murni (`tanggal_diterima`, dst.) tidak terpengaruh.
 
 ---
 

@@ -144,8 +144,9 @@ class DataTerhapus
             'id' => $record->getKey(),
             'identitas' => self::identitas($modul, $record),
             'keterangan' => self::keterangan($modul, $record),
-            'dibuat_pada' => $record->created_at,
-            'dihapus_pada' => $record->deleted_at,
+            // Timestamp database dalam UTC, ditampilkan dalam WIB.
+            'dibuat_pada' => Waktu::tampil($record->created_at),
+            'dihapus_pada' => Waktu::tampil($record->deleted_at),
             // Locale aplikasi masih 'en', jadi jeda waktunya dipaksa ke Bahasa
             // Indonesia di sini — bukan di blade — agar view tetap dumb.
             'dihapus_sejak' => $record->deleted_at?->locale('id')->diffForHumans(),

@@ -24,8 +24,12 @@ class EksporDiplomasiController extends Controller
     {
         $ekspor = $this->ekspor($request, $modul);
 
+        // Font subsetting: hanya huruf yang benar-benar dipakai yang disematkan,
+        // bukan seluruh font DejaVu (±850 KB per file). Default laravel-dompdf
+        // mematikannya.
         $pdf = Pdf::loadView('ekspor.riwayat-diplomasi-pdf', ['ekspor' => $ekspor])
-            ->setPaper('a4', 'landscape');
+            ->setPaper('a4', 'landscape')
+            ->setOption('enable_font_subsetting', true);
 
         $this->nomorHalaman($pdf);
 

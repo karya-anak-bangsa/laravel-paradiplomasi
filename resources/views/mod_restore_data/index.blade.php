@@ -101,9 +101,9 @@
                             <p class="fw-bold mb-0">{{ $item->identitas }}</p>
                             <small class="fst-italic text-primary">{{ $item->keterangan }}</small>
                         </td>
-                        <td class="text-center">{{ $item->dibuat_pada?->format('d M Y, H:i') ?? '-' }}</td>
+                        <td class="text-center">{{ $item->dibuat_pada ? $item->dibuat_pada->format('d M Y, H:i').' WIB' : '-' }}</td>
                         <td class="text-center">
-                            {{ $item->dihapus_pada?->format('d M Y, H:i') ?? '-' }}
+                            {{ $item->dihapus_pada ? $item->dihapus_pada->format('d M Y, H:i').' WIB' : '-' }}
                             <small class="d-block text-danger">{{ $item->dihapus_sejak ?? '-' }}</small>
                         </td>
                         <td class="text-center">

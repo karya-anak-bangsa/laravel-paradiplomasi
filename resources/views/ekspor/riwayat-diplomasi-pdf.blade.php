@@ -90,14 +90,17 @@
 
     <body>
         <header>
-            <img src="{{ public_path('img/dki-jakarta.webp') }}" alt="Logo DKI Jakarta">
+            {{-- Versi kecil (159×180 px) khusus kop PDF: dompdf menyematkan gambar
+                 dalam resolusi aslinya, dan dki-jakarta.webp (1200×1355 px) saja
+                 menambah ±700 KB ke setiap file. --}}
+            <img src="{{ public_path('img/dki-jakarta-kop.png') }}" alt="Logo DKI Jakarta">
             <div class="instansi">Biro Kerjasama Daerah Setda Provinsi DKI Jakarta</div>
             <div class="aplikasi">Paradiplomasi Jakarta — Paradiplomatic Compass Analytical System</div>
         </header>
 
         {{-- "Halaman X dari Y" dicetak di pojok kanan footer oleh
              EksporDiplomasiController::nomorHalaman() — dompdf tidak mendukung counter(pages) di CSS --}}
-        <footer>Diunduh pada {{ now()->format('d M Y, H:i') }} WIB</footer>
+        <footer><x-waktu-akses label="Diunduh pada" /></footer>
 
         @php($daftarBaris = $ekspor->baris())
 

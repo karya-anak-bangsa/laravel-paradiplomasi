@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <small class="text-danger">Diakses pada {{ now()->format('d M Y, H:i') }} WIB</small>
+                <small class="text-danger"><x-waktu-akses /></small>
             </div>
         </div>
         {{-- card --}}

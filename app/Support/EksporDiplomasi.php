@@ -44,7 +44,7 @@ class EksporDiplomasi
 
     public function namaFile(string $ekstensi): string
     {
-        return 'daftar_'.$this->modul->slug().'_'.now()->format('Ymd_His').'.'.$ekstensi;
+        return 'daftar_'.$this->modul->slug().'_'.Waktu::sekarang()->format('Ymd_His').'.'.$ekstensi;
     }
 
     /**

@@ -69,6 +69,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Zona Waktu Tampilan
+    |--------------------------------------------------------------------------
+    |
+    | Aplikasi & database sengaja tetap UTC (di atas) supaya created_at,
+    | updated_at, dan deleted_at lama maupun baru tersimpan konsisten. Jam
+    | yang DITAMPILKAN ke pengguna (berlabel "WIB") dikonversi ke zona ini
+    | lewat App\Support\Waktu — jangan pakai now() polos di view.
+    |
+    */
+
+    'timezone_tampilan' => 'Asia/Jakarta',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
