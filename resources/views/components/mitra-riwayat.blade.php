@@ -5,8 +5,8 @@
 
 {{--
     Tab Riwayat Diplomasi pada halaman profil mitra — dipakai bersama oleh SELURUH
-    modul mitra (Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN, Non-PNA,
-    Pemprov DKI, KBRI, KJRI, PTRI).
+    modul mitra (Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN, Kantor
+    Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI, Non-PNA).
 
     Sebelumnya tiap modul mitra punya salinan show-riwayat.blade.php sendiri
     sepanjang ±800 baris yang isinya identik kecuali nama variabel — melanggar

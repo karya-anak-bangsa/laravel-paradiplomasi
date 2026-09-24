@@ -43,6 +43,7 @@ class NonPerwakilanNegaraAsingSeeder extends Seeder
      *   - KBRI Tokyo, KBRI Bern             -> KbriSeeder
      *   - KJRI Mumbai                       -> KjriSeeder
      *   - Biro Kepala Daerah, Badan Kesatuan Bangsa dan Politik -> PemprovDkiSeeder
+     *   - Taipei Economic and Trade Office (TETO) -> KantorDagangAsingSeeder
      *
      * Catatan: Kementerian Luar Negeri RI dan Menteri Luar Negeri Republik
      * Indonesia TETAP di sini. Keduanya instansi pemerintah pusat - bukan
@@ -96,13 +97,6 @@ class NonPerwakilanNegaraAsingSeeder extends Seeder
             [
                 'nama_non_perwakilan_negara_asing' => 'AIESEC Indonesia',
                 'keterangan' => 'Cabang Indonesia dari AIESEC (Association Internationale des Etudiants en Sciences Economiques et Commerciales), organisasi kepemudaan internasional yang berdiri sejak 1948 dan hadir di Indonesia sejak 1984. Tuan rumah AIESEC International Congress 2026 di Jakarta.',
-                'is_active' => true,
-            ],
-
-            // Kantor perwakilan non-kedutaan
-            [
-                'nama_non_perwakilan_negara_asing' => 'Taipei Economic and Trade Office (TETO)',
-                'keterangan' => 'Kantor perwakilan ekonomi dan dagang Taipei di Jakarta. Penanganan undangan dari kantor ini memerlukan kehati-hatian berkenaan dengan kebijakan One China Policy.',
                 'is_active' => true,
             ],
 

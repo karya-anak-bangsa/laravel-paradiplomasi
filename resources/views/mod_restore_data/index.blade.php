@@ -7,7 +7,7 @@
 @endsection
 
 {{--
-    Daftar seluruh data yang sudah "dihapus" dari 14 modul (8 Mitra + 6 Riwayat
+    Daftar seluruh data yang sudah "dihapus" dari 16 modul (10 Mitra + 6 Riwayat
     Diplomasi). Datanya tidak pernah hilang dari database — tombol hapus di
     modul aslinya hanya menonaktifkan + men-soft-delete baris (lihat CLAUDE.md
     Bagian 9.3), sehingga admin bisa mengaktifkannya kembali dari halaman ini.

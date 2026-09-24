@@ -33,7 +33,7 @@ class Mitra extends Model
     // Nama tiap relasi di bawah WAJIB sama dengan TipeMitra::relasi(), karena
     // accessor di bawah dan eager-load di controller menurunkannya dari enum.
     //
-    // Kedelapannya memakai withTrashed() dengan alasan yang sama seperti
+    // Kesepuluhnya memakai withTrashed() dengan alasan yang sama seperti
     // ReferencesMitra::mitra(): riwayat diplomasi yang masih aktif tetap harus
     // bisa menampilkan nama mitranya meski mitra itu sudah dihapus (subtype dan
     // supertype-nya ter-soft-delete berbarengan lewat BelongsToMitra). Tanpa
@@ -55,6 +55,16 @@ class Mitra extends Model
     public function misiPermanenAsean(): HasOne
     {
         return $this->hasOne(MisiPermanenAsean::class, 'id_mitra', 'id_mitra')->withTrashed();
+    }
+
+    public function kantorDagangAsing(): HasOne
+    {
+        return $this->hasOne(KantorDagangAsing::class, 'id_mitra', 'id_mitra')->withTrashed();
+    }
+
+    public function pusatKebudayaanAsing(): HasOne
+    {
+        return $this->hasOne(PusatKebudayaanAsing::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     public function nonPerwakilanNegaraAsing(): HasOne

@@ -99,10 +99,10 @@ class DashboardController extends Controller
         //
         // SENGAJA hanya 3 tipe mitra: Kedutaan Besar, Misi Asing ASEAN, Misi
         // Permanen Negara ASEAN — yaitu perwakilan negara asing di Jakarta.
-        // Mitra Non-PNA, Pemprov DKI, KBRI, KJRI, dan PTRI TIDAK diperingkat di
-        // sini sesuai arahan bisnis: ranking ini mengukur keaktifan mitra
-        // diplomatik asing, bukan seluruh pihak yang pernah berinteraksi dengan
-        // Biro KSD. Jangan "melengkapi" daftar ini dengan kelima tipe lain.
+        // Kantor Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov
+        // DKI, dan Mitra Non-PNA TIDAK diperingkat di sini sesuai arahan bisnis:
+        // ranking ini mengukur keaktifan mitra diplomatik asing, bukan seluruh
+        // pihak yang pernah berinteraksi dengan Biro KSD. Jangan "melengkapi" daftar ini dengan ketujuh tipe lain.
         //
         // Konsekuensi teknis: ketiga tipe di bawah pasti punya `kode_negara`,
         // sehingga grid-nya aman memakai `.flag-country-{kode}` langsung tanpa

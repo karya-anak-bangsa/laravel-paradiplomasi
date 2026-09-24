@@ -20,6 +20,8 @@
                                     <a class="dropdown-item" href="{{ route('kedutaan-besar.index') }}">Kedutaan Besar</a>
                                     <a class="dropdown-item" href="{{ route('misi-asing-asean.index') }}">Misi Asing untuk ASEAN</a>
                                     <a class="dropdown-item" href="{{ route('misi-permanen-asean.index') }}">Misi Permanen Negara ASEAN</a>
+                                    <a class="dropdown-item" href="{{ route('kantor-dagang-asing.index') }}">Kantor Dagang Asing</a>
+                                    <a class="dropdown-item" href="{{ route('pusat-kebudayaan-asing.index') }}">Pusat Kebudayaan Asing</a>
                                     <a class="dropdown-item" href="{{ route('kbri.index') }}">Mitra KBRI</a>
                                     <a class="dropdown-item" href="{{ route('kjri.index') }}">Mitra KJRI</a>
                                     <a class="dropdown-item" href="{{ route('ptri.index') }}">Mitra PTRI</a>

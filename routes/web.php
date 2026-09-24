@@ -8,6 +8,7 @@ use App\Http\Controllers\AudiensiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EksporDiplomasiController;
+use App\Http\Controllers\KantorDagangAsingController;
 use App\Http\Controllers\KbriController;
 use App\Http\Controllers\KedutaanBesarController;
 use App\Http\Controllers\KerjasamaController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\MisiPermanenAseanController;
 use App\Http\Controllers\NonPerwakilanNegaraAsingController;
 use App\Http\Controllers\PemprovDkiController;
 use App\Http\Controllers\PtriController;
+use App\Http\Controllers\PusatKebudayaanAsingController;
 use App\Http\Controllers\RestoreDataController;
 use App\Http\Controllers\TanggalPentingController;
 use App\Http\Controllers\UndanganController;
@@ -47,6 +49,8 @@ Route::middleware('cek.auth')->group(function () {
         Route::resource('kedutaan-besar', KedutaanBesarController::class)->except(['index', 'show']);
         Route::resource('misi-asing-asean', MisiAsingAseanController::class)->except(['index', 'show']);
         Route::resource('misi-permanen-asean', MisiPermanenAseanController::class)->except(['index', 'show']);
+        Route::resource('kantor-dagang-asing', KantorDagangAsingController::class)->except(['index', 'show']);
+        Route::resource('pusat-kebudayaan-asing', PusatKebudayaanAsingController::class)->except(['index', 'show']);
         Route::resource('non-perwakilan-negara-asing', NonPerwakilanNegaraAsingController::class)->except(['index', 'show']);
         Route::resource('pemprov-dki', PemprovDkiController::class)->except(['index', 'show']);
         Route::resource('kbri', KbriController::class)->except(['index', 'show']);
@@ -61,7 +65,7 @@ Route::middleware('cek.auth')->group(function () {
         Route::view('akun-pengguna', 'mod_akun_pengguna.index')->name('akun-pengguna.index');
         Route::view('riwayat-aktivitas', 'mod_riwayat_aktivitas.index')->name('riwayat-aktivitas.index');
 
-        // Restore Data bukan resource: datanya berasal dari 14 modul sekaligus,
+        // Restore Data bukan resource: datanya berasal dari 16 modul sekaligus,
         // jadi tidak ada satu model pun yang bisa dijadikan route binding.
         // Segmen {grup}/{modul} divalidasi terhadap TipeMitra & ModulDiplomasi
         // di App\Support\DataTerhapus.
@@ -73,6 +77,8 @@ Route::middleware('cek.auth')->group(function () {
     Route::resource('kedutaan-besar', KedutaanBesarController::class)->only(['index', 'show']);
     Route::resource('misi-asing-asean', MisiAsingAseanController::class)->only(['index', 'show']);
     Route::resource('misi-permanen-asean', MisiPermanenAseanController::class)->only(['index', 'show']);
+    Route::resource('kantor-dagang-asing', KantorDagangAsingController::class)->only(['index', 'show']);
+    Route::resource('pusat-kebudayaan-asing', PusatKebudayaanAsingController::class)->only(['index', 'show']);
     Route::resource('non-perwakilan-negara-asing', NonPerwakilanNegaraAsingController::class)->only(['index', 'show']);
     Route::resource('pemprov-dki', PemprovDkiController::class)->only(['index', 'show']);
     Route::resource('kbri', KbriController::class)->only(['index', 'show']);

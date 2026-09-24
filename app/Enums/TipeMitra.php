@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+use App\Models\KantorDagangAsing;
 use App\Models\Kbri;
 use App\Models\KedutaanBesar;
 use App\Models\Kjri;
@@ -10,6 +11,7 @@ use App\Models\MisiPermanenAsean;
 use App\Models\NonPerwakilanNegaraAsing;
 use App\Models\PemprovDki;
 use App\Models\Ptri;
+use App\Models\PusatKebudayaanAsing;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -30,6 +32,8 @@ enum TipeMitra: string
     case KedutaanBesar = 'Kedutaan Besar';
     case MisiAsingAsean = 'Misi Asing untuk ASEAN';
     case MisiPermanenAsean = 'Misi Permanen Negara ASEAN';
+    case KantorDagangAsing = 'Kantor Dagang Asing';
+    case PusatKebudayaanAsing = 'Pusat Kebudayaan Asing';
     case Kbri = 'Kedutaan Besar Republik Indonesia (KBRI)';
     case Kjri = 'Konsulat Jenderal Republik Indonesia (KJRI)';
     case Ptri = 'Perutusan Tetap Republik Indonesia (PTRI)';
@@ -46,6 +50,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'kedutaan_besar',
             self::MisiAsingAsean => 'misi_asing_asean',
             self::MisiPermanenAsean => 'misi_permanen_asean',
+            self::KantorDagangAsing => 'kantor_dagang_asing',
+            self::PusatKebudayaanAsing => 'pusat_kebudayaan_asing',
             self::Kbri => 'kbri',
             self::Kjri => 'kjri',
             self::Ptri => 'ptri',
@@ -65,6 +71,8 @@ enum TipeMitra: string
             self::KedutaanBesar => KedutaanBesar::class,
             self::MisiAsingAsean => MisiAsingAsean::class,
             self::MisiPermanenAsean => MisiPermanenAsean::class,
+            self::KantorDagangAsing => KantorDagangAsing::class,
+            self::PusatKebudayaanAsing => PusatKebudayaanAsing::class,
             self::Kbri => Kbri::class,
             self::Kjri => Kjri::class,
             self::Ptri => Ptri::class,
@@ -82,6 +90,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'kedutaanBesar',
             self::MisiAsingAsean => 'misiAsingAsean',
             self::MisiPermanenAsean => 'misiPermanenAsean',
+            self::KantorDagangAsing => 'kantorDagangAsing',
+            self::PusatKebudayaanAsing => 'pusatKebudayaanAsing',
             self::Kbri => 'kbri',
             self::Kjri => 'kjri',
             self::Ptri => 'ptri',
@@ -100,6 +110,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'nama_kedutaan_besar_id',
             self::MisiAsingAsean => 'nama_misi_asing_asean_id',
             self::MisiPermanenAsean => 'nama_misi_permanen_asean_id',
+            self::KantorDagangAsing => 'nama_kantor_dagang_asing',
+            self::PusatKebudayaanAsing => 'nama_pusat_kebudayaan_asing',
             self::Kbri => 'nama_kbri',
             self::Kjri => 'nama_kjri',
             self::Ptri => 'nama_ptri',
@@ -113,8 +125,9 @@ enum TipeMitra: string
      * perwakilan negara asing di Jakarta, yang di UI ditampilkan dengan bendera
      * negara dan dinamai menurut negaranya.
      *
-     * False untuk mitra yang hanya mencatat nama + keterangan (Non-PNA, Pemprov
-     * DKI, KBRI, KJRI, PTRI) — UI-nya memakai ikon generik dan nama resmi.
+     * False untuk mitra yang hanya mencatat nama + keterangan (Kantor Dagang
+     * Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI, Non-PNA) —
+     * UI-nya memakai ikon generik dan nama resmi.
      */
     public function berbasisNegara(): bool
     {
@@ -136,6 +149,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'Kedutaan Besar',
             self::MisiAsingAsean => 'Misi Asing ASEAN',
             self::MisiPermanenAsean => 'Misi Permanen ASEAN',
+            self::KantorDagangAsing => 'Kantor Dagang Asing',
+            self::PusatKebudayaanAsing => 'Pusat Kebudayaan Asing',
             self::Kbri => 'KBRI',
             self::Kjri => 'KJRI',
             self::Ptri => 'PTRI',
@@ -154,6 +169,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'kedutaan-besar.index',
             self::MisiAsingAsean => 'misi-asing-asean.index',
             self::MisiPermanenAsean => 'misi-permanen-asean.index',
+            self::KantorDagangAsing => 'kantor-dagang-asing.index',
+            self::PusatKebudayaanAsing => 'pusat-kebudayaan-asing.index',
             self::Kbri => 'kbri.index',
             self::Kjri => 'kjri.index',
             self::Ptri => 'ptri.index',
@@ -187,6 +204,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'landmark',
             self::MisiAsingAsean => 'flag',
             self::MisiPermanenAsean => 'flag-checkered',
+            self::KantorDagangAsing => 'briefcase',
+            self::PusatKebudayaanAsing => 'masks-theater',
             self::Kbri => 'building-flag',
             self::Kjri => 'passport',
             self::Ptri => 'earth-asia',
@@ -201,6 +220,8 @@ enum TipeMitra: string
             self::KedutaanBesar => 'blue',
             self::MisiAsingAsean => 'azure',
             self::MisiPermanenAsean => 'indigo',
+            self::KantorDagangAsing => 'orange',
+            self::PusatKebudayaanAsing => 'green',
             self::Kbri => 'cyan',
             self::Kjri => 'lime',
             self::Ptri => 'pink',

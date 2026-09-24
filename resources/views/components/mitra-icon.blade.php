@@ -2,8 +2,8 @@
 
 {{--
     Penanda visual mitra: bendera negara untuk perwakilan negara asing di Jakarta,
-    ikon generik untuk mitra yang hanya mencatat nama (Non-PNA, Pemprov DKI, KBRI,
-    KJRI, PTRI). Pembedanya diambil dari TipeMitra::berbasisNegara(), bukan dari
+    ikon generik untuk mitra yang hanya mencatat nama (Kantor Dagang Asing, Pusat
+    Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI, Non-PNA). Pembedanya diambil dari TipeMitra::berbasisNegara(), bukan dari
     daftar tipe yang ditulis ulang di sini.
 --}}
 

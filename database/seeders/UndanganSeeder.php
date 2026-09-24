@@ -358,7 +358,7 @@ class UndanganSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_non_perwakilan_negara_asing' => 'Taipei Economic and Trade Office (TETO)',
+                'nama_kantor_dagang_asing' => 'Taipei Economic and Trade Office (TETO)',
                 'acara' => '<p>Undangan untuk menghadiri acara Double Tenth Day di Hotel Borobudur, Jakarta</p>',
                 'rangkuman' => '<p>Taipei Economic and Trade Office (TETO) mengirimkan undangan untuk menghadiri Double Tenth Day pada tanggal 7 Oktober 2026 di Hotel Borobudur, Jakarta.</p><p>Double Tenth Day (10 Oktober) adalah Hari Nasional Taiwan yang memperingati Pemberontakan Wuchang tahun 1911. Peristiwa ini memicu Revolusi Xinhai yang menggulingkan Dinasti Qing dan melahirkan Republik Tiongkok. Hari libur ini dirayakan dengan upacara bendera, pidato kenegaraan, parade militer, pertunjukan budaya, dan pesta kembang api.</p><p>Berkenaan dengan kebijakan One China Policy, diperlukan kehati-hatian dalam menghadiri acara ini.</p><p>Gubernur Provinsi DKI Jakarta dikonfirmasi tidak hadir dan mengirimkan karangan bunga per 14 September 2026.</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen undangan',

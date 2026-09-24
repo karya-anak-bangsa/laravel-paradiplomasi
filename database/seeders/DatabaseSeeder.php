@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             // Modul mitra "nama + keterangan"
             // WAJIB sebelum seluruh seeder Riwayat Diplomasi di bawah, karena
             // seeder tersebut me-lookup id_mitra berdasarkan nama mitranya.
+            KantorDagangAsingSeeder::class,
+            PusatKebudayaanAsingSeeder::class,
             NonPerwakilanNegaraAsingSeeder::class,
             PemprovDkiSeeder::class,
             KbriSeeder::class,
