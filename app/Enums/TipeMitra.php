@@ -3,14 +3,12 @@
 namespace App\Enums;
 
 use App\Models\KantorDagangAsing;
-use App\Models\Kbri;
 use App\Models\KedutaanBesar;
-use App\Models\Kjri;
 use App\Models\MisiAsingAsean;
 use App\Models\MisiPermanenAsean;
 use App\Models\NonPerwakilanNegaraAsing;
 use App\Models\PemprovDki;
-use App\Models\Ptri;
+use App\Models\PerwakilanRi;
 use App\Models\PusatKebudayaanAsing;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -34,9 +32,7 @@ enum TipeMitra: string
     case MisiPermanenAsean = 'Misi Permanen Negara ASEAN';
     case KantorDagangAsing = 'Kantor Dagang Asing';
     case PusatKebudayaanAsing = 'Pusat Kebudayaan Asing';
-    case Kbri = 'Kedutaan Besar Republik Indonesia (KBRI)';
-    case Kjri = 'Konsulat Jenderal Republik Indonesia (KJRI)';
-    case Ptri = 'Perutusan Tetap Republik Indonesia (PTRI)';
+    case PerwakilanRi = 'Perwakilan RI di Luar Negeri';
     case PemprovDki = 'Pemerintah Provinsi DKI Jakarta';
     case NonPNA = 'Non Perwakilan Negara Asing';
 
@@ -52,9 +48,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'misi_permanen_asean',
             self::KantorDagangAsing => 'kantor_dagang_asing',
             self::PusatKebudayaanAsing => 'pusat_kebudayaan_asing',
-            self::Kbri => 'kbri',
-            self::Kjri => 'kjri',
-            self::Ptri => 'ptri',
+            self::PerwakilanRi => 'perwakilan_ri',
             self::PemprovDki => 'pemprov_dki',
             self::NonPNA => 'non_pna',
         };
@@ -73,9 +67,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => MisiPermanenAsean::class,
             self::KantorDagangAsing => KantorDagangAsing::class,
             self::PusatKebudayaanAsing => PusatKebudayaanAsing::class,
-            self::Kbri => Kbri::class,
-            self::Kjri => Kjri::class,
-            self::Ptri => Ptri::class,
+            self::PerwakilanRi => PerwakilanRi::class,
             self::PemprovDki => PemprovDki::class,
             self::NonPNA => NonPerwakilanNegaraAsing::class,
         };
@@ -92,9 +84,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'misiPermanenAsean',
             self::KantorDagangAsing => 'kantorDagangAsing',
             self::PusatKebudayaanAsing => 'pusatKebudayaanAsing',
-            self::Kbri => 'kbri',
-            self::Kjri => 'kjri',
-            self::Ptri => 'ptri',
+            self::PerwakilanRi => 'perwakilanRi',
             self::PemprovDki => 'pemprovDki',
             self::NonPNA => 'nonPerwakilanNegaraAsing',
         };
@@ -112,9 +102,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'nama_misi_permanen_asean_id',
             self::KantorDagangAsing => 'nama_kantor_dagang_asing',
             self::PusatKebudayaanAsing => 'nama_pusat_kebudayaan_asing',
-            self::Kbri => 'nama_kbri',
-            self::Kjri => 'nama_kjri',
-            self::Ptri => 'nama_ptri',
+            self::PerwakilanRi => 'nama_perwakilan_ri',
             self::PemprovDki => 'nama_pemprov_dki',
             self::NonPNA => 'nama_non_perwakilan_negara_asing',
         };
@@ -126,7 +114,7 @@ enum TipeMitra: string
      * negara dan dinamai menurut negaranya.
      *
      * False untuk mitra yang hanya mencatat nama + keterangan (Kantor Dagang
-     * Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI, Non-PNA) —
+     * Asing, Pusat Kebudayaan Asing, Perwakilan RI, Pemprov DKI, Non-PNA) —
      * UI-nya memakai ikon generik dan nama resmi.
      */
     public function berbasisNegara(): bool
@@ -141,7 +129,7 @@ enum TipeMitra: string
      * Label pendek untuk tempat sempit — kartu akumulasi dashboard, navbar,
      * kolom tabel. Bedanya dengan ->value: yang ini memangkas kata yang sudah
      * jelas dari konteksnya (mis. "Misi Permanen ASEAN" alih-alih "Misi
-     * Permanen Negara ASEAN", "KBRI" alih-alih nama panjangnya).
+     * Permanen Negara ASEAN", "Mitra Non-PNA" alih-alih nama panjangnya).
      */
     public function labelSingkat(): string
     {
@@ -151,9 +139,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'Misi Permanen ASEAN',
             self::KantorDagangAsing => 'Kantor Dagang Asing',
             self::PusatKebudayaanAsing => 'Pusat Kebudayaan Asing',
-            self::Kbri => 'KBRI',
-            self::Kjri => 'KJRI',
-            self::Ptri => 'PTRI',
+            self::PerwakilanRi => 'Perwakilan RI di Luar Negeri',
             self::PemprovDki => 'Pemprov DKI Jakarta',
             self::NonPNA => 'Mitra Non-PNA',
         };
@@ -171,9 +157,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'misi-permanen-asean.index',
             self::KantorDagangAsing => 'kantor-dagang-asing.index',
             self::PusatKebudayaanAsing => 'pusat-kebudayaan-asing.index',
-            self::Kbri => 'kbri.index',
-            self::Kjri => 'kjri.index',
-            self::Ptri => 'ptri.index',
+            self::PerwakilanRi => 'perwakilan-ri.index',
             self::PemprovDki => 'pemprov-dki.index',
             self::NonPNA => 'non-perwakilan-negara-asing.index',
         };
@@ -206,9 +190,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'flag-checkered',
             self::KantorDagangAsing => 'briefcase',
             self::PusatKebudayaanAsing => 'masks-theater',
-            self::Kbri => 'building-flag',
-            self::Kjri => 'passport',
-            self::Ptri => 'earth-asia',
+            self::PerwakilanRi => 'building-flag',
             self::PemprovDki => 'city',
             self::NonPNA => 'building-columns',
         };
@@ -222,9 +204,7 @@ enum TipeMitra: string
             self::MisiPermanenAsean => 'indigo',
             self::KantorDagangAsing => 'orange',
             self::PusatKebudayaanAsing => 'green',
-            self::Kbri => 'cyan',
-            self::Kjri => 'lime',
-            self::Ptri => 'pink',
+            self::PerwakilanRi => 'cyan',
             self::PemprovDki => 'teal',
             self::NonPNA => 'purple',
         };

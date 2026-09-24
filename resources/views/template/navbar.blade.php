@@ -22,9 +22,7 @@
                                     <a class="dropdown-item" href="{{ route('misi-permanen-asean.index') }}">Misi Permanen Negara ASEAN</a>
                                     <a class="dropdown-item" href="{{ route('kantor-dagang-asing.index') }}">Kantor Dagang Asing</a>
                                     <a class="dropdown-item" href="{{ route('pusat-kebudayaan-asing.index') }}">Pusat Kebudayaan Asing</a>
-                                    <a class="dropdown-item" href="{{ route('kbri.index') }}">Mitra KBRI</a>
-                                    <a class="dropdown-item" href="{{ route('kjri.index') }}">Mitra KJRI</a>
-                                    <a class="dropdown-item" href="{{ route('ptri.index') }}">Mitra PTRI</a>
+                                    <a class="dropdown-item" href="{{ route('perwakilan-ri.index') }}">Perwakilan RI di Luar Negeri</a>
                                     <a class="dropdown-item" href="{{ route('pemprov-dki.index') }}">Pemprov DKI Jakarta</a>
                                     <a class="dropdown-item" href="{{ route('non-perwakilan-negara-asing.index') }}">Mitra Non-PNA</a>
                                 </div>

@@ -332,7 +332,7 @@ class AudiensiSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_kbri' => 'KBRI Bern',
+                'nama_perwakilan_ri' => 'KBRI Bern',
                 'topik' => '<p>Permohonan audiensi kepada Gubernur DKI Jakarta dari KBRI Bern</p>',
                 'rangkuman' => '<p>Melalui pemberitahuan dari Sekretariat Gubernur, KBRI Bern memohon Audiensi Kepada Gubernur DKI Jakarta</p><p>Audiensi dilaksanakan 4 Maret 2026</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen audiensi',

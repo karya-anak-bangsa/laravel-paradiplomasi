@@ -9,17 +9,15 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EksporDiplomasiController;
 use App\Http\Controllers\KantorDagangAsingController;
-use App\Http\Controllers\KbriController;
 use App\Http\Controllers\KedutaanBesarController;
 use App\Http\Controllers\KerjasamaController;
-use App\Http\Controllers\KjriController;
 use App\Http\Controllers\KolaborasiController;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\MisiAsingAseanController;
 use App\Http\Controllers\MisiPermanenAseanController;
 use App\Http\Controllers\NonPerwakilanNegaraAsingController;
 use App\Http\Controllers\PemprovDkiController;
-use App\Http\Controllers\PtriController;
+use App\Http\Controllers\PerwakilanRiController;
 use App\Http\Controllers\PusatKebudayaanAsingController;
 use App\Http\Controllers\RestoreDataController;
 use App\Http\Controllers\TanggalPentingController;
@@ -51,11 +49,9 @@ Route::middleware('cek.auth')->group(function () {
         Route::resource('misi-permanen-asean', MisiPermanenAseanController::class)->except(['index', 'show']);
         Route::resource('kantor-dagang-asing', KantorDagangAsingController::class)->except(['index', 'show']);
         Route::resource('pusat-kebudayaan-asing', PusatKebudayaanAsingController::class)->except(['index', 'show']);
+        Route::resource('perwakilan-ri', PerwakilanRiController::class)->except(['index', 'show']);
         Route::resource('non-perwakilan-negara-asing', NonPerwakilanNegaraAsingController::class)->except(['index', 'show']);
         Route::resource('pemprov-dki', PemprovDkiController::class)->except(['index', 'show']);
-        Route::resource('kbri', KbriController::class)->except(['index', 'show']);
-        Route::resource('kjri', KjriController::class)->except(['index', 'show']);
-        Route::resource('ptri', PtriController::class)->except(['index', 'show']);
         Route::resource('kerjasama', KerjasamaController::class)->except(['index', 'show']);
         Route::resource('kolaborasi', KolaborasiController::class)->except(['index', 'show']);
         Route::resource('undangan', UndanganController::class)->except(['index', 'show']);
@@ -65,7 +61,7 @@ Route::middleware('cek.auth')->group(function () {
         Route::view('akun-pengguna', 'mod_akun_pengguna.index')->name('akun-pengguna.index');
         Route::view('riwayat-aktivitas', 'mod_riwayat_aktivitas.index')->name('riwayat-aktivitas.index');
 
-        // Restore Data bukan resource: datanya berasal dari 16 modul sekaligus,
+        // Restore Data bukan resource: datanya berasal dari 14 modul sekaligus,
         // jadi tidak ada satu model pun yang bisa dijadikan route binding.
         // Segmen {grup}/{modul} divalidasi terhadap TipeMitra & ModulDiplomasi
         // di App\Support\DataTerhapus.
@@ -79,11 +75,9 @@ Route::middleware('cek.auth')->group(function () {
     Route::resource('misi-permanen-asean', MisiPermanenAseanController::class)->only(['index', 'show']);
     Route::resource('kantor-dagang-asing', KantorDagangAsingController::class)->only(['index', 'show']);
     Route::resource('pusat-kebudayaan-asing', PusatKebudayaanAsingController::class)->only(['index', 'show']);
+    Route::resource('perwakilan-ri', PerwakilanRiController::class)->only(['index', 'show']);
     Route::resource('non-perwakilan-negara-asing', NonPerwakilanNegaraAsingController::class)->only(['index', 'show']);
     Route::resource('pemprov-dki', PemprovDkiController::class)->only(['index', 'show']);
-    Route::resource('kbri', KbriController::class)->only(['index', 'show']);
-    Route::resource('kjri', KjriController::class)->only(['index', 'show']);
-    Route::resource('ptri', PtriController::class)->only(['index', 'show']);
     Route::resource('kerjasama', KerjasamaController::class)->only(['index', 'show']);
     Route::resource('kolaborasi', KolaborasiController::class)->only(['index', 'show']);
     Route::resource('undangan', UndanganController::class)->only(['index', 'show']);

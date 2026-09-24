@@ -6,14 +6,14 @@
 {{--
     Tab Riwayat Diplomasi pada halaman profil mitra — dipakai bersama oleh SELURUH
     modul mitra (Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN, Kantor
-    Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI, Non-PNA).
+    Dagang Asing, Pusat Kebudayaan Asing, Perwakilan RI, Pemprov DKI, Non-PNA).
 
     Sebelumnya tiap modul mitra punya salinan show-riwayat.blade.php sendiri
     sepanjang ±800 baris yang isinya identik kecuali nama variabel — melanggar
     CLAUDE.md Bagian 9.5. Komponen ini menggantikan seluruh salinan tersebut.
 
     Prop:
-      $mitra   — model subtype (KedutaanBesar/Kbri/dst) yang keenam relasi
+      $mitra   — model subtype (KedutaanBesar/PerwakilanRi/dst) yang keenam relasi
                  Riwayat Diplomasi-nya sudah di-load oleh controller.
       $sebutan — kata benda untuk pesan kosong, mis. "kedutaan ini" / "misi ini".
 

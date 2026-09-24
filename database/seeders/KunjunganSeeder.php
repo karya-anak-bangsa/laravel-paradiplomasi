@@ -92,7 +92,7 @@ class KunjunganSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_kbri' => 'KBRI Tokyo',
+                'nama_perwakilan_ri' => 'KBRI Tokyo',
                 'perihal' => '<p>Kunjungan Duta Besar Indonesia untuk Jepang ke Jakarta.</p>',
                 'rangkuman' => '<p>Pemerintah Provinsi DKI Jakarta mengundang Duta Besar Indoesia untuk Jepang untuk berkunjung ke Jakarta sebagai bagian dari upaya penguatan kerja sama strategis Jakarta–Jepang di berbagai sektor prioritas.</p><p>Berdasarkan komunikasi dengan KBRI Tokyo, kegiatan direncanakan berupa kunjungan ke lokasi-lokasi proyek infrastruktur Jakarta yang potensial, baik dari sektor investasi, infrastruktur, transportasi publik, pengembangan kota, transformasi pemerintahan digital, pengelolaan lingkungan, dan ketahanan pesisir.</p><p>Persetujuan pelaksanaan kegiatan telah disampaikan melalui Nota Dinas Kepala Biro Kerja Sama Daerah kepada Sekretaris Daerah Provinsi DKI Jakarta No. 17/UD.02.02 tanggal 29 Mei 2026.</p><p>Rangkaian agenda yang diusulkan meliputi Pertemuan bilateral dengan Gubernur DKI Jakarta, Forum inovasi perkotaan dan kemitraan strategis, Kunjungan lapangan ke TPST Bantar Gebang terkait pengolahan sampah menjadi energi, serta Diskusi pengembangan Giant Sea Wall Jakarta.</p><p>Kegiatan telah dilaksanakan 4 s.d. 6 Juni 2026. Duta Besar RI untuk Jepang menyampaikan terima kasih melalui Surat No. 82/EKON/vI/2026 Tanggal 9 Juni 2026.</p>',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen kunjungan',

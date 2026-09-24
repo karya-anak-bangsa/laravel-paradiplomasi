@@ -20,15 +20,11 @@ class DashboardController extends Controller
         // Mitra diturunkan dari TipeMitra, sehingga jenis mitra baru otomatis
         // muncul di dashboard tanpa menyentuh controller maupun blade-nya.
         //
-        // KBRI/KJRI/PTRI diberi awalan "Mitra " dan ikonnya diseragamkan jadi
-        // "landmark" khusus di kartu ini — bukan lewat TipeMitra::labelSingkat()
-        // / ikon(), supaya modul Restore Data (yang memakai method sama) tidak
-        // ikut berubah.
+        // Ikon seluruh kartu diseragamkan jadi "landmark" khusus di kartu ini —
+        // bukan lewat TipeMitra::ikon(), supaya modul Restore Data (yang memakai
+        // method sama) tidak ikut berubah.
         $akumulasiMitra = collect(TipeMitra::cases())->map(fn (TipeMitra $tipe) => (object) [
-            'label' => match ($tipe) {
-                TipeMitra::Kbri, TipeMitra::Kjri, TipeMitra::Ptri => 'Mitra '.$tipe->labelSingkat(),
-                default => $tipe->labelSingkat(),
-            },
+            'label' => $tipe->labelSingkat(),
             'ikon' => 'landmark',
             'warna' => $tipe->warna(),
             'route' => $tipe->routeIndex(),
@@ -99,10 +95,10 @@ class DashboardController extends Controller
         //
         // SENGAJA hanya 3 tipe mitra: Kedutaan Besar, Misi Asing ASEAN, Misi
         // Permanen Negara ASEAN — yaitu perwakilan negara asing di Jakarta.
-        // Kantor Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov
+        // Kantor Dagang Asing, Pusat Kebudayaan Asing, Perwakilan RI, Pemprov
         // DKI, dan Mitra Non-PNA TIDAK diperingkat di sini sesuai arahan bisnis:
         // ranking ini mengukur keaktifan mitra diplomatik asing, bukan seluruh
-        // pihak yang pernah berinteraksi dengan Biro KSD. Jangan "melengkapi" daftar ini dengan ketujuh tipe lain.
+        // pihak yang pernah berinteraksi dengan Biro KSD. Jangan "melengkapi" daftar ini dengan kelima tipe lain.
         //
         // Konsekuensi teknis: ketiga tipe di bawah pasti punya `kode_negara`,
         // sehingga grid-nya aman memakai `.flag-country-{kode}` langsung tanpa

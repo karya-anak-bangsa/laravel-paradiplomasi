@@ -1,13 +1,13 @@
 # Proyek Web Paradiplomasi Pemda DKI
 
-_Terakhir diperbarui: 25 September 2026 — penambahan 2 jenis mitra: **Kantor Dagang Asing** & **Pusat Kebudayaan Asing** (pola "nama + keterangan"), urutan tipe mitra kini 10 jenis, dan TETO dipindah dari Non-PNA ke Kantor Dagang Asing lewat migration data. Sebelumnya: penataan ulang tombol (Logout → menu pengguna, ekspor → `x-tombol-ekspor` di header tabel; lihat Bagian 9.5). Sebelumnya: ekspor Excel/PDF di 6 modul Riwayat Diplomasi (`App\Support\EksporDiplomasi`, scope `daftarIndex()`). Sebelumnya: penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
+_Terakhir diperbarui: 25 September 2026 — modul KBRI, KJRI, PTRI **digabung** menjadi satu modul **Perwakilan RI di Luar Negeri** (`tb_perwakilan_ri`, kolom `tipe_perwakilan_ri`), tipe mitra kini 8 jenis; data lama dipindah lewat migration `2026_09_25_110000_gabung_kbri_kjri_ptri_ke_tb_perwakilan_ri` (lihat Bagian 3). Sebelumnya: penambahan 2 jenis mitra: **Kantor Dagang Asing** & **Pusat Kebudayaan Asing** (pola "nama + keterangan"), urutan tipe mitra kini 10 jenis, dan TETO dipindah dari Non-PNA ke Kantor Dagang Asing lewat migration data. Sebelumnya: penataan ulang tombol (Logout → menu pengguna, ekspor → `x-tombol-ekspor` di header tabel; lihat Bagian 9.5). Sebelumnya: ekspor Excel/PDF di 6 modul Riwayat Diplomasi (`App\Support\EksporDiplomasi`, scope `daftarIndex()`). Sebelumnya: penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
 
 ## 1. Deskripsi Singkat
 <p align="justify">
 Website Paradiplomasi Jakarta adalah sistem informasi untuk pencatatan data diplomasi dan hubungan luar negeri Pemda DKI Jakarta yang diwakili oleh Biro Kerjasama Daerah (KSD) setda DKI Jakarta dengan beberapa mitra seperti kedutaan besar, misi asing untuk asean, misi permanen negara asean, dan non perwakilan negara asing. Saat ini, web paradiplomasi jakarta dalam tahap domain testing artinya hasil development akan dijalankan pada domain hostinger. Jika seluruh proses bisnis di web paradiplomasi telah selesai dikerjakan maka akan dilakukan deployment ke server resmi pemda dki yaitu server diskominfotik pemda dki.
 </p>
 <p align="justify">
-Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, kantor dagang asing, pusat kebudayaan asing, Non Perwakilan Negara Asing, perangkat daerah Pemerintah Provinsi DKI Jakarta, serta perwakilan RI di luar negeri (KBRI, KJRI, PTRI) — dapat melakukan diplomasi berupa Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI dan tercatat di web paradiplomasi jakarta. Sebagai contoh, kedutaan besar australia dan misi australia untuk asean melakukan pergantian pimpinan. Lalu kedua pimpinan tersebut ingin berkunjung ke balai kota dki untuk bertemu dengan gubernur dki. Hal ini dilakukan untuk protokoler antara pemda dki dengan mitra biro ksd. Oleh karena itu, pada modul kunjungan akan tercatat dua data kunjungan. Pertama kunjungan duta besar australia dan kedua kunjungan kepala misi australia untuk asean. Walaupun pelaksanaan kunjungan dilakukan pada hari yang sama, namun proses pencatatannya dilakukan dua kali. Contoh lainnya, negara singapura yang diwakili oleh misi permanen republik singapura untuk asean ingin melakukan kerjasama dengan beberapa perguran tinggi di Indonesia. Adapun bentuk kerjasamanya adalah program pertukaran mahasiswa antara nanyang technological university dengan mahasiswa dari universitas indonesia, universitas gajah mada, institut teknologi bandung. Oleh karena itu, pada modul kerjasama akan tercatat satu kerjasama. Secara singkat, setiap riwayat diplomasi (modul kerjasama - acara dki) dapat mencatat data diplomasi dari berbagai jenis mitra biro ksd.
+Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, kantor dagang asing, pusat kebudayaan asing, Non Perwakilan Negara Asing, perangkat daerah Pemerintah Provinsi DKI Jakarta, serta Perwakilan RI di Luar Negeri (KBRI, KJRI, PTRI) — dapat melakukan diplomasi berupa Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI dan tercatat di web paradiplomasi jakarta. Sebagai contoh, kedutaan besar australia dan misi australia untuk asean melakukan pergantian pimpinan. Lalu kedua pimpinan tersebut ingin berkunjung ke balai kota dki untuk bertemu dengan gubernur dki. Hal ini dilakukan untuk protokoler antara pemda dki dengan mitra biro ksd. Oleh karena itu, pada modul kunjungan akan tercatat dua data kunjungan. Pertama kunjungan duta besar australia dan kedua kunjungan kepala misi australia untuk asean. Walaupun pelaksanaan kunjungan dilakukan pada hari yang sama, namun proses pencatatannya dilakukan dua kali. Contoh lainnya, negara singapura yang diwakili oleh misi permanen republik singapura untuk asean ingin melakukan kerjasama dengan beberapa perguran tinggi di Indonesia. Adapun bentuk kerjasamanya adalah program pertukaran mahasiswa antara nanyang technological university dengan mahasiswa dari universitas indonesia, universitas gajah mada, institut teknologi bandung. Oleh karena itu, pada modul kerjasama akan tercatat satu kerjasama. Secara singkat, setiap riwayat diplomasi (modul kerjasama - acara dki) dapat mencatat data diplomasi dari berbagai jenis mitra biro ksd.
 </p>
 <p align="justify">
 <strong>Pengecualian penting:</strong> modul Acara DKI memiliki proses bisnis yang berbeda dari kelima modul Riwayat Diplomasi lainnya. Satu Acara DKI dapat melibatkan <em>banyak mitra sekaligus</em> dalam satu peristiwa yang sama, masing-masing dengan status kehadirannya sendiri (Diundang/Hadir/Tidak Hadir) beserta alasannya. Lihat Bagian 4 untuk penjelasan lengkap beserta contoh kasus.
@@ -16,11 +16,11 @@ Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, k
 ---
 
 ## 2. Pembagian Modul
-- **Modul Mitra (10 jenis)** — urutan resmi (arahan Kasubag, 25 Sep 2026; dipakai `TipeMitra::cases()`, navbar, dropdown, dan kartu dashboard): Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN, Kantor Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI Jakarta, Non Perwakilan Negara Asing.
+- **Modul Mitra (8 jenis)** — urutan resmi (arahan Kasubag, 25 Sep 2026; dipakai `TipeMitra::cases()`, navbar, dropdown, dan kartu dashboard): Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN, Kantor Dagang Asing, Pusat Kebudayaan Asing, Perwakilan RI di Luar Negeri, Pemprov DKI Jakarta, Non Perwakilan Negara Asing.
   - *Berbasis negara* (punya `kode_negara`/`nama_negara`, alamat, koordinat): Kedutaan Besar, Misi Asing untuk ASEAN, Misi Permanen Negara ASEAN.
-  - *Nama + keterangan saja*: Kantor Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemerintah Provinsi DKI Jakarta, Non Perwakilan Negara Asing (label navbar "Mitra Non-PNA").
+  - *Nama + keterangan saja*: Kantor Dagang Asing, Pusat Kebudayaan Asing, Perwakilan RI di Luar Negeri (+ kolom pilihan `tipe_perwakilan_ri`), Pemerintah Provinsi DKI Jakarta, Non Perwakilan Negara Asing (label navbar "Mitra Non-PNA").
 
-  Kesepuluhnya adalah *subtype* dari satu supertype `tb_mitra` — lihat Bagian 3. Perhatikan bedanya **Kedutaan Besar** (kedubes negara asing di Jakarta) dan **KBRI** (kedutaan besar RI di luar negeri): dua jenis mitra yang berbeda, bukan duplikat.
+  Kedelapannya adalah *subtype* dari satu supertype `tb_mitra` — lihat Bagian 3. Perhatikan bedanya **Kedutaan Besar** (kedubes negara asing di Jakarta) dan **Perwakilan RI di Luar Negeri** (KBRI/KJRI/PTRI, perwakilan RI di negara lain): dua jenis mitra yang berbeda, bukan duplikat.
 - **Modul Riwayat Diplomasi:** Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan (proses bisnis identik, 1 baris = 1 mitra), dan Acara DKI (proses bisnis berbeda, 1 acara = banyak mitra — lihat Bagian 4).
 - **Modul Administrator:** Akun Pengguna, Riwayat Aktivitas, Restore Data.
 - **Modul Pendukung:** Tanggal Penting (kalender read-only, tidak punya tabel sendiri).
@@ -29,7 +29,7 @@ Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, k
 |---|---|---|---|
 | `Akun Pengguna` | `Hardcode dari AuthController` | login dan logout | View index (`mod_akun_pengguna.index`) sudah ada, tapi backend CRUD/listing pengguna belum diimplementasikan. |
 | `Riwayat Aktivitas` | `belum dibuat` | - | View index sudah ada namun eksplisit berlabel **"Log Aktivitas Pengguna (Placeholder)"** — belum ada pencatatan log sungguhan. |
-| `Restore Data` | *(tidak ada tabel sendiri)* | lihat, cari, pulihkan | **Sudah berfungsi.** Menampilkan seluruh data ter-soft-delete dari 16 modul (10 Mitra + 6 Riwayat Diplomasi) dan mengaktifkannya kembali **satu per satu** — tidak ada aksi massal. Daftar modulnya diturunkan dari `TipeMitra` + `ModulDiplomasi` lewat `App\Support\DataTerhapus`, jadi modul baru otomatis ikut terpantau. Lihat Bagian 9.3. |
+| `Restore Data` | *(tidak ada tabel sendiri)* | lihat, cari, pulihkan | **Sudah berfungsi.** Menampilkan seluruh data ter-soft-delete dari 14 modul (8 Mitra + 6 Riwayat Diplomasi) dan mengaktifkannya kembali **satu per satu** — tidak ada aksi massal. Daftar modulnya diturunkan dari `TipeMitra` + `ModulDiplomasi` lewat `App\Support\DataTerhapus`, jadi modul baru otomatis ikut terpantau. Lihat Bagian 9.3. |
 | `Kedutaan Besar` | `tb_kedutaan_besar` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | ex. Kedutaan Besar Australia. "Hapus" = nonaktifkan (`is_active = false`), bukan hapus permanen. |
 | `Misi Asing ASEAN` | `tb_misi_asing_asean` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | ex. Misi Australia untuk ASEAN |
 | `Misi Permanen ASEAN` | `tb_misi_permanen_asean` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | ex. Misi Permanen Republik Singapura |
@@ -37,9 +37,7 @@ Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, k
 | `Pusat Kebudayaan Asing` | `tb_pusat_kebudayaan_asing` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Lembaga kebudayaan negara asing di Jakarta. Modul sudah jadi, **datanya belum ada** (lihat `PusatKebudayaanAsingSeeder`). IFI tetap tercatat di bawah Kedutaan Besar Perancis sesuai sheet acuan. |
 | `Non Perwakilan Negara Asing` | `tb_non_perwakilan_negara_asing` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Nama resmi disimpan bebas (bukan negara) di kolom `nama_non_perwakilan_negara_asing`. ex. UNDP, World Economic Forum, PGRI. |
 | `Pemerintah Provinsi DKI Jakarta` | `tb_pemprov_dki` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Perangkat daerah Pemprov DKI (biro/dinas/badan) — antar-perangkat daerah dimungkinkan berkerjasama/berkolaborasi. ex. Biro Kepala Daerah. |
-| `KBRI` | `tb_kbri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Kedutaan Besar **RI di luar negeri**. ex. KBRI Tokyo. Jangan tertukar dengan modul `Kedutaan Besar`. |
-| `KJRI` | `tb_kjri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Konsulat Jenderal RI di luar negeri. ex. KJRI Mumbai. |
-| `PTRI` | `tb_ptri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Perutusan Tetap RI pada organisasi internasional. Modul sudah jadi, **datanya belum ada** (lihat `PtriSeeder`). |
+| `Perwakilan RI di Luar Negeri` | `tb_perwakilan_ri` + `tb_mitra` (supertype) | lihat, cari, tambah, ubah, hapus | Gabungan eks-modul KBRI, KJRI, PTRI (arahan Kasubag, 25 Sep 2026). Field: `nama_perwakilan_ri` (teks), `tipe_perwakilan_ri` (dropdown `PerwakilanRi::TIPE_OPTIONS`: kode `KBRI`/`KJRI`/`PTRI` yang disimpan → label panjang yang ditampilkan), `keterangan`. Nama **tetap ditulis lengkap** ("KBRI Tokyo", bukan "Tokyo") karena dropdown pemilih mitra, file ekspor, dan Restore Data hanya menampilkan kolom nama. Jangan tertukar dengan modul `Kedutaan Besar`. |
 | `Kerjasama` | `tb_kerjasama` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | 1 baris = 1 mitra, via `id_mitra` generik ke `tb_mitra` (lihat Bagian 3). |
 | `Kolaborasi` | `tb_kolaborasi` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
 | `Undangan` | `tb_undangan` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
@@ -47,19 +45,19 @@ Setiap mitra — kedutaan besar, misi asing asean, misi permanen negara asean, k
 | `Kunjungan` | `tb_kunjungan` | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | Sama seperti Kerjasama. |
 | `Acara DKI` | `tb_acara_dki` + `tb_acara_dki_mitra` (pivot) | lihat, cari, tambah, ubah, hapus, ekspor Excel/PDF | **Beda pola** — 1 acara bisa punya banyak mitra sekaligus, masing-masing dengan `status_kehadiran` & `keterangan_kehadiran` sendiri. Lihat Bagian 4. |
 | `Tanggal Penting` | *(tidak ada tabel sendiri)* | lihat | Kalender read-only, diturunkan dari `tanggal_awal_pelaksanaan`–`tanggal_akhir_pelaksanaan` milik Acara DKI yang `is_active`. |
-| `Dashboard` | - | lihat | Kartu akumulasi dua kelompok — **Mitra Biro KSD** (10 kartu, diturunkan dari `TipeMitra` sehingga tipe baru muncul otomatis) dan **Riwayat Diplomasi** (6 kartu + donat perbandingan); tiap kartu menautkan ke index modulnya. Plus peta sebaran kedutaan besar (lat/long), analisis status per modul, dan ranking "Mitra Diplomatik Paling Aktif". |
+| `Dashboard` | - | lihat | Kartu akumulasi dua kelompok — **Mitra Biro KSD** (8 kartu, diturunkan dari `TipeMitra` sehingga tipe baru muncul otomatis) dan **Riwayat Diplomasi** (6 kartu + donat perbandingan); tiap kartu menautkan ke index modulnya. Plus peta sebaran kedutaan besar (lat/long), analisis status per modul, dan ranking "Mitra Diplomatik Paling Aktif". |
 
 
 ---
 
 ## 3. Arsitektur Data Mitra (Generalisasi-Spesialisasi)
 
-Modul Mitra **bukan** 10 tabel independen — melainkan pola generalisasi-spesialisasi (supertype-subtype):
+Modul Mitra **bukan** 8 tabel independen — melainkan pola generalisasi-spesialisasi (supertype-subtype):
 
 - **`tb_mitra`** (supertype) — hanya berisi `id_mitra`, `tipe_mitra` (cast ke enum `App\Enums\TipeMitra`), `is_active`, timestamps, soft delete. Baris di tabel ini **tidak pernah diisi manual/di-seed** — dibuat otomatis oleh trait `App\Models\Concerns\BelongsToMitra` setiap kali record subtype baru dibuat.
-- **10 tabel subtype** — `tb_kedutaan_besar`, `tb_misi_asing_asean`, `tb_misi_permanen_asean`, `tb_kantor_dagang_asing`, `tb_pusat_kebudayaan_asing`, `tb_kbri`, `tb_kjri`, `tb_ptri`, `tb_pemprov_dki`, `tb_non_perwakilan_negara_asing` — masing-masing punya `id_mitra` sebagai foreign key **unique** (relasi 1:1) ke `tb_mitra`, terpisah dari primary key mereka sendiri (`id_kedutaan_besar`, dst).
+- **8 tabel subtype** — `tb_kedutaan_besar`, `tb_misi_asing_asean`, `tb_misi_permanen_asean`, `tb_kantor_dagang_asing`, `tb_pusat_kebudayaan_asing`, `tb_perwakilan_ri`, `tb_pemprov_dki`, `tb_non_perwakilan_negara_asing` — masing-masing punya `id_mitra` sebagai foreign key **unique** (relasi 1:1) ke `tb_mitra`, terpisah dari primary key mereka sendiri (`id_kedutaan_besar`, dst).
 
-Kenapa pola ini dipakai: 5 modul Riwayat Diplomasi (Kerjasama–Kunjungan) harus bisa menunjuk ke mitra **apapun jenisnya** lewat satu kolom `id_mitra` yang seragam — tanpa perlu 10 kolom FK terpisah yang saling nullable (`id_kedutaan_besar`, `id_misi_asing_asean`, dst).
+Kenapa pola ini dipakai: 5 modul Riwayat Diplomasi (Kerjasama–Kunjungan) harus bisa menunjuk ke mitra **apapun jenisnya** lewat satu kolom `id_mitra` yang seragam — tanpa perlu 8 kolom FK terpisah yang saling nullable (`id_kedutaan_besar`, `id_misi_asing_asean`, dst).
 
 ### `App\Enums\TipeMitra` adalah sumber tunggal metadata tipe mitra
 
@@ -67,7 +65,7 @@ Setiap case enum membawa metadata lengkap tipenya lewat method: `slug()` (kunci 
 
 Metadata tampilan (`ikon`/`warna`/`labelSingkat`) sengaja ikut ditaruh di enum, bukan di blade — supaya dashboard dan navbar tidak perlu menuliskan daftar tipe mitra lagi.
 
-**Semua kode yang perlu tahu "ada tipe mitra apa saja" WAJIB menurunkannya dari enum ini, jangan menulis daftarnya sendiri.** Yang sudah mengikuti: `Mitra::subtype()`/`nama_resmi_mitra`/`label_mitra`, eager-load di 6 controller Riwayat Diplomasi, `App\Support\DaftarMitra`, komponen `x-mitra-picker` / `x-mitra-icon` / `x-mitra-ringkas`, form Acara DKI, dan trait seeder `ResolvesMitra`. Konsekuensinya menambah jenis mitra ke-11 **tidak perlu menyisir** berkas-berkas itu satu per satu.
+**Semua kode yang perlu tahu "ada tipe mitra apa saja" WAJIB menurunkannya dari enum ini, jangan menulis daftarnya sendiri.** Yang sudah mengikuti: `Mitra::subtype()`/`nama_resmi_mitra`/`label_mitra`, eager-load di 6 controller Riwayat Diplomasi, `App\Support\DaftarMitra`, komponen `x-mitra-picker` / `x-mitra-icon` / `x-mitra-ringkas`, form Acara DKI, dan trait seeder `ResolvesMitra`. Konsekuensinya menambah jenis mitra ke-9 **tidak perlu menyisir** berkas-berkas itu satu per satu.
 
 ### `App\Enums\ModulDiplomasi` — padanan `TipeMitra` untuk 6 modul Riwayat Diplomasi
 
@@ -81,18 +79,18 @@ Dibuat untuk modul Restore Data, yang harus menyisir **seluruh** modul pemilik `
 
 | Trait | Dipakai oleh | Fungsi |
 |---|---|---|
-| `BelongsToMitra` | 10 model subtype | Auto-create/soft-delete/restore/force-delete baris `tb_mitra` pasangannya. Setiap model anak **wajib** override `tipeMitra(): string`. |
+| `BelongsToMitra` | 8 model subtype | Auto-create/soft-delete/restore/force-delete baris `tb_mitra` pasangannya. Setiap model anak **wajib** override `tipeMitra(): string`. |
 | `ReferencesMitra` | Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan | Relasi `belongsTo` generik ke `tb_mitra.id_mitra` — 5 modul ini menunjuk ke mitra apapun tipenya lewat satu FK yang sama, tanpa perlu tahu subtype-nya. |
-| `HasRiwayatDiplomasi` | `Mitra` (supertype) + 10 subtype | Kebalikan dari `ReferencesMitra` — relasi `hasMany` ke 5 modul di atas (**wajib** difilter `is_active`, lihat Bagian 9.3) dan relasi `belongsToMany` khusus `acaraDki()` (lihat Bagian 4). |
+| `HasRiwayatDiplomasi` | `Mitra` (supertype) + 8 subtype | Kebalikan dari `ReferencesMitra` — relasi `hasMany` ke 5 modul di atas (**wajib** difilter `is_active`, lihat Bagian 9.3) dan relasi `belongsToMany` khusus `acaraDki()` (lihat Bagian 4). |
 | `HasMitraProfileAccessors` | 3 subtype berbasis negara | Accessor UI bersama: `telepon_kantor`/`email_kantor` (string dipisah koma) → array, label & warna badge status aktif. Tidak dipakai subtype "nama + keterangan" karena mereka tidak punya kolom-kolom itu. |
-| `ResolvesMitra` (namespace `Database\Seeders\Concerns`) | 6 seeder Riwayat Diplomasi | Menerjemahkan kolom nama mitra pada baris data seeder (`nama_kbri`, `nama_pemprov_dki`, dst) menjadi `id_mitra`. Kolom yang dikenali diturunkan dari `TipeMitra::kolomNama()`. |
+| `ResolvesMitra` (namespace `Database\Seeders\Concerns`) | 6 seeder Riwayat Diplomasi | Menerjemahkan kolom nama mitra pada baris data seeder (`nama_perwakilan_ri`, `nama_pemprov_dki`, dst) menjadi `id_mitra`. Kolom yang dikenali diturunkan dari `TipeMitra::kolomNama()`. |
 | `HasDiplomasiFieldOptions` / `HasDiplomasiFilter` / `HasDiplomasiProfileAccessors` | Kerjasama, Kolaborasi, Undangan, Audiensi, Kunjungan, Acara DKI | Konstanta dropdown (`STATUS_OPTIONS`, `TRIWULAN_OPTIONS`), scope filter (`filterStatus`, `filterTahun`, `tahunTersedia`, serta `daftarIndex` — query index yang juga dipakai ekspor Excel/PDF, supaya file yang diunduh dijamin sama dengan tabel), accessor tampilan bersama (`statusBadgeColor`, `judulRingkas`, `tanggalDiterimaDisplay`, dst). |
-| `MenonaktifkanData` (namespace `App\Http\Controllers\Concerns`) | `destroy()` di 16 controller (10 Mitra + 6 Riwayat Diplomasi) | Satu-satunya tempat pola "hapus" = nonaktifkan + soft delete diimplementasikan. `nonaktifkan()` untuk Riwayat Diplomasi, `nonaktifkanMitra()` untuk subtype Mitra (ikut menonaktifkan `tb_mitra`). Lihat Bagian 9.3. |
+| `MenonaktifkanData` (namespace `App\Http\Controllers\Concerns`) | `destroy()` di 14 controller (8 Mitra + 6 Riwayat Diplomasi) | Satu-satunya tempat pola "hapus" = nonaktifkan + soft delete diimplementasikan. `nonaktifkan()` untuk Riwayat Diplomasi, `nonaktifkanMitra()` untuk subtype Mitra (ikut menonaktifkan `tb_mitra`). Lihat Bagian 9.3. |
 
 ### Aturan wajib saat menambah modul baru yang menunjuk ke Mitra
 
 - **Modul tipe "riwayat diplomasi"** (1 baris = 1 mitra, mengikuti pola Kerjasama–Kunjungan): pakai `ReferencesMitra` + ketiga trait `HasDiplomasi*`, definisikan `$judulColumn`/`$statusColumn`, lalu tambahkan relasi baliknya ke `HasRiwayatDiplomasi`.
-- **Subtype Mitra baru** (jenis mitra ke-11 dan seterusnya) — cukup 3 langkah, **tidak perlu** menyentuh controller Riwayat Diplomasi, komponen picker, atau seeder manapun:
+- **Subtype Mitra baru** (jenis mitra ke-9 dan seterusnya) — cukup 3 langkah, **tidak perlu** menyentuh controller Riwayat Diplomasi, komponen picker, atau seeder manapun:
   1. Tambah `case` baru di `App\Enums\TipeMitra` beserta keenam method-nya (`slug`, `modelClass`, `relasi`, `kolomNama`, `berbasisNegara`).
   2. Buat migration (`id_[tabel]` + `id_mitra` unique FK + kolom identitas + `is_active` + timestamps + softDeletes) dan model yang memakai `BelongsToMitra` + `HasRiwayatDiplomasi` (+ `HasMitraProfileAccessors` bila berbasis negara), lalu tambahkan relasi `hasOne`-nya di `Mitra` dengan nama **persis** seperti `TipeMitra::relasi()`.
   3. Buat controller + Store/Update request + folder view (`_form`, `create`, `edit`, `index`, `show`, `show-rincian`) + 2 baris route + entri navbar. Halaman `show` memakai `<x-mitra-riwayat>` — **jangan** membuat `show-riwayat.blade.php` sendiri.
@@ -151,17 +149,15 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **[Kedutaan besar](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=0#gid=0)**
 - **[Misi Asing untuk ASEAN](https://docs.google.com/spreadsheets/d/1nAn8AkgiNSYgMRTfvMZNAjQAZ0yNjTrt/edit?gid=1497379427)**
 - **[Misi Permanen Negara ASEAN](https://docs.google.com/spreadsheets/d/1nAn8AkgiNSYgMRTfvMZNAjQAZ0yNjTrt/edit?gid=1288212522)**
-- **Kantor Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemerintah Provinsi DKI Jakarta, Non Perwakilan Negara Asing:** *tidak punya sheet tersendiri* — Biro KSD belum menyediakannya. Daftar mitranya **diturunkan** dari kolom "Mitra" pada sheet Riwayat Diplomasi di bawah, yaitu seluruh nama yang tidak mengikuti pola penamaan "Kedutaan Besar …", "Misi … untuk ASEAN", atau "Misi Permanen … untuk ASEAN", lalu dipilah per jenis mitra:
+- **Kantor Dagang Asing, Pusat Kebudayaan Asing, Perwakilan RI di Luar Negeri, Pemerintah Provinsi DKI Jakarta, Non Perwakilan Negara Asing:** *tidak punya sheet tersendiri* — Biro KSD belum menyediakannya. Daftar mitranya **diturunkan** dari kolom "Mitra" pada sheet Riwayat Diplomasi di bawah, yaitu seluruh nama yang tidak mengikuti pola penamaan "Kedutaan Besar …", "Misi … untuk ASEAN", atau "Misi Permanen … untuk ASEAN", lalu dipilah per jenis mitra:
 
   | Seeder | Jumlah | Isi |
   |---|---|---|
   | `KantorDagangAsingSeeder` | 1 | Taipei Economic and Trade Office (TETO) — dipindah dari Non-PNA; DB yang sudah berjalan dipindah oleh migration `2026_09_25_100002_pindahkan_teto_ke_tb_kantor_dagang_asing` (id_mitra tetap, riwayat tetap tersambung) |
-  | `PusatKebudayaanAsingSeeder` | 0 | Belum ada data — slot kosong seperti `PtriSeeder` |
+  | `PusatKebudayaanAsingSeeder` | 0 | Belum ada data — slot kosong |
   | `NonPerwakilanNegaraAsingSeeder` | 21 | Organisasi internasional, instansi pemerintah pusat RI, pemerintah negara/daerah asing, organisasi profesi & badan usaha |
   | `PemprovDkiSeeder` | 2 | Biro Kepala Daerah, Badan Kesatuan Bangsa dan Politik |
-  | `KbriSeeder` | 2 | KBRI Tokyo, KBRI Bern |
-  | `KjriSeeder` | 1 | KJRI Mumbai |
-  | `PtriSeeder` | 0 | Belum ada data di sheet manapun — seeder sengaja dibuat kosong sebagai slot |
+  | `PerwakilanRiSeeder` | 3 | KBRI Tokyo, KBRI Bern (`KBRI`), KJRI Mumbai (`KJRI`). Belum ada data PTRI. Gabungan eks-`KbriSeeder`/`KjriSeeder`/`PtriSeeder` |
 
   Catatan: Kementerian Luar Negeri RI dan Menteri Luar Negeri RI tetap di Non-PNA — instansi pemerintah pusat, bukan perangkat daerah Pemprov DKI maupun perwakilan RI di luar negeri. Jika kelak Biro KSD menerbitkan sheet khusus untuk jenis-jenis mitra ini, sheet tersebut yang menjadi sumber kebenaran dan seeder di atas perlu direkonsiliasi terhadapnya.
 - **[Kerjasama](https://docs.google.com/spreadsheets/d/1S1RD2XSW96kCV6dSM2cEJpMCtwDH7Xmc072knEET7_o/edit?gid=349452470)**
@@ -217,7 +213,7 @@ Keduanya tetap terpisah karena perannya beda: `is_active` menentukan data tampil
 
 Konsekuensi lain:
 - Setiap relasi baru dari sisi Mitra ke modul Riwayat Diplomasi **wajib** ditambahkan `->where('is_active', true)` (lihat `HasRiwayatDiplomasi`).
-- Sebaliknya, setiap relasi dari **data historis ke Mitra** wajib `->withTrashed()` — sudah dipasang di `ReferencesMitra::mitra()`, `AcaraDKI::mitra()`, kesepuluh `hasOne` di `Mitra`, dan `BelongsToMitra::mitra()`. Alasannya: kerjasama yang masih aktif tetap harus menampilkan nama mitranya walau mitra itu sudah dihapus. Kalau lupa, `$item->mitra->nama_resmi_mitra` jadi null dan halaman index/rincian modul Riwayat Diplomasi error begitu ada mitra yang dihapus.
+- Sebaliknya, setiap relasi dari **data historis ke Mitra** wajib `->withTrashed()` — sudah dipasang di `ReferencesMitra::mitra()`, `AcaraDKI::mitra()`, kedelapan `hasOne` di `Mitra`, dan `BelongsToMitra::mitra()`. Alasannya: kerjasama yang masih aktif tetap harus menampilkan nama mitranya walau mitra itu sudah dihapus. Kalau lupa, `$item->mitra->nama_resmi_mitra` jadi null dan halaman index/rincian modul Riwayat Diplomasi error begitu ada mitra yang dihapus.
 - `tb_mitra` (supertype) ikut dinonaktifkan/dipulihkan otomatis mengikuti subtype-nya lewat `BelongsToMitra` (hook `deleted`/`restored`).
 - Pemulihannya — kebalikan dari trait di atas — ada di `App\Support\DataTerhapus::pulihkan()`: `is_active` dikembalikan true dan `deleted_at` dikosongkan dalam satu operasi simpan. Catatan teknis: `restore()` memakai `save()` sehingga atribut lain ikut tersimpan, sedangkan `delete()` pada model bersoft-delete **hanya** menulis `deleted_at` + `updated_at` — itu sebabnya penonaktifan butuh dua query, pemulihan cukup satu.
 - **Force delete tidak dipanggil dari mana pun.** Tidak ada jalur di aplikasi yang bisa menghilangkan data dari database secara permanen.
@@ -266,6 +262,6 @@ Sebelum menulis blade baru, cek dulu apakah komponen di atas sudah mengakomodasi
 - **Jangan sederhanakan pola arsitektur tanpa memahami alasan bisnisnya** — khususnya pola supertype-subtype Mitra (Bagian 3) dan pola pivot Acara DKI (Bagian 4). Keduanya sengaja berbeda dari pola default, bukan inkonsistensi yang perlu "diperbaiki".
 - **Jangan menulis daftar tipe mitra secara hardcode di mana pun** — turunkan dari `App\Enums\TipeMitra` (Bagian 3). Rantai `if/elseif`, `match`, atau daftar `<option>` yang menyebut tipe mitra satu per satu adalah tanda pola ini dilanggar. Aturan yang sama berlaku untuk daftar modul Riwayat Diplomasi lewat `App\Enums\ModulDiplomasi`.
 - **`destroy()` wajib lewat trait `MenonaktifkanData`**, jangan `update(['is_active' => false])` langsung (Bagian 9.3) — kalau `deleted_at` tidak terisi, datanya tidak akan muncul di Pengaturan Sistem > Restore Data dan praktis tidak bisa dipulihkan admin.
-- **Pengecualian yang disengaja:** ranking "Mitra Diplomatik Paling Aktif" di dashboard **hanya** mencakup Kedutaan Besar, Misi Asing ASEAN, dan Misi Permanen ASEAN. Kantor Dagang Asing, Pusat Kebudayaan Asing, KBRI, KJRI, PTRI, Pemprov DKI, dan Mitra Non-PNA sengaja tidak diperingkat — ranking ini mengukur keaktifan mitra diplomatik asing, bukan seluruh pihak yang pernah berinteraksi dengan Biro KSD. Jangan "melengkapi" daftar ini memakai `TipeMitra::cases()`.
+- **Pengecualian yang disengaja:** ranking "Mitra Diplomatik Paling Aktif" di dashboard **hanya** mencakup Kedutaan Besar, Misi Asing ASEAN, dan Misi Permanen ASEAN. Kantor Dagang Asing, Pusat Kebudayaan Asing, Perwakilan RI, Pemprov DKI, dan Mitra Non-PNA sengaja tidak diperingkat — ranking ini mengukur keaktifan mitra diplomatik asing, bukan seluruh pihak yang pernah berinteraksi dengan Biro KSD. Jangan "melengkapi" daftar ini memakai `TipeMitra::cases()`.
 - **Filter `is_active` wajib** setiap kali menambah relasi baru dari Mitra/subtype ke modul Riwayat Diplomasi manapun (lihat Bagian 9.3) — kalau lupa, data yang sudah "dihapus" akan tetap muncul di tab Riwayat Diplomasi pada halaman profil mitra.
 - **Cek komponen Blade & trait Concerns yang sudah ada** (Bagian 9.5) sebelum menulis kode baru yang berpotensi duplikat.

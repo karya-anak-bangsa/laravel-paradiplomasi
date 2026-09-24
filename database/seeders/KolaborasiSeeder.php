@@ -279,7 +279,7 @@ class KolaborasiSeeder extends Seeder
                 'nomor_pic' => null,
             ],
             [
-                'nama_kjri' => 'KJRI Mumbai',  // sheet: "Mitra Non-PNA"
+                'nama_perwakilan_ri' => 'KJRI Mumbai',  // sheet: "Mitra Non-PNA"
                 'kolaborasi' => 'KJRI Mumbai - Rencana pelaksanaan Jakarta-Mumbai (JAMU) 2026',
                 'rangkuman' => 'Melalui Surat No --/SOS/UM/I/2026 tanggal 26 Januari 2026, Konsul Jenderal RI di Mumbai mengajukan permohonan pertemuan dengan Kepala Biro Kerja Sama Daerah. Pertemuan diharapkan dapat terlaksana pada rentang tanggal 10-13 Februari 2026, bertepatan dengan agenda kegiatan kedinasan Konjen RI di Jakarta pada 9-13 Februari 2026.<br>Pertemuan bertujuan untuk membahas penguatan kolaborasi ekonomi, perdagangan, pariwisata, kuliner, sosial-budaya, dan pendidikan melalui hubungan "Sister City" antara Jakarta dan Mumbai.<br>Pengembangan hubungan ini merupakan kelanjutan dari acara the 1st Jakarta Mumbai Update (JAMU) yang dilaksanakan pada 20-21 Agustus 2025.<br>KJRI Mumbai berencana menyelenggarakan the 2nd Jakarta - Mumbai Update (JAMU) 2026 pada 26-28 Juni 2026 di Mumbai.',
                 'catatan' => 'Jika terdapat catatan harap ditulis dan lengkapi link gdrive untuk akses dokumen kolaborasi',

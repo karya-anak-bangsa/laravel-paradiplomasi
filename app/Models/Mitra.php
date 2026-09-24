@@ -33,7 +33,7 @@ class Mitra extends Model
     // Nama tiap relasi di bawah WAJIB sama dengan TipeMitra::relasi(), karena
     // accessor di bawah dan eager-load di controller menurunkannya dari enum.
     //
-    // Kesepuluhnya memakai withTrashed() dengan alasan yang sama seperti
+    // Kedelapannya memakai withTrashed() dengan alasan yang sama seperti
     // ReferencesMitra::mitra(): riwayat diplomasi yang masih aktif tetap harus
     // bisa menampilkan nama mitranya meski mitra itu sudah dihapus (subtype dan
     // supertype-nya ter-soft-delete berbarengan lewat BelongsToMitra). Tanpa
@@ -77,19 +77,9 @@ class Mitra extends Model
         return $this->hasOne(PemprovDki::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
-    public function kbri(): HasOne
+    public function perwakilanRi(): HasOne
     {
-        return $this->hasOne(Kbri::class, 'id_mitra', 'id_mitra')->withTrashed();
-    }
-
-    public function kjri(): HasOne
-    {
-        return $this->hasOne(Kjri::class, 'id_mitra', 'id_mitra')->withTrashed();
-    }
-
-    public function ptri(): HasOne
-    {
-        return $this->hasOne(Ptri::class, 'id_mitra', 'id_mitra')->withTrashed();
+        return $this->hasOne(PerwakilanRi::class, 'id_mitra', 'id_mitra')->withTrashed();
     }
 
     // --------------------------------------------------------------------------
@@ -131,7 +121,7 @@ class Mitra extends Model
 
     /**
      * Nama resmi (Bahasa Indonesia) mitra sesuai tipenya — kolom nama resmi
-     * berbeda nama per tabel subtype (nama_kedutaan_besar_id, nama_kbri, dst),
+     * berbeda nama per tabel subtype (nama_kedutaan_besar_id, nama_perwakilan_ri, dst),
      * sehingga tidak bisa diakses lewat properti generik seperti namaMitra.
      * Pemetaan kolomnya diambil dari TipeMitra::kolomNama().
      */

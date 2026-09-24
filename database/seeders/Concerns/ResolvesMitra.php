@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * Array $data pada tiap seeder sengaja TIDAK menuliskan angka id_mitra secara
  * hardcode (rawan berubah kalau urutan seeder Mitra berubah). Sebagai gantinya
  * setiap baris menyimpan nama resmi mitra pada kolom identitas sesuai tipenya —
- * 'nama_kedutaan_besar_id', 'nama_kbri', 'nama_pemprov_dki', dan seterusnya —
+ * 'nama_kedutaan_besar_id', 'nama_perwakilan_ri', 'nama_pemprov_dki', dan seterusnya —
  * lalu trait ini menerjemahkannya menjadi id_mitra saat seeding.
  *
  * Kolom mana yang dikenali diturunkan dari TipeMitra::kolomNama(), sehingga

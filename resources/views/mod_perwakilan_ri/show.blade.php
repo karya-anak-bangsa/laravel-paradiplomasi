@@ -1,0 +1,25 @@
+@extends('template.app')
+
+@section('nav-mitra-kami', 'active')
+@section('page-header')
+    <x-page-header title="Modul Perwakilan RI di Luar Negeri" back-route="perwakilan-ri.index" />
+@endsection
+
+@section('page-content')
+
+    <div class="row row-cards mb-4">
+        <div class="col-lg-12">
+
+            <x-page-body-show title="Rincian Data">
+                @include('mod_perwakilan_ri.show-rincian')
+            </x-page-body-show>
+
+            <x-page-body-show title="Riwayat Diplomasi">
+                <x-mitra-riwayat :mitra="$perwakilanRi" sebutan="perwakilan RI ini" />
+            </x-page-body-show>
+
+        </div>
+        {{-- col --}}
+    </div>
+    {{-- row --}}
+@endsection

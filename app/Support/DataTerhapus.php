@@ -12,8 +12,8 @@ use Illuminate\Support\Collection;
  *
  * Tombol "hapus" di seluruh modul menonaktifkan baris (`is_active = false`)
  * SEKALIGUS men-soft-delete-nya (`deleted_at` terisi) — lihat CLAUDE.md Bagian
- * 9.3. Kelas ini membaca kembali baris-baris ter-soft-delete itu dari ke-16
- * modul pemilik data (10 subtype mitra + 6 modul Riwayat Diplomasi) dan
+ * 9.3. Kelas ini membaca kembali baris-baris ter-soft-delete itu dari ke-14
+ * modul pemilik data (8 subtype mitra + 6 modul Riwayat Diplomasi) dan
  * menyeragamkannya menjadi satu daftar yang bisa ditampilkan dalam satu tabel.
  *
  * Daftar modulnya TIDAK ditulis di sini — diturunkan dari App\Enums\TipeMitra

@@ -32,11 +32,9 @@ class DatabaseSeeder extends Seeder
             // seeder tersebut me-lookup id_mitra berdasarkan nama mitranya.
             KantorDagangAsingSeeder::class,
             PusatKebudayaanAsingSeeder::class,
-            NonPerwakilanNegaraAsingSeeder::class,
+            PerwakilanRiSeeder::class,
             PemprovDkiSeeder::class,
-            KbriSeeder::class,
-            KjriSeeder::class,
-            PtriSeeder::class,
+            NonPerwakilanNegaraAsingSeeder::class,
 
             // Modul Riwayat Diplomasi
             KerjasamaSeeder::class,

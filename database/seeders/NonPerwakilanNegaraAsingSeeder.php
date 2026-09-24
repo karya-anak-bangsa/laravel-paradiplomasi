@@ -40,8 +40,7 @@ class NonPerwakilanNegaraAsingSeeder extends Seeder
      *
      * Mitra yang TIDAK lagi dicatat di sini (dipindah ke modul mitra tersendiri
      * atas arahan Kasubag, karena jenisnya sudah punya modul sendiri):
-     *   - KBRI Tokyo, KBRI Bern             -> KbriSeeder
-     *   - KJRI Mumbai                       -> KjriSeeder
+     *   - KBRI Tokyo, KBRI Bern, KJRI Mumbai -> PerwakilanRiSeeder
      *   - Biro Kepala Daerah, Badan Kesatuan Bangsa dan Politik -> PemprovDkiSeeder
      *   - Taipei Economic and Trade Office (TETO) -> KantorDagangAsingSeeder
      *
