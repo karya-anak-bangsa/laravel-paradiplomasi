@@ -27,15 +27,19 @@
         {{-- header-left --}}
 
         <div class="navbar-nav flex-row order-md-last">
-            {{-- <div class="nav-item d-none d-md-flex me-3">
-                <span class="badge bg-primary-lt fs-4">{{ session('auth_nama') }}</span>
-            </div> --}}
-            <div class="nav-item d-none d-md-flex me-0">
-                <div class="btn-list">
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Menu pengguna">
+                    <span class="avatar avatar-md bg-primary-lt"><i class="fa-solid fa-user"></i></span>
+                    <div class="d-none d-xl-block ps-2">
+                        <div>{{ session('auth_nama') }}</div>
+                        <div class="mt-1 small text-secondary">{{ session('auth_email') }}</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa-solid fa-square-arrow-up-right me-2"></i>Logout
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
                         </button>
                     </form>
                 </div>

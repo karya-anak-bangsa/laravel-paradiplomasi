@@ -1,6 +1,6 @@
 # Proyek Web Paradiplomasi Pemda DKI
 
-_Terakhir diperbarui: 25 September 2026 — ekspor Excel/PDF di 6 modul Riwayat Diplomasi (`App\Support\EksporDiplomasi`, scope `daftarIndex()`). Sebelumnya: penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
+_Terakhir diperbarui: 25 September 2026 — penataan ulang tombol (Logout → menu pengguna, ekspor → `x-tombol-ekspor` di header tabel; lihat Bagian 9.5). Sebelumnya: ekspor Excel/PDF di 6 modul Riwayat Diplomasi (`App\Support\EksporDiplomasi`, scope `daftarIndex()`). Sebelumnya: penambahan modul Pengaturan Sistem > Restore Data, enum `App\Enums\ModulDiplomasi`, dan pola "hapus" = nonaktifkan + soft delete lewat trait `MenonaktifkanData`._
 
 ## 1. Deskripsi Singkat
 <p align="justify">
@@ -179,7 +179,7 @@ Biro KSD memberikan akses data diplomasi menggunakan google spreadsheet. Adapun 
 - **Library Frontend via CDN (bukan npm/Vite):** Select2 (`4.1.0-rc.0` + tema `select2-bootstrap-5-theme`), DataTables (`2.1.8`), SweetAlert2, Simple-Notify — semuanya dimuat langsung di `resources/views/template/app.blade.php`. **Jangan** install ulang lewat `npm`, supaya tidak ada dua sumber versi yang berbeda.
 - **Paket Composer untuk ekspor:** `maatwebsite/excel` ^4.0 (Excel, di atas PhpSpreadsheet 5) dan `barryvdh/laravel-dompdf` ^3.1 (PDF). Server testing/production wajib menjalankan `composer install` setelah deploy, dan butuh ekstensi PHP `zip`, `gd`, `xml`, `mbstring`. Di Hostinger `proc_open` dimatikan sehingga script `package:discover` bawaan Composer gagal — jalankan `composer install --no-dev --optimize-autoloader --no-scripts`, lalu `php artisan package:discover` dan `php artisan optimize:clear` secara manual.
   - Ukuran PDF dijaga kecil (±50–60 KB): font subsetting diaktifkan di `EksporDiplomasiController`, dan kop memakai `public/img/dki-jakarta-kop.png` (159×180 px), bukan `dki-jakarta.webp` (1200×1355 px) — dompdf menyematkan gambar dalam resolusi aslinya, sehingga logo besar saja menambah ±700 KB per file.
-  - Alurnya: tombol di `x-page-body-filter` → route `ekspor.excel` / `ekspor.pdf` (`/ekspor/{slug ModulDiplomasi}/{excel|pdf}`, satu pasang route untuk keenam modul) → `EksporDiplomasiController` → `App\Support\EksporDiplomasi` (satu-satunya tempat yang menentukan kolom & isi file) → `App\Exports\RiwayatDiplomasiExport` / view `ekspor.riwayat-diplomasi-pdf`.
+  - Alurnya: dropdown `x-tombol-ekspor` (di header kartu tabel index) → route `ekspor.excel` / `ekspor.pdf` (`/ekspor/{slug ModulDiplomasi}/{excel|pdf}`, satu pasang route untuk keenam modul) → `EksporDiplomasiController` → `App\Support\EksporDiplomasi` (satu-satunya tempat yang menentukan kolom & isi file) → `App\Exports\RiwayatDiplomasiExport` / view `ekspor.riwayat-diplomasi-pdf`.
   - Kolom ekspor sengaja **sama dengan tabel index** (arahan user), bedanya judul ditulis utuh dan Acara DKI mencantumkan nama mitra + status kehadiran. Kalau kolom index berubah, ubah juga `EksporDiplomasi::kolom()`.
   - Semua teks di Excel ditulis sebagai teks (`RiwayatDiplomasiExport::bindValue()`), bukan lewat binder bawaan PhpSpreadsheet yang menganggap teks berawalan `=` sebagai rumus — mencegah *formula injection* dari judul/nama yang diketik pengguna. Jangan hapus binder ini.
   - Batasan dompdf yang sudah ditemui: `counter(pages)` di CSS selalu "0" (nomor halaman dicetak lewat canvas di `EksporDiplomasiController::nomorHalaman()`), dan satu baris tabel tidak bisa dipecah ke dua halaman (baris yang lebih tinggi dari kertas terpotong). Karena itu Daftar Undangan Acara DKI di PDF ditulis **satu mitra per `<tr>`** bernomor `1).`, `2).`, dst. — kolom lain hanya diisi di `<tr>` pertama dan garis antar-`<tr>` dihapus (kelas `sambung-atas`/`sambung-bawah`) supaya tampak satu sel. **Jangan** diganti `rowspan` (lebar kolom menyusut di halaman lanjutan) maupun `<br>` dalam satu sel (terpotong).
@@ -228,13 +228,19 @@ Konsekuensi lain:
 - Dropdown Select2 di dalam elemen yang overflow-scroll (mis. tabel responsive) **wajib** di-set `dropdownParent: $(document.body)` supaya tidak terpotong.
 
 ### 9.5 Komponen Blade yang Sudah Tersedia — Pakai Ulang, Jangan Duplikasi
-Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-textarea`, `form-input-select`, `form-input-email`, `form-input-password`, `form-input-file`, `page-header`, `page-body-form`, `page-body-show`, `page-body-table`, `page-body-filter`, `show-field`, `stat-card`, `waktu-akses`, `mitra-icon`, `mitra-picker`, `mitra-ringkas`, `mitra-riwayat`.
+Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-textarea`, `form-input-select`, `form-input-email`, `form-input-password`, `form-input-file`, `page-header`, `page-body-form`, `page-body-show`, `page-body-table`, `page-body-filter`, `tombol-ekspor`, `show-field`, `stat-card`, `waktu-akses`, `mitra-icon`, `mitra-picker`, `mitra-ringkas`, `mitra-riwayat`.
 
 **`x-waktu-akses`** — teks "Diakses pada 25 Sep 2026, 02:26 WIB" dalam WIB (lihat Bagian 9.6). Prop: `label` (default `"Diakses pada"`; PDF ekspor memakai `"Diunduh pada"`). Hanya mengeluarkan teks — pembungkusnya (mis. `<small class="text-danger">`) tetap ditulis pemanggil.
 
 **`x-stat-card`** — kartu angka dashboard (avatar berikon + jumlah + label). Props: `jumlah`, `label`, `ikon`, `warna`, `route` (opsional; kalau diisi, seluruh kartu jadi area klik lewat `stretched-link`). Kelas grid-nya dioper lewat atribut biasa, mis. `class="col-lg-3 col-sm-6"`.
 
-**`x-page-body-filter`** — kartu filter Status & Tahun di index 6 modul Riwayat Diplomasi. Props: `statusOptions`, `tahunOptions`, `modul` (opsional, case `App\Enums\ModulDiplomasi`; kalau diisi, muncul tombol ekspor Excel & PDF yang membawa filter aktif). Tombol tampil untuk admin maupun guest.
+**`x-page-body-filter`** — kartu filter Status & Tahun di index 6 modul Riwayat Diplomasi. Props: `statusOptions`, `tahunOptions`. Hanya berisi filter — tombol ekspor sengaja **tidak** ditaruh di sini.
+
+**`x-page-body-table`** — kartu tabel `.datatable`. Selain slot `thead`/`tbody`, punya slot opsional `actions` yang dirender di kanan header kartu (`card-actions`).
+
+**`x-tombol-ekspor`** — satu tombol netral "Ekspor" berisi dropdown Excel/PDF yang membawa filter aktif. Prop: `modul` (case `App\Enums\ModulDiplomasi`). Dipasang di slot `actions` milik `x-page-body-table`. Tampil untuk admin maupun guest.
+
+**Aturan tata letak tombol (arahan user, 25 Sep 2026):** satu halaman hanya punya **satu tombol solid berwarna**, yaitu aksi utamanya ("Tambah Data" di `x-page-header`). Aksi lain dibuat netral dan diletakkan dekat objek yang dikenai aksinya — ekspor di header tabel, Logout di dalam menu pengguna (avatar) pada `template/header.blade.php`. Sebelumnya Logout, Tambah Data, Excel, dan PDF semuanya tombol solid yang bertumpuk di kolom kanan, sehingga terkesan bergerombol.
 
 Khusus tiga komponen mitra terakhir:
 - **`x-mitra-riwayat`** — seluruh tab Riwayat Diplomasi (6 tab + modal rinciannya) pada halaman profil mitra. Dipakai oleh **semua** modul mitra. Sebelumnya tiap modul punya salinan `show-riwayat.blade.php` sendiri sepanjang ±800 baris; keempat salinan itu sudah dihapus. Props: `:mitra` (model subtype dengan keenam relasi ter-load) dan `sebutan` (kata benda untuk pesan kosong, mis. `"kedutaan ini"`). Daftar 5 tab pertama beserta nama relasi/kolomnya diturunkan dari `ModulDiplomasi`; tombol Ubah hanya tampil untuk admin.

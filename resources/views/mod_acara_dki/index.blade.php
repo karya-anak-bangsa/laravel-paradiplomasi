@@ -10,9 +10,12 @@
 @endsection
 
 @section('page-content')
-    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" :modul="App\Enums\ModulDiplomasi::AcaraDki" />
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
 
     <x-page-body-table title="Daftar acara DKI">
+        <x-slot name="actions">
+            <x-tombol-ekspor :modul="App\Enums\ModulDiplomasi::AcaraDki" />
+        </x-slot>
         <x-slot name="thead">
             <tr>
                 <th data-orderable="true" style="width:22%" class="text-start">Acara DKI</th>

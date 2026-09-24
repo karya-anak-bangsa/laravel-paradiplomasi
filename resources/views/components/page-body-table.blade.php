@@ -3,6 +3,9 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title">{{ $title }}</span>
+                @isset($actions)
+                    <div class="card-actions">{{ $actions }}</div>
+                @endisset
             </div>
             <div class="card-body">
                 <div class="table-responsive">

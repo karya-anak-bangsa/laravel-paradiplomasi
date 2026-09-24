@@ -10,9 +10,12 @@
 @endsection
 
 @section('page-content')
-    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" :modul="App\Enums\ModulDiplomasi::Kunjungan" />
+    <x-page-body-filter :statusOptions="$statusOptions" :tahunOptions="$tahunOptions" />
 
     <x-page-body-table title="Daftar kunjungan dari/ke perwakilan negara asing">
+        <x-slot name="actions">
+            <x-tombol-ekspor :modul="App\Enums\ModulDiplomasi::Kunjungan" />
+        </x-slot>
         <x-slot name="thead">
             <tr>
                 <th data-orderable="true" style="width:30%" class="text-start">Mitra</th>
