@@ -14,17 +14,18 @@ use Illuminate\Database\Eloquent\Builder;
  * Model yang memakai trait ini WAJIB punya kolom/property berikut:
  *
  * @property string $statusColumn Nama kolom status pada model ini, mis. 'status_kerjasama'
+ * @method static \Illuminate\Database\Eloquent\Builder query()
  */
 trait HasDiplomasiFilter
 {
     public function scopeFilterStatus(Builder $query, ?string $status): Builder
     {
-        return $query->when($status, fn (Builder $q) => $q->where($this->statusColumn, $status));
+        return $query->when($status, fn(Builder $q) => $q->where($this->statusColumn, $status));
     }
 
     public function scopeFilterTahun(Builder $query, ?string $tahun): Builder
     {
-        return $query->when($tahun, fn (Builder $q) => $q->whereYear('tanggal_diterima', $tahun));
+        return $query->when($tahun, fn(Builder $q) => $q->whereYear('tanggal_diterima', $tahun));
     }
 
     /**
