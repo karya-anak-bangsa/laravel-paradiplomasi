@@ -22,7 +22,9 @@
     $terpilih = $diminta !== '' && array_key_exists($diminta, $options) ? $diminta : null;
 @endphp
 
-<div class="card-actions {{ $lebar }}">
+{{-- me-0: .card-actions bawaan Tabler bermargin kanan -0.5rem (untuk tombol), sehingga
+     dropdown menjorok ke luar; dengan me-0 ujung kanannya sejajar dengan isi card-body. --}}
+<div class="card-actions me-0 {{ $lebar }}">
     <form method="GET" action="{{ route('dashboard.index') }}#{{ $anchor }}">
         @foreach (request()->except($name) as $kunci => $nilai)
             @if (is_scalar($nilai))

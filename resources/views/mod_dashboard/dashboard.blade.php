@@ -46,6 +46,13 @@
         </div>
     </div>
 
+    {{-- Perbandingan Sebaran Wilayah per Tipe Mitra (tidak terpengaruh filter tipe_wilayah) --}}
+    <div class="row row-cards mb-4">
+        <div class="col-12">
+            @include('mod_dashboard.dashboard-perbandingan-wilayah')
+        </div>
+    </div>
+
     {{-- Rincian Sebaran Lokasi Kedutaan Besar --}}
     <div class="row row-cards mb-0">
         <div class="col-12">

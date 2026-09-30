@@ -11,6 +11,7 @@ use App\Models\Kerjasama;
 use App\Models\Kolaborasi;
 use App\Models\Kunjungan;
 use App\Models\Undangan;
+use App\Support\SebaranWilayah;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -115,6 +116,10 @@ class DashboardController extends Controller
         $totalPerKecamatan = $rincianWilayah->unique(fn ($baris) => $baris->kota.'|'.$baris->kecamatan)->sum('jumlah_kecamatan');
         $totalPerKelurahan = $rincianWilayah->sum('jumlah_kelurahan');
 
+        // Chart perbandingan wilayah antar tipe mitra — sengaja tidak mengikuti
+        // filter `tipe_wilayah` (lihat App\Support\SebaranWilayah).
+        $sebaranPerTipe = SebaranWilayah::perTipe();
+
         // Analisa Statistik Pelayanan Perwakilan Negara Asing (perbandingan status per modul)
         $statusList = ['Berjalan', 'Selesai', 'Tunda', 'Batal', 'Regret'];
         $jumlahPerModul = [
@@ -183,6 +188,7 @@ class DashboardController extends Controller
             'rincianWilayah',
             'totalPerKecamatan',
             'totalPerKelurahan',
+            'sebaranPerTipe',
             'statusList',
             'moduleLabels',
             'pieSeriesPerModul',
