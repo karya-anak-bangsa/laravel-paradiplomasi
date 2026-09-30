@@ -6,7 +6,7 @@
 
 <div class="text-dark mt-3">
     <p class="fw-semibold mb-auto">Alamat Misi Asing untuk ASEAN</p>
-    <p class="fw-normal mb-auto">{{ collect([$misiAsingAsean->alamat, $misiAsingAsean->kelurahan, $misiAsingAsean->kecamatan, $misiAsingAsean->kota, $misiAsingAsean->kode_pos])->filter()->implode(', ') ?:'-' }}</p>
+    <p class="fw-normal mb-auto">{{ $misiAsingAsean->alamat_lengkap ?? '-' }}</p>
 </div>
 
 @push('styles')

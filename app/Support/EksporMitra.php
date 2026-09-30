@@ -34,6 +34,15 @@ class EksporMitra extends DaftarEkspor
         return $this->tipe->value;
     }
 
+    /**
+     * Mitra berbasis negara punya 6 kolom berisi teks panjang (nama, email,
+     * alamat) — dibuat sama lebar agar tidak ada satu kolom yang mendominasi.
+     */
+    public function kolomSeragam(): bool
+    {
+        return $this->tipe->berbasisNegara();
+    }
+
     protected function slug(): string
     {
         return $this->tipe->slug();

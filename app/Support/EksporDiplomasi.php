@@ -62,6 +62,26 @@ class EksporDiplomasi extends DaftarEkspor
         return "{$undangan['mitra']} ({$kehadiran})";
     }
 
+    /**
+     * 5 modul berbasis mitra tunggal: No, tanggal, dan status selebar isinya,
+     * Mitra : judul = 1 : 2 (arahan user, 30 Sep 2026). Acara DKI (Daftar
+     * Undangan berupa banyak <tr>) tetap diatur otomatis oleh dompdf.
+     */
+    public function kolomSeragam(): bool
+    {
+        return $this->modul->berbasisMitraTunggal();
+    }
+
+    protected function kolomAutofit(): array
+    {
+        return ['No', ...self::KOLOM_TANGGAL, 'Status'];
+    }
+
+    protected function bobotKolom(): array
+    {
+        return ['Mitra' => 1, $this->modul->labelJudul() => 2];
+    }
+
     protected function slug(): string
     {
         return $this->modul->slug();

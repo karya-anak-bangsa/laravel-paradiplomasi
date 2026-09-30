@@ -4,12 +4,18 @@
        $jumlahKelurahan = $rincianWilayah->count();
    @endphp
 
-   <div class="card">
+   <div class="card" id="kartu-rincian-sebaran">
        <div class="card-header">
            <h3 class="card-title">
                <i class="fa-solid fa-map-location-dot me-1"></i>
-               Rincian Sebaran Lokasi Kedutaan Besar
+               Rincian Sebaran Lokasi Mitra Biro KSD
            </h3>
+           <x-dashboard-filter-select
+               name="tipe_wilayah"
+               :options="$tipeWilayahOptions"
+               anchor="kartu-rincian-sebaran"
+               semua="Semua Mitra"
+               lebar="col-lg-3" />
        </div>
        <div class="card-body">
 
@@ -80,7 +86,7 @@
                                </div>
                                <div class="col-auto">
                                    <div class="fw-semibold">{{ $totalPerKelurahan }} Data</div>
-                                   <div class="text-secondary">Total Mitra PNA</div>
+                                   <div class="text-secondary">Total Mitra</div>
                                </div>
                            </div>
                        </div>
@@ -135,7 +141,7 @@
                            <tfoot>
                                <tr>
                                    <th class="text-end"></th>
-                                   <th class="text-start">Total Kedutaan Besar</th>
+                                   <th class="text-start">Total Mitra</th>
                                    <th class="text-end">{{ $totalPerKecamatan }}</th>
                                    <th class="text-end"></th>
                                    <th class="text-end">{{ $totalPerKelurahan }}</th>

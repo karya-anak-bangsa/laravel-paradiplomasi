@@ -54,6 +54,8 @@ class MisiAsingAsean extends Model
     /**
      * Kolom ekspor mengikuti mod_misi_asing_asean/index.blade.php — nama
      * ID/EN dua baris dalam satu sel.
+     * Ditambah kolom Email & Alamat (lihat kolomKontakEkspor()) yang tidak ada di
+     * tabel index.
      */
     public static function kolomEkspor(): array
     {
@@ -61,6 +63,7 @@ class MisiAsingAsean extends Model
             'Negara' => fn (self $item) => $item->nama_negara,
             'Nama Misi Resmi' => fn (self $item) => collect([$item->nama_misi_asing_asean_id, $item->nama_misi_asing_asean_en])->filter()->implode("\n") ?: null,
             'Nama Diplomat' => fn (self $item) => $item->nama_diplomat,
+            ...self::kolomKontakEkspor(),
         ];
     }
 }

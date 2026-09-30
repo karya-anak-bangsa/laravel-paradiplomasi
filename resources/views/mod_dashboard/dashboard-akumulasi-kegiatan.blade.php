@@ -10,12 +10,13 @@
     satu (±283 baris); markup kartunya kini ada di <x-stat-card>.
 --}}
 
-<div class="card">
+<div class="card" id="kartu-akumulasi">
     <div class="card-header">
         <h3 class="card-title">
             <i class="fa-solid fa-chart-simple"></i>
             <span class="text-dark">Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta</span>
         </h3>
+        <x-dashboard-filter-tahun name="tahun_akumulasi" :tahun-options="$tahunOptions" anchor="kartu-akumulasi" />
     </div>
 
     <div class="card-body">

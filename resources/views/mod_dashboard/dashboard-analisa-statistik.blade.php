@@ -1,9 +1,10 @@
-<div class="card">
+<div class="card" id="kartu-analisa">
     <div class="card-header">
         <h3 class="card-title">
             <i class="fa-solid fa-chart-simple"></i>
             Analisa Statistik Diplomasi di Biro KSD Setda DKI Jakarta
         </h3>
+        <x-dashboard-filter-tahun name="tahun_analisa" :tahun-options="$tahunOptions" anchor="kartu-analisa" />
     </div>
     <div class="card-body">
         <div class="row row-cards">

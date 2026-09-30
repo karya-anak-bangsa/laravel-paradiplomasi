@@ -53,6 +53,8 @@ class KedutaanBesar extends Model
     /**
      * Kolom ekspor mengikuti mod_kedutaan_besar/index.blade.php — nama
      * ID/EN dan nama/jabatan diplomat masing-masing dua baris dalam satu sel.
+     * Ditambah kolom Email & Alamat (lihat kolomKontakEkspor()) yang tidak ada di
+     * tabel index.
      */
     public static function kolomEkspor(): array
     {
@@ -60,6 +62,7 @@ class KedutaanBesar extends Model
             'Negara' => fn (self $item) => $item->nama_negara,
             'Nama Kedutaan' => fn (self $item) => collect([$item->nama_kedutaan_besar_id, $item->nama_kedutaan_besar_en])->filter()->implode("\n") ?: null,
             'Nama Diplomat' => fn (self $item) => collect([$item->nama_diplomat, $item->jabatan_diplomat])->filter()->implode("\n") ?: null,
+            ...self::kolomKontakEkspor(),
         ];
     }
 }

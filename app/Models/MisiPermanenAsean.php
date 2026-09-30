@@ -52,6 +52,8 @@ class MisiPermanenAsean extends Model
     /**
      * Kolom ekspor mengikuti mod_misi_permanen_asean/index.blade.php — nama
      * ID/EN dua baris dalam satu sel.
+     * Ditambah kolom Email & Alamat (lihat kolomKontakEkspor()) yang tidak ada di
+     * tabel index.
      */
     public static function kolomEkspor(): array
     {
@@ -59,6 +61,7 @@ class MisiPermanenAsean extends Model
             'Negara' => fn (self $item) => $item->nama_negara,
             'Nama Misi Resmi' => fn (self $item) => collect([$item->nama_misi_permanen_asean_id, $item->nama_misi_permanen_asean_en])->filter()->implode("\n") ?: null,
             'Nama Diplomat' => fn (self $item) => $item->nama_diplomat,
+            ...self::kolomKontakEkspor(),
         ];
     }
 }

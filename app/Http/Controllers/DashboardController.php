@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ModulDiplomasi;
 use App\Enums\TipeMitra;
 use App\Models\AcaraDKI;
 use App\Models\Audiensi;
@@ -16,6 +17,23 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Filter tahun per kartu (Akumulasi, Analisa Statistik, Mitra Aktif),
+        // masing-masing independen lewat parameter query sendiri. Tahun
+        // mengikuti `tanggal_diterima` seperti filter Tahun di index modul;
+        // nilai di luar daftar (mis. URL diketik manual) dianggap "Semua Tahun".
+        $tahunOptions = collect(ModulDiplomasi::cases())
+            ->flatMap(fn (ModulDiplomasi $modul) => $modul->modelClass()::tahunTersedia())
+            ->unique()
+            ->sortDesc()
+            ->values()
+            ->all();
+        $tahunDipilih = fn (string $kunci): ?string => in_array((int) request($kunci), $tahunOptions, true)
+            ? (string) request($kunci)
+            : null;
+        $tahunAkumulasi = $tahunDipilih('tahun_akumulasi');
+        $tahunAnalisa = $tahunDipilih('tahun_analisa');
+        $tahunMitra = $tahunDipilih('tahun_mitra');
+
         // Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta — kelompok
         // Mitra diturunkan dari TipeMitra, sehingga jenis mitra baru otomatis
         // muncul di dashboard tanpa menyentuh controller maupun blade-nya.
@@ -46,7 +64,7 @@ class DashboardController extends Controller
             ['label' => 'Acara DKI', 'ikon' => 'calendar-days', 'warna' => 'orange', 'route' => 'acara-dki.index', 'warnaChart' => 'orange', 'model' => AcaraDKI::class],
         ])->map(fn (array $modul) => (object) [
             ...$modul,
-            'jumlah' => $modul['model']::where('is_active', true)->count(),
+            'jumlah' => $modul['model']::where('is_active', true)->filterTahun($tahunAkumulasi)->count(),
         ]);
 
         // Peta Sebaran & Pencarian Lokasi Kedutaan Besar
@@ -56,7 +74,29 @@ class DashboardController extends Controller
             ->orderBy('nama_negara')
             ->get(['id_kedutaan_besar', 'kode_negara', 'nama_negara', 'nama_kedutaan_besar_id', 'alamat', 'kelurahan', 'kecamatan', 'kota', 'latitude', 'longitude']);
 
-        $rincianWilayah = KedutaanBesar::query()
+        // Rincian sebaran wilayah mencakup seluruh mitra berbasis negara (Kedutaan
+        // Besar, Misi Asing ASEAN, Misi Permanen ASEAN) — ketiganya punya kolom
+        // kota/kecamatan/kelurahan yang sama, jadi digabung lewat UNION sebelum
+        // dihitung. Diturunkan dari TipeMitra::berbasisNegara() agar tipe
+        // berbasis negara berikutnya otomatis ikut.
+        //
+        // Filter `tipe_wilayah` (slug TipeMitra) menyempitkan ke satu tipe; nilai
+        // di luar daftar dianggap "Semua Mitra".
+        $tipeWilayah = collect(TipeMitra::cases())
+            ->filter(fn (TipeMitra $tipe) => $tipe->berbasisNegara());
+        $tipeWilayahOptions = $tipeWilayah->mapWithKeys(fn (TipeMitra $tipe) => [$tipe->slug() => $tipe->labelSingkat()])->all();
+        $wilayahMitra = $tipeWilayah
+            ->when(
+                array_key_exists((string) request('tipe_wilayah'), $tipeWilayahOptions),
+                fn ($daftar) => $daftar->filter(fn (TipeMitra $tipe) => $tipe->slug() === request('tipe_wilayah')),
+            )
+            ->map(fn (TipeMitra $tipe) => DB::table((new ($tipe->modelClass()))->getTable())
+                ->select('kota', 'kecamatan', 'kelurahan')
+                ->where('is_active', true)
+                ->whereNull('deleted_at'))
+            ->reduce(fn ($gabungan, $query) => $gabungan ? $gabungan->unionAll($query) : $query);
+
+        $rincianWilayah = DB::query()->fromSub($wilayahMitra, 'wilayah_mitra')
             ->select([
                 'kota',
                 'kecamatan',
@@ -67,7 +107,6 @@ class DashboardController extends Controller
                 DB::raw('COUNT(*) OVER (PARTITION BY kota, kecamatan) AS baris_kecamatan'),
                 DB::raw('COUNT(*) OVER (PARTITION BY kota) AS baris_kota'),
             ])
-            ->where('is_active', true)
             ->groupBy('kota', 'kecamatan', 'kelurahan')->orderByDesc('jumlah_kota')
             ->orderBy('kota')->orderByDesc('jumlah_kecamatan')
             ->orderBy('kecamatan')->orderByDesc('jumlah_kelurahan')
@@ -79,12 +118,12 @@ class DashboardController extends Controller
         // Analisa Statistik Pelayanan Perwakilan Negara Asing (perbandingan status per modul)
         $statusList = ['Berjalan', 'Selesai', 'Tunda', 'Batal', 'Regret'];
         $jumlahPerModul = [
-            'Kerjasama' => Kerjasama::selectRaw('status_kerjasama as status, COUNT(*) as total')->groupBy('status_kerjasama')->pluck('total', 'status'),
-            'Kolaborasi' => Kolaborasi::selectRaw('status_kolaborasi as status, COUNT(*) as total')->groupBy('status_kolaborasi')->pluck('total', 'status'),
-            'Undangan' => Undangan::selectRaw('status_undangan as status, COUNT(*) as total')->groupBy('status_undangan')->pluck('total', 'status'),
-            'Audiensi' => Audiensi::selectRaw('status_audiensi as status, COUNT(*) as total')->groupBy('status_audiensi')->pluck('total', 'status'),
-            'Kunjungan' => Kunjungan::selectRaw('status_kunjungan as status, COUNT(*) as total')->groupBy('status_kunjungan')->pluck('total', 'status'),
-            'Acara DKI' => AcaraDKI::selectRaw('status_acara_dki as status, COUNT(*) as total')->groupBy('status_acara_dki')->pluck('total', 'status'),
+            'Kerjasama' => Kerjasama::filterTahun($tahunAnalisa)->selectRaw('status_kerjasama as status, COUNT(*) as total')->groupBy('status_kerjasama')->pluck('total', 'status'),
+            'Kolaborasi' => Kolaborasi::filterTahun($tahunAnalisa)->selectRaw('status_kolaborasi as status, COUNT(*) as total')->groupBy('status_kolaborasi')->pluck('total', 'status'),
+            'Undangan' => Undangan::filterTahun($tahunAnalisa)->selectRaw('status_undangan as status, COUNT(*) as total')->groupBy('status_undangan')->pluck('total', 'status'),
+            'Audiensi' => Audiensi::filterTahun($tahunAnalisa)->selectRaw('status_audiensi as status, COUNT(*) as total')->groupBy('status_audiensi')->pluck('total', 'status'),
+            'Kunjungan' => Kunjungan::filterTahun($tahunAnalisa)->selectRaw('status_kunjungan as status, COUNT(*) as total')->groupBy('status_kunjungan')->pluck('total', 'status'),
+            'Acara DKI' => AcaraDKI::filterTahun($tahunAnalisa)->selectRaw('status_acara_dki as status, COUNT(*) as total')->groupBy('status_acara_dki')->pluck('total', 'status'),
         ];
         $moduleLabels = array_keys($jumlahPerModul);
         $pieSeriesPerModul = collect($jumlahPerModul)
@@ -103,9 +142,18 @@ class DashboardController extends Controller
         // Konsekuensi teknis: ketiga tipe di bawah pasti punya `kode_negara`,
         // sehingga grid-nya aman memakai `.flag-country-{kode}` langsung tanpa
         // perlu x-mitra-icon.
-        $hitungAktivitas = function (TipeMitra $tipe) {
+        $hitungAktivitas = function (TipeMitra $tipe) use ($tahunMitra) {
+            $perTahun = fn ($query) => $query->filterTahun($tahunMitra);
+
             return $tipe->modelClass()::where('is_active', true)
-                ->withCount(['kerjasama', 'kolaborasi', 'undangan', 'audiensi', 'kunjungan', 'acaraDki'])
+                ->withCount([
+                    'kerjasama' => $perTahun,
+                    'kolaborasi' => $perTahun,
+                    'undangan' => $perTahun,
+                    'audiensi' => $perTahun,
+                    'kunjungan' => $perTahun,
+                    'acaraDki' => $perTahun,
+                ])
                 ->get()
                 ->map(fn ($mitra) => (object) [
                     'kode_negara' => $mitra->kode_negara,
@@ -123,6 +171,7 @@ class DashboardController extends Controller
         $mitraAktif = $hitungAktivitas(TipeMitra::KedutaanBesar)
             ->concat($hitungAktivitas(TipeMitra::MisiAsingAsean))
             ->concat($hitungAktivitas(TipeMitra::MisiPermanenAsean))
+            ->where('total_aktivitas', '>', 0)
             ->sortByDesc('total_aktivitas')
             ->take(40)
             ->values();
@@ -138,6 +187,8 @@ class DashboardController extends Controller
             'moduleLabels',
             'pieSeriesPerModul',
             'mitraAktif',
+            'tahunOptions',
+            'tipeWilayahOptions',
         ));
     }
 }

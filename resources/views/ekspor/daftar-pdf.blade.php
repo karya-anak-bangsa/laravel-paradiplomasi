@@ -65,6 +65,7 @@
                 border-collapse: collapse;
             }
 
+            /* Kolom "No" selebar isinya, kolom lain sama lebar (lihat DaftarEkspor::kolomSeragam()) */
             thead {
                 display: table-header-group;
             }
@@ -120,17 +121,20 @@
         <h1>{{ $ekspor->judul() }}</h1>
         <p class="keterangan">{{ $ekspor->keteranganFilter() }} &middot; {{ count($daftarBaris) }} data</p>
 
-        <table>
+        @php($lebarKolom = $ekspor->kolomSeragam() ? $ekspor->lebarKolomSeragam($daftarBaris) : [])
+
+        <table @class(['seragam' => $ekspor->kolomSeragam()])>
             <thead>
                 <tr>
                     @foreach ($header['atas'] as $kolom)
-                        <th colspan="{{ $kolom['colspan'] }}" rowspan="{{ $kolom['rowspan'] }}">{{ $kolom['label'] }}</th>
+                        <th colspan="{{ $kolom['colspan'] }}" rowspan="{{ $kolom['rowspan'] }}" @isset($lebarKolom[$kolom['label']]) style="width: {{ $lebarKolom[$kolom['label']] }}%" @endisset>{{ $kolom['label'] }}</th>
                     @endforeach
                 </tr>
                 @if ($header['bawah'] !== [])
                     <tr>
                         @foreach ($header['bawah'] as $label)
-                            <th>{{ $label }}</th>
+                            {{-- lebar diminta lewat label lengkap ("Tanggal Diterima"), bukan "Diterima" --}}
+                            <th @isset($lebarKolom[\App\Support\DaftarEkspor::GRUP_TANGGAL.' '.$label]) style="width: {{ $lebarKolom[\App\Support\DaftarEkspor::GRUP_TANGGAL.' '.$label] }}%" @endisset>{{ $label }}</th>
                         @endforeach
                     </tr>
                 @endif
@@ -164,7 +168,7 @@
                                         {{ $nilai->format('d M Y') }}
                                     @else
                                         {{-- "\n" = nilai dua baris, mis. nama ID + EN pada daftar mitra --}}
-                                        {!! nl2br(e($nilai ?? '-')) !!}
+                                        {!! $ekspor->kolomSeragam() ? \App\Support\DaftarEkspor::htmlSelSeragam($nilai ?? '-') : nl2br(e($nilai ?? '-')) !!}
                                     @endif
                                 </td>
                             @endforeach
