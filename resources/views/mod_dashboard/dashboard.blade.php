@@ -7,7 +7,8 @@
     <div class="row row-cards">
         <div class="col-lg-12">
             <div class="alert alert-primary alert-dismissible" role="alert">
-                <span>Selamat Datang, Anda login sebagai Administrator</span>
+                {{-- auth_nama diisi AuthController::login(): "Administrator" (admin) / "Tamu Biro KSD" (guest) --}}
+                <span>Selamat Datang, Anda login sebagai {{ session('auth_nama') }}</span>
                 <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
             </div>
         </div>

@@ -20,6 +20,25 @@
         {{-- stylesheet tabler custom --}}
         <link rel="stylesheet" href="{{ asset('template-backend/tabler-custom/tabler-custom.css') }}" />
 
+        {{-- input tidak valid: cukup border merah, tanpa ikon X bawaan Tabler --}}
+        <style>
+            .form-control.is-invalid {
+                background-image: none;
+                padding-right: 0.75rem;
+            }
+
+            /* Password memakai input-group-flat: tombol mata di sisi kanan ikut dimerahkan,
+               termasuk saat fokus (aturan fokus bawaan membuatnya biru). */
+            .input-group-flat:has(.form-control.is-invalid) .form-control,
+            .input-group-flat:has(.form-control.is-invalid) .input-group-text {
+                border-color: var(--tblr-form-invalid-border-color) !important;
+            }
+
+            .input-group-flat:has(.form-control.is-invalid):focus-within {
+                box-shadow: 0 0 0 0.25rem rgba(var(--tblr-danger-rgb), 0.25);
+            }
+        </style>
+
     </head>
 
     <body>
@@ -47,7 +66,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
                                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                    value="{{ old('email') }}" placeholder="Alamat email Anda" autocomplete="off" />
+                                    placeholder="Alamat email Anda" autocomplete="off" />
                             </div>
 
                             {{-- password + tombol mata untuk menampilkan/menyembunyikan isinya --}}
@@ -55,7 +74,7 @@
                                 <label class="form-label" for="password">Password</label>
                                 <div class="input-group input-group-flat">
                                     <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
-                                        value="{{ old('password') }}" placeholder="Kata sandi Anda" autocomplete="off" />
+                                        placeholder="Kata sandi Anda" autocomplete="off" />
                                     <span class="input-group-text">
                                         <button type="button" id="toggle-password" class="link-secondary border-0 bg-transparent p-0"
                                             title="Tampilkan password" aria-label="Tampilkan password" aria-pressed="false">
@@ -102,6 +121,20 @@
 
         {{-- scripts tabler 1.4.0 --}}
         <script src="{{ asset('template-backend/tabler-core-1.4.0/dist/js/tabler.min.js') }}"></script>
+
+        {{-- begitu pengguna mulai mengetik ulang, border merah di kedua input dilepas.
+             Sengaja keydown/paste, bukan `input`: autofill browser/password manager
+             memicu `input` saat halaman dibuka dan akan langsung menghapus border merahnya. --}}
+        <script>
+            const lepasBorderMerah = () => {
+                document.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
+            };
+
+            document.querySelectorAll('input[name="email"], input[name="password"]').forEach((input) => {
+                input.addEventListener('keydown', lepasBorderMerah);
+                input.addEventListener('paste', lepasBorderMerah);
+            });
+        </script>
 
         {{-- tampilkan/sembunyikan password --}}
         <script>

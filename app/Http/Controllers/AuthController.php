@@ -44,9 +44,13 @@ class AuthController extends Controller
             return redirect()->route('dashboard.index');
         }
 
-        return back()
-            ->withInput($request->only('email'))
-            ->withErrors(['email' => 'Email atau kata sandi salah.']);
+        // Pesan yang sama dipasang di kedua kolom supaya input email DAN password
+        // sama-sama diberi border merah — pengguna tidak perlu ditebak-tebak mana
+        // yang salah ketik (dan kita tidak membocorkan apakah emailnya terdaftar).
+        // Input sengaja TIDAK dikembalikan (tanpa withInput) — kedua kolom kosong lagi.
+        $pesan = 'Email atau kata sandi salah.';
+
+        return back()->withErrors(['email' => $pesan, 'password' => $pesan]);
     }
 
     public function logout(Request $request)
