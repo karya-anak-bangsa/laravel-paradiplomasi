@@ -5,7 +5,7 @@
     Props:
     - name         : nama parameter query, mis. `tahun_akumulasi`
     - tahunOptions : daftar tahun (dari DashboardController)
-    - anchor       : id kartu tujuan scroll setelah submit
+    - anchor       : id kartu pemilik dropdown (kartu yang diganti saat berubah)
 --}}
 @props(['name', 'tahunOptions' => [], 'anchor'])
 

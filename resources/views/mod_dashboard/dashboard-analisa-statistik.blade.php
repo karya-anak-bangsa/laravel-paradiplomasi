@@ -25,13 +25,17 @@
             @endforeach
         </div>
     </div>
+
+    {{-- Data donat; dibaca skrip di bawah dan ikut berganti saat kartu diganti (lihat dashboard-ajax) --}}
+    <script type="application/json" data-kartu-data>
+        @json(['statusLabels' => $statusList, 'pieSeriesPerModul' => $pieSeriesPerModul])
+    </script>
 </div>
 
 @push('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const statusLabels = @json($statusList);
-            const pieSeriesPerModul = @json($pieSeriesPerModul);
+        Dashboard.daftar("kartu-analisa", function(kartu) {
+            const {statusLabels, pieSeriesPerModul} = Dashboard.data(kartu);
             const statusColors = [
                 "var(--tblr-blue)",
                 "var(--tblr-success)",
@@ -39,34 +43,41 @@
                 "var(--tblr-danger)",
                 "var(--tblr-secondary)",
             ];
+            if (!window.ApexCharts) return;
 
+            const charts = [];
             pieSeriesPerModul.forEach(function(series, index) {
-                const el = document.getElementById("chart-status-modul-" + index);
-                window.ApexCharts && el &&
-                    new ApexCharts(el, {
-                        chart: {
-                            type: "donut",
-                            fontFamily: "inherit",
-                            height: 220,
-                            sparkline: {
-                                enabled: true
-                            },
-                            animations: {
-                                enabled: false
-                            },
+                const el = kartu.querySelector("#chart-status-modul-" + index);
+                if (!el) return;
+
+                const chart = new ApexCharts(el, {
+                    chart: {
+                        type: "donut",
+                        fontFamily: "inherit",
+                        height: 220,
+                        sparkline: {
+                            enabled: true
                         },
-                        series: series,
-                        labels: statusLabels,
-                        colors: statusColors,
-                        tooltip: {
-                            theme: "dark",
-                            fillSeriesColor: false,
+                        animations: {
+                            enabled: false
                         },
-                        legend: {
-                            show: false
-                        },
-                    }).render();
+                    },
+                    series: series,
+                    labels: statusLabels,
+                    colors: statusColors,
+                    tooltip: {
+                        theme: "dark",
+                        fillSeriesColor: false,
+                    },
+                    legend: {
+                        show: false
+                    },
+                });
+                chart.render();
+                charts.push(chart);
             });
+
+            return () => charts.forEach((chart) => chart.destroy());
         });
     </script>
 @endpush

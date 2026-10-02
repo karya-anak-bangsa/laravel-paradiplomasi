@@ -121,9 +121,9 @@ class DashboardController extends Controller
         $mitraPerLokasi = SebaranWilayah::mitraPerLokasi($tipeWilayahTerpilih);
         $labelTipeWilayah = $tipeWilayahOptions[(string) request('tipe_wilayah')] ?? 'Semua Mitra';
 
-        // Chart perbandingan wilayah antar tipe mitra — sengaja tidak mengikuti
+        // Grafik batang berkelompok kecamatan & kelurahan antar tipe mitra — sengaja tidak mengikuti
         // filter `tipe_wilayah` (lihat App\Support\SebaranWilayah).
-        $sebaranPerTipe = SebaranWilayah::perTipe();
+        $sebaranWilayah = SebaranWilayah::perWilayah();
 
         // Analisa Statistik Pelayanan Perwakilan Negara Asing (perbandingan status per modul)
         $statusList = ['Berjalan', 'Selesai', 'Tunda', 'Batal', 'Regret'];
@@ -193,7 +193,7 @@ class DashboardController extends Controller
             'rincianWilayah',
             'totalPerKecamatan',
             'totalPerKelurahan',
-            'sebaranPerTipe',
+            'sebaranWilayah',
             'statusList',
             'moduleLabels',
             'pieSeriesPerModul',

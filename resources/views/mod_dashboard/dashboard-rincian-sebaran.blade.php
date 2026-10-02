@@ -163,6 +163,18 @@
 
        </div>
        {{-- card-body --}}
+
+       {{-- Data modal; dibaca skrip di bawah dan ikut berganti saat kartu diganti (lihat dashboard-ajax) --}}
+       @php
+           $dataModal = [
+               'mitraPerLokasi' => $mitraPerLokasi,
+               'labelTipe' => $labelTipeWilayah,
+               'semuaTipe' => ! array_key_exists((string) request('tipe_wilayah'), $tipeWilayahOptions),
+           ];
+       @endphp
+       <script type="application/json" data-kartu-data>
+           @json($dataModal)
+       </script>
    </div>
    {{-- card --}}
 
@@ -230,10 +242,15 @@
         // Klik nama kecamatan/kelurahan -> modal daftar mitra di lokasi itu.
         // Ruang lingkupnya mengikuti dropdown tipe mitra kartu ini (server-side),
         // jadi data yang dikirim sudah tersaring sesuai pilihan.
-        document.addEventListener('DOMContentLoaded', function() {
-            const mitraPerLokasi = @json($mitraPerLokasi);
-            const labelTipe = @json($labelTipeWilayah);
-            const semuaTipe = @json(! array_key_exists((string) request('tipe_wilayah'), $tipeWilayahOptions));
+        //
+        // Kartunya diganti tiap dropdown berubah (lihat dashboard-ajax), jadi
+        // klik tautan dipasang ulang lewat Dashboard.daftar(), sedangkan modal
+        // (di luar kartu) cukup disiapkan sekali dan membaca data terkini dari
+        // variabel di bawah.
+        (function() {
+            let mitraPerLokasi = [];
+            let labelTipe = '';
+            let semuaTipe = true;
 
             const elemenModal = document.getElementById('modal-rincian-lokasi');
             const pemicuModal = document.getElementById('pemicu-modal-lokasi');
@@ -249,43 +266,47 @@
 
             let dataTable = null;
 
-            document.querySelectorAll('#kartu-rincian-sebaran .lokasi-klik').forEach(function(tautan) {
-                tautan.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const {tingkat, kota, kecamatan, kelurahan} = tautan.dataset;
+            Dashboard.daftar('kartu-rincian-sebaran', function(kartu) {
+                ({mitraPerLokasi, labelTipe, semuaTipe} = Dashboard.data(kartu));
 
-                    const cocok = mitraPerLokasi.filter((mitra) =>
-                        (mitra.kota ?? '') === kota
-                        && (mitra.kecamatan ?? '') === kecamatan
-                        && (tingkat === 'kecamatan' || (mitra.kelurahan ?? '') === kelurahan));
+                kartu.querySelectorAll('.lokasi-klik').forEach(function(tautan) {
+                    tautan.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const {tingkat, kota, kecamatan, kelurahan} = tautan.dataset;
 
-                    isi('modal-lokasi-judul', `Rincian Data Mitra Biro KSD - ${labelTipe}`);
-                    isi('modal-lokasi-kota', kota);
-                    isi('modal-lokasi-kecamatan', kecamatan);
-                    isi('modal-lokasi-kelurahan', tingkat === 'kecamatan' ? 'Seluruh kelurahan' : kelurahan);
-                    isi('modal-lokasi-jumlah', `${cocok.length} data`);
+                        const cocok = mitraPerLokasi.filter((mitra) =>
+                            (mitra.kota ?? '') === kota
+                            && (mitra.kecamatan ?? '') === kecamatan
+                            && (tingkat === 'kecamatan' || (mitra.kelurahan ?? '') === kelurahan));
 
-                    tabel.querySelector('tbody').innerHTML = cocok.map((mitra) => `
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="flag flag-sm flag-country-${esc(mitra.kode_negara)} me-2"></span>
-                                    <span class="fw-bold">${esc(mitra.nama_negara)}</span>
-                                </div>
-                            </td>
-                            <td>${duaBaris(mitra.nama, mitra.nama_en)}</td>
-                            <td>${duaBaris(mitra.nama_diplomat, mitra.jabatan_diplomat)}</td>
-                            <td>${esc(mitra.tipe)}</td>
-                            <td>
-                                <div class="btn-list flex-nowrap justify-content-center">
-                                    <a href="${esc(mitra.url)}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
-                                </div>
-                            </td>
-                        </tr>`).join('');
+                        isi('modal-lokasi-judul', `Rincian Data Mitra Biro KSD - ${labelTipe}`);
+                        isi('modal-lokasi-kota', kota);
+                        isi('modal-lokasi-kecamatan', kecamatan);
+                        isi('modal-lokasi-kelurahan', tingkat === 'kecamatan' ? 'Seluruh kelurahan' : kelurahan);
+                        isi('modal-lokasi-jumlah', `${cocok.length} data`);
 
-                    // Tabler tidak mengekspos `bootstrap` sebagai global, jadi modal dibuka
-                    // lewat tombol pemicu data-bs-toggle seperti modal lain di aplikasi.
-                    pemicuModal.click();
+                        tabel.querySelector('tbody').innerHTML = cocok.map((mitra) => `
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="flag flag-sm flag-country-${esc(mitra.kode_negara)} me-2"></span>
+                                        <span class="fw-bold">${esc(mitra.nama_negara)}</span>
+                                    </div>
+                                </td>
+                                <td>${duaBaris(mitra.nama, mitra.nama_en)}</td>
+                                <td>${duaBaris(mitra.nama_diplomat, mitra.jabatan_diplomat)}</td>
+                                <td>${esc(mitra.tipe)}</td>
+                                <td>
+                                    <div class="btn-list flex-nowrap justify-content-center">
+                                        <a href="${esc(mitra.url)}" class="btn btn-icon btn-primary"><i class="fa-solid fa-eye"></i></a>
+                                    </div>
+                                </td>
+                            </tr>`).join('');
+
+                        // Tabler tidak mengekspos `bootstrap` sebagai global, jadi modal dibuka
+                        // lewat tombol pemicu data-bs-toggle seperti modal lain di aplikasi.
+                        pemicuModal.click();
+                    });
                 });
             });
 
@@ -314,6 +335,6 @@
                 dataTable = null;
                 tabel.querySelector('tbody').innerHTML = '';
             });
-        });
+        })();
     </script>
 @endpush

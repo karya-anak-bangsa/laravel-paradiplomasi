@@ -19,6 +19,9 @@
 
 @section('page-content')
 
+    {{-- Filter kartu tanpa refresh; harus di-include sebelum kartu-kartu di bawah --}}
+    @include('mod_dashboard.dashboard-ajax')
+
     {{-- Akumulasi Kegiatan Diplomasi di Biro KSD Setda DKI Jakarta --}}
     <div class="row row-cards mb-4">
         <div class="col-lg-12">

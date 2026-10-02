@@ -2,14 +2,14 @@
     Dropdown filter di kanan header kartu dashboard.
 
     Tiap kartu punya parameter query sendiri (`name`), jadi filter antar-kartu
-    independen. Form-nya GET: pilihan kartu lain ikut dibawa lewat hidden
-    input, dan fragmen `#anchor` pada action membuat halaman kembali ke kartu
-    yang sedang diubah, bukan loncat ke atas.
+    independen. Perubahan pilihan ditangani skrip di dashboard-ajax.blade.php:
+    hanya kartu `anchor` yang diganti, tanpa refresh dan tanpa loncat scroll.
+    Pilihan kartu lain dibaca dari URL, jadi tidak perlu form maupun hidden input.
 
     Props:
     - name   : nama parameter query, mis. `tahun_akumulasi`
     - options: [nilai => label] pilihan selain opsi "semua"
-    - anchor : id kartu tujuan scroll setelah submit
+    - anchor : id kartu pemilik dropdown (kartu yang diganti saat pilihan berubah)
     - semua  : label opsi bawaan (nilai kosong = tanpa filter)
     - lebar  : kelas grid pembungkus (default col-lg-2)
 --}}
@@ -25,18 +25,10 @@
 {{-- me-0: .card-actions bawaan Tabler bermargin kanan -0.5rem (untuk tombol), sehingga
      dropdown menjorok ke luar; dengan me-0 ujung kanannya sejajar dengan isi card-body. --}}
 <div class="card-actions me-0 {{ $lebar }}">
-    <form method="GET" action="{{ route('dashboard.index') }}#{{ $anchor }}">
-        @foreach (request()->except($name) as $kunci => $nilai)
-            @if (is_scalar($nilai))
-                <input type="hidden" name="{{ $kunci }}" value="{{ $nilai }}">
-            @endif
+    <select name="{{ $name }}" class="form-select" aria-label="{{ $semua }}" autocomplete="off" data-dashboard-filter data-kartu="{{ $anchor }}">
+        <option value="" @selected($terpilih === null)>{{ $semua }}</option>
+        @foreach ($options as $nilai => $label)
+            <option value="{{ $nilai }}" @selected($terpilih === (string) $nilai)>{{ $label }}</option>
         @endforeach
-
-        <select name="{{ $name }}" class="form-select" aria-label="{{ $semua }}" autocomplete="off" onchange="this.form.submit()">
-            <option value="" @selected($terpilih === null)>{{ $semua }}</option>
-            @foreach ($options as $nilai => $label)
-                <option value="{{ $nilai }}" @selected($terpilih === (string) $nilai)>{{ $label }}</option>
-            @endforeach
-        </select>
-    </form>
+    </select>
 </div>

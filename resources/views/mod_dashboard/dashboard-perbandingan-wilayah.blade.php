@@ -1,12 +1,10 @@
 @php
-    // Satu grafik per ukuran wilayah, masing-masing berskala sendiri: total mitra (ratusan)
-    // tidak boleh menggencet jumlah kota (satuan) dalam satu sumbu yang sama. Disusun 2x2
-    // agar batang horizontalnya cukup panjang untuk dibaca.
-    $ukuranWilayah = [
-        'kota' => 'Kota',
-        'kecamatan' => 'Kecamatan',
-        'kelurahan' => 'Kelurahan',
-        'mitra' => 'Total Mitra',
+    // Dua grafik batang berkelompok: tiap kelompok = satu wilayah, tiap batang dalam kelompok = satu
+    // tipe mitra berbasis negara (urutan dan warna sama di kedua grafik, legenda di header berlaku
+    // untuk keduanya). Wilayahnya dipilih oleh App\Support\SebaranWilayah::perWilayah().
+    $grafikWilayah = [
+        'kecamatan' => ['judul' => 'Berdasarkan Kecamatan', 'satuan' => 'kecamatan'],
+        'kelurahan' => ['judul' => 'Berdasarkan Kelurahan', 'satuan' => 'kelurahan'],
     ];
 @endphp
 
@@ -16,12 +14,12 @@
             <i class="fa-solid fa-chart-simple"></i>
             Visualisasi Rincian Sebaran Lokasi Mitra KSD
         </h3>
-        {{-- Legenda tipe mitra di pojok kanan atas; berlaku untuk keempat grafik di bawah.
+        {{-- Legenda tipe mitra di pojok kanan atas; berlaku untuk kedua grafik di bawah.
              m-0 ms-auto meniadakan margin negatif bawaan .card-actions (dibuat untuk tombol) agar
              ujung kanan legenda sejajar dengan tepi isi card-body, bukan menjorok ke luar. --}}
-        @if ($sebaranPerTipe->sum('mitra') > 0)
+        @if ($sebaranWilayah['ada'])
             <div class="card-actions m-0 ms-auto d-flex flex-wrap justify-content-end gap-3">
-                @foreach ($sebaranPerTipe as $tipe)
+                @foreach ($sebaranWilayah['tipe'] as $tipe)
                     <span class="text-nowrap">
                         <span class="status-dot" style="background-color: var(--tblr-{{ $tipe['warna'] }})"></span>
                         {{ $tipe['label'] }}
@@ -31,11 +29,14 @@
         @endif
     </div>
     <div class="card-body">
-        @if ($sebaranPerTipe->sum('mitra') > 0)
+        @if ($sebaranWilayah['ada'])
             <div class="row row-cards">
-                @foreach ($ukuranWilayah as $kunci => $judul)
+                @foreach ($grafikWilayah as $kunci => $grafik)
                     <div class="col-lg-6">
-                        <div class="fw-bold mb-1">{{ $judul }}</div>
+                        <div class="fw-bold">{{ $grafik['judul'] }}</div>
+                        <div class="text-secondary small mb-2">
+                            Jumlah mitra di {{ $grafik['satuan'] }} terpadat pada {{ implode(' dan ', $sebaranWilayah[$kunci]['kota']) }}
+                        </div>
                         <div id="chart-perbandingan-{{ $kunci }}"></div>
                     </div>
                 @endforeach
@@ -54,22 +55,20 @@
             }
 
             const warnaTeks = "var(--tblr-body-color)";
-            const sebaran = @json($sebaranPerTipe);
-            const ukuran = @json(array_keys($ukuranWilayah));
+            const sebaran = @json($sebaranWilayah);
+            const warna = sebaran.tipe.map((tipe) => "var(--tblr-" + tipe.warna + ")");
 
-            // Tiap grafik = satu ukuran wilayah, tiga batang horizontal = tiga tipe mitra dengan urutan dan
-            // warna yang sama di semua grafik (legenda di atas berlaku untuk keempatnya).
-            ukuran.forEach(function(kunci) {
+            ["kecamatan", "kelurahan"].forEach(function(kunci) {
                 const el = document.getElementById("chart-perbandingan-" + kunci);
                 if (!el) {
                     return;
                 }
-                const nilai = sebaran.map((tipe) => tipe[kunci]);
+                const grafik = sebaran[kunci];
 
                 new ApexCharts(el, {
                     chart: {
                         type: "bar",
-                        height: 100,
+                        height: 320,
                         fontFamily: "inherit",
                         toolbar: {
                             show: false
@@ -78,19 +77,17 @@
                             enabled: false
                         },
                     },
-                    series: sebaran.map((tipe) => ({
-                        name: tipe.label,
-                        data: [tipe[kunci]]
-                    })),
-                    colors: sebaran.map((tipe) => "var(--tblr-" + tipe.warna + ")"),
-                    // Pada bar horizontal, xaxis adalah sumbu nilai. Angka tertulis langsung di ujung
-                    // tiap batang, jadi sumbu nilai disembunyikan.
+                    series: grafik.series,
+                    colors: warna,
+                    // Kategori berupa [nama wilayah, induknya] -> Apex menulisnya dalam dua baris.
                     xaxis: {
-                        categories: [""],
-                        min: 0,
-                        max: Math.ceil(Math.max(...nilai) * 1.15),
+                        categories: grafik.kategori,
                         labels: {
-                            show: false
+                            rotate: 0,
+                            hideOverlappingLabels: false,
+                            style: {
+                                colors: warnaTeks
+                            },
                         },
                         axisBorder: {
                             show: false
@@ -99,15 +96,20 @@
                             show: false
                         },
                     },
+                    // Angka tertulis di atas tiap batang; skala "rapi" dari Apex memberi ruang di atas batang tertinggi.
                     yaxis: {
+                        min: 0,
+                        forceNiceScale: true,
                         labels: {
-                            show: false
+                            formatter: (nilai) => Math.round(nilai),
+                            style: {
+                                colors: warnaTeks
+                            },
                         },
                     },
                     plotOptions: {
                         bar: {
-                            horizontal: true,
-                            barHeight: "80%",
+                            columnWidth: "70%",
                             borderRadius: 4,
                             dataLabels: {
                                 position: "top"
@@ -116,37 +118,25 @@
                     },
                     dataLabels: {
                         enabled: true,
-                        offsetX: 22,
+                        offsetY: -22,
                         style: {
-                            fontSize: "14px",
+                            fontSize: "13px",
                             fontWeight: 700,
                             colors: [warnaTeks]
                         },
                     },
                     stroke: {
                         show: true,
-                        width: 4,
+                        width: 3,
                         colors: ["transparent"]
                     },
                     legend: {
                         show: false
                     },
-                    // Padding negatif merapatkan batang ke judul grafik (ruang bawaan Apex terlalu longgar).
                     grid: {
-                        padding: {
-                            top: -30,
-                            bottom: -20,
-                            left: -16,
-                            right: 0
-                        },
                         borderColor: "var(--tblr-border-color)",
                         strokeDashArray: 3,
                         xaxis: {
-                            lines: {
-                                show: false
-                            }
-                        },
-                        yaxis: {
                             lines: {
                                 show: false
                             }
@@ -156,6 +146,9 @@
                         theme: "dark",
                         shared: true,
                         intersect: false,
+                        y: {
+                            formatter: (nilai) => nilai + " mitra"
+                        },
                     },
                 }).render();
             });

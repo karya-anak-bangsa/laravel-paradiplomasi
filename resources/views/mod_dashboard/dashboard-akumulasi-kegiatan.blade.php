@@ -73,36 +73,53 @@
         {{-- row --}}
     </div>
     {{-- card-body --}}
+
+    {{-- Data donat; dibaca skrip di bawah dan ikut berganti saat kartu diganti (lihat dashboard-ajax) --}}
+    @php
+        $dataDonat = [
+            'series' => $akumulasiRiwayat->pluck('jumlah'),
+            'labels' => $akumulasiRiwayat->pluck('label'),
+            'colors' => $akumulasiRiwayat->map(fn ($modul) => 'var(--tblr-' . $modul->warnaChart . ')'),
+        ];
+    @endphp
+    <script type="application/json" data-kartu-data>
+        @json($dataDonat)
+    </script>
 </div>
 {{-- card --}}
 
 @push('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            window.ApexCharts &&
-                new ApexCharts(document.getElementById("chart-akumulasi-modul"), {
-                    chart: {
-                        type: "donut",
-                        fontFamily: "inherit",
-                        height: 240,
-                        sparkline: {
-                            enabled: true
-                        },
-                        animations: {
-                            enabled: false
-                        },
+        Dashboard.daftar("kartu-akumulasi", function(kartu) {
+            const data = Dashboard.data(kartu);
+            if (!window.ApexCharts) return;
+
+            const chart = new ApexCharts(kartu.querySelector("#chart-akumulasi-modul"), {
+                chart: {
+                    type: "donut",
+                    fontFamily: "inherit",
+                    height: 240,
+                    sparkline: {
+                        enabled: true
                     },
-                    series: @json($akumulasiRiwayat->pluck('jumlah')),
-                    labels: @json($akumulasiRiwayat->pluck('label')),
-                    colors: @json($akumulasiRiwayat->map(fn ($modul) => 'var(--tblr-' . $modul->warnaChart . ')')),
-                    tooltip: {
-                        theme: "dark",
-                        fillSeriesColor: false,
+                    animations: {
+                        enabled: false
                     },
-                    legend: {
-                        show: false
-                    },
-                }).render();
+                },
+                series: data.series,
+                labels: data.labels,
+                colors: data.colors,
+                tooltip: {
+                    theme: "dark",
+                    fillSeriesColor: false,
+                },
+                legend: {
+                    show: false
+                },
+            });
+            chart.render();
+
+            return () => chart.destroy();
         });
     </script>
 @endpush
