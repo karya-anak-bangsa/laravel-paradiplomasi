@@ -26,7 +26,7 @@ class EksporMitra extends DaftarEkspor
 
     public function keteranganFilter(): string
     {
-        return 'Seluruh mitra aktif';
+        return 'Seluruh mitra Biro KSD';
     }
 
     public function namaSheet(): string

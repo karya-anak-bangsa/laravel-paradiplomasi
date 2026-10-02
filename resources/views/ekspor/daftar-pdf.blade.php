@@ -108,7 +108,7 @@
                  menambah ±700 KB ke setiap file. --}}
             <img src="{{ public_path('img/dki-jakarta-kop.png') }}" alt="Logo DKI Jakarta">
             <div class="instansi">Biro Kerjasama Daerah Setda Provinsi DKI Jakarta</div>
-            <div class="aplikasi">Paradiplomatic Compass Analytical (https://paradiplomasi-jakarta.id/)</div>
+            <div class="aplikasi">Paradiplomatic Compass Analytical System (https://paradiplomasi-jakarta.id/)</div>
         </header>
 
         {{-- "Halaman X dari Y" dicetak di pojok kanan footer oleh
@@ -119,7 +119,7 @@
         @php($header = $ekspor->headerBertingkat())
 
         <h1>{{ $ekspor->judul() }}</h1>
-        <p class="keterangan">{{ $ekspor->keteranganFilter() }} &middot; {{ count($daftarBaris) }} data</p>
+        <p class="keterangan">{{ $ekspor->keteranganFilter() }} - {{ count($daftarBaris) }} data</p>
 
         @php($lebarKolom = $ekspor->kolomSeragam() ? $ekspor->lebarKolomSeragam($daftarBaris) : [])
 
