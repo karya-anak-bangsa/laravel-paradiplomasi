@@ -38,6 +38,12 @@ abstract class DaftarEkspor
 
     abstract public function keteranganFilter(): string;
 
+    /** Pemisah antara keterangan filter dan jumlah data di PDF. */
+    public function pemisahKeterangan(): string
+    {
+        return '·';
+    }
+
     /** Nama sheet Excel (maks. 31 karakter). */
     abstract public function namaSheet(): string;
 

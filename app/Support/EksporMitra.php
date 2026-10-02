@@ -29,6 +29,11 @@ class EksporMitra extends DaftarEkspor
         return 'Seluruh mitra Biro KSD';
     }
 
+    public function pemisahKeterangan(): string
+    {
+        return '-';
+    }
+
     public function namaSheet(): string
     {
         return $this->tipe->value;

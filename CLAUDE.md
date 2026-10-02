@@ -247,7 +247,7 @@ Sudah ada di `resources/views/components/`: `form-input-text`, `form-input-texta
 
 **`x-page-body-table`** — kartu tabel `.datatable`. Selain slot `thead`/`tbody`, punya slot opsional `actions` yang dirender di kanan header kartu (`card-actions`).
 
-**`x-tombol-ekspor`** — satu tombol netral "Ekspor" berisi dropdown Excel/PDF yang membawa filter aktif. Prop: `modul` (case `App\Enums\ModulDiplomasi` atau `App\Enums\TipeMitra`; untuk mitra judul dropdown-nya "Seluruh mitra aktif" karena index mitra tidak punya filter). Dipasang di slot `actions` milik `x-page-body-table`. Tampil untuk admin maupun guest.
+**`x-tombol-ekspor`** — satu tombol netral "Ekspor" berisi dropdown Excel/PDF yang membawa filter aktif. Prop: `modul` (case `App\Enums\ModulDiplomasi` atau `App\Enums\TipeMitra`; judul dropdown-nya selalu "Sesuai Filter Yang Aktif" untuk Riwayat Diplomasi maupun Mitra — index mitra memang tanpa filter, jadi isinya seluruh mitra aktif). Dipasang di slot `actions` milik `x-page-body-table`. Tampil untuk admin maupun guest.
 
 **Aturan tata letak tombol (arahan user, 25 Sep 2026):** satu halaman hanya punya **satu tombol solid berwarna**, yaitu aksi utamanya ("Tambah Data" di `x-page-header`). Aksi lain dibuat netral dan diletakkan dekat objek yang dikenai aksinya — ekspor di header tabel, Logout di dalam menu pengguna (avatar) pada `template/header.blade.php`. Sebelumnya Logout, Tambah Data, Excel, dan PDF semuanya tombol solid yang bertumpuk di kolom kanan, sehingga terkesan bergerombol.
 

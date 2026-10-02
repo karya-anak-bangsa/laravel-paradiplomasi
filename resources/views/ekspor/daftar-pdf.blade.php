@@ -119,7 +119,7 @@
         @php($header = $ekspor->headerBertingkat())
 
         <h1>{{ $ekspor->judul() }}</h1>
-        <p class="keterangan">{{ $ekspor->keteranganFilter() }} - {{ count($daftarBaris) }} data</p>
+        <p class="keterangan">{{ $ekspor->keteranganFilter() }} {{ $ekspor->pemisahKeterangan() }} {{ count($daftarBaris) }} data</p>
 
         @php($lebarKolom = $ekspor->kolomSeragam() ? $ekspor->lebarKolomSeragam($daftarBaris) : [])
 

@@ -5,7 +5,6 @@
     // Filter yang sedang aktif ikut dibawa ke tombol ekspor, supaya isi file
     // sama dengan tabel yang sedang dilihat. Index mitra tidak punya filter.
     $filterAktif = array_filter(request()->only(['status', 'tahun']));
-    $keterangan = $modul instanceof \App\Enums\TipeMitra ? 'Seluruh mitra aktif' : 'Sesuai filter yang aktif';
 @endphp
 
 <div class="dropdown">
@@ -13,7 +12,7 @@
         <i class="fa-solid fa-download me-2"></i>Ekspor
     </button>
     <div class="dropdown-menu dropdown-menu-end">
-        <span class="dropdown-header">{{ $keterangan }}</span>
+        <span class="dropdown-header">Sesuai Filter Yang Aktif</span>
         <a class="dropdown-item" href="{{ $modul->urlEkspor('excel', $filterAktif) }}">
             <i class="fa-solid fa-file-excel text-green me-2"></i>Excel (.xlsx)
         </a>
