@@ -86,11 +86,11 @@ class DashboardController extends Controller
         $tipeWilayah = collect(TipeMitra::cases())
             ->filter(fn (TipeMitra $tipe) => $tipe->berbasisNegara());
         $tipeWilayahOptions = $tipeWilayah->mapWithKeys(fn (TipeMitra $tipe) => [$tipe->slug() => $tipe->labelSingkat()])->all();
-        $wilayahMitra = $tipeWilayah
-            ->when(
-                array_key_exists((string) request('tipe_wilayah'), $tipeWilayahOptions),
-                fn ($daftar) => $daftar->filter(fn (TipeMitra $tipe) => $tipe->slug() === request('tipe_wilayah')),
-            )
+        $tipeWilayahTerpilih = $tipeWilayah->when(
+            array_key_exists((string) request('tipe_wilayah'), $tipeWilayahOptions),
+            fn ($daftar) => $daftar->filter(fn (TipeMitra $tipe) => $tipe->slug() === request('tipe_wilayah')),
+        );
+        $wilayahMitra = $tipeWilayahTerpilih
             ->map(fn (TipeMitra $tipe) => DB::table((new ($tipe->modelClass()))->getTable())
                 ->select('kota', 'kecamatan', 'kelurahan')
                 ->where('is_active', true)
@@ -115,6 +115,11 @@ class DashboardController extends Controller
             ->get();
         $totalPerKecamatan = $rincianWilayah->unique(fn ($baris) => $baris->kota.'|'.$baris->kecamatan)->sum('jumlah_kecamatan');
         $totalPerKelurahan = $rincianWilayah->sum('jumlah_kelurahan');
+
+        // Daftar mitra di tiap kecamatan/kelurahan untuk modal saat sel diklik;
+        // ruang lingkupnya sama dengan tabel rincian (mengikuti `tipe_wilayah`).
+        $mitraPerLokasi = SebaranWilayah::mitraPerLokasi($tipeWilayahTerpilih);
+        $labelTipeWilayah = $tipeWilayahOptions[(string) request('tipe_wilayah')] ?? 'Semua Mitra';
 
         // Chart perbandingan wilayah antar tipe mitra — sengaja tidak mengikuti
         // filter `tipe_wilayah` (lihat App\Support\SebaranWilayah).
@@ -195,6 +200,8 @@ class DashboardController extends Controller
             'mitraAktif',
             'tahunOptions',
             'tipeWilayahOptions',
+            'mitraPerLokasi',
+            'labelTipeWilayah',
         ));
     }
 }

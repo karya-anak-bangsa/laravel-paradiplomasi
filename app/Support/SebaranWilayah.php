@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Enums\TipeMitra;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * Perbandingan sebaran wilayah (kota, kecamatan, kelurahan, total mitra) antar
@@ -28,6 +29,35 @@ class SebaranWilayah
      * jangan diputar ulang.
      */
     private const WARNA_CHART = ['blue', 'orange', 'teal'];
+
+    /**
+     * Mitra aktif beserta lokasinya, untuk modal yang terbuka saat sel
+     * kecamatan/kelurahan di tabel rincian diklik. Diurutkan menurut nama.
+     *
+     * @param  Collection<int, TipeMitra>  $daftarTipe  tipe mitra berbasis negara yang dicakup
+     * @return Collection<int, array{tipe: string, nama: string, url: string, kota: ?string, kecamatan: ?string, kelurahan: ?string}>
+     */
+    public static function mitraPerLokasi(Collection $daftarTipe): Collection
+    {
+        return $daftarTipe
+            ->flatMap(fn (TipeMitra $tipe) => $tipe->modelClass()::where('is_active', true)
+                ->get()
+                ->map(fn ($mitra) => [
+                    'tipe' => $tipe->labelSingkat(),
+                    'nama' => $mitra->{$tipe->kolomNama()},
+                    'nama_en' => $mitra->getAttributes()[Str::replaceLast('_id', '_en', $tipe->kolomNama())] ?? null,
+                    'kode_negara' => $mitra->kode_negara,
+                    'nama_negara' => $mitra->nama_negara,
+                    'nama_diplomat' => $mitra->nama_diplomat,
+                    'jabatan_diplomat' => $mitra->getAttributes()['jabatan_diplomat'] ?? null,
+                    'url' => route($tipe->routeShow(), $mitra),
+                    'kota' => $mitra->kota,
+                    'kecamatan' => $mitra->kecamatan,
+                    'kelurahan' => $mitra->kelurahan,
+                ]))
+            ->sortBy('nama', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values();
+    }
 
     /**
      * @return Collection<int, array{label: string, warna: string, kota: int, kecamatan: int, kelurahan: int, mitra: int}>
