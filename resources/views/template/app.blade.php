@@ -168,7 +168,9 @@
                             });
                         }
                     });
-                    new DataTable(table, {
+                    // Instance disimpan di elemennya agar skrip lain (mis. pilih baris
+                    // untuk ekspor parsial di x-tombol-ekspor) bisa memakainya.
+                    table.instanceDataTable = new DataTable(table, {
                         columnDefs,
                         order: [],
                         pageLength: 25,

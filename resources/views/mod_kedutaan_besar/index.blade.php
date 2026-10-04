@@ -14,15 +14,17 @@
         </x-slot>
         <x-slot name="thead">
             <tr>
+                <x-pilih-semua />
                 <th style="width: 20%">Negara</th>
-                <th style="width: 35%">Nama Kedutaan</th>
-                <th style="width: 35%">Nama Diplomat</th>
+                <th style="width: 32%">Nama Kedutaan</th>
+                <th style="width: 33%">Nama Diplomat</th>
                 <th data-orderable="false" style="width: 10%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
             @foreach ($kedutaanBesar as $item)
                 <tr>
+                    <x-pilih-baris :id="$item->getKey()" />
                     <td>
                         <div class="d-flex align-items-center">
                             <span class="flag flag-sm flag-country-{{ $item->kode_negara }} me-2"></span>

@@ -18,17 +18,19 @@
         </x-slot>
         <x-slot name="thead">
             <tr>
+                <x-pilih-semua />
                 <th data-orderable="true" style="width:22%" class="text-start">Acara DKI</th>
                 <th data-orderable="true" style="width:16%" class="text-center">Daftar Undangan</th>
-                <th data-orderable="true" style="width:15%" class="text-center">Tanggal Diterima</th>
-                <th data-orderable="true" style="width:15%" class="text-center">Tanggal Selesai</th>
-                <th data-orderable="true" style="width:14%" class="text-center">Status</th>
+                <th data-orderable="true" style="width:13%" class="text-center">Tanggal Diterima</th>
+                <th data-orderable="true" style="width:13%" class="text-center">Tanggal Selesai</th>
+                <th data-orderable="true" style="width:13%" class="text-center">Status</th>
                 <th data-orderable="false" style="width:18%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
             @foreach ($acaraDki as $item)
                 <tr>
+                    <x-pilih-baris :id="$item->getKey()" />
                     <td class="text-start">{{ $item->judul_ringkas }}</td>
                     <td class="text-center">
                         @if ($item->mitra->isEmpty())

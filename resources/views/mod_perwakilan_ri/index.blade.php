@@ -12,15 +12,17 @@
         </x-slot>
         <x-slot name="thead">
             <tr>
+                <x-pilih-semua />
                 <th style="width: 30%">Nama</th>
                 <th style="width: 10%">Tipe</th>
-                <th style="width: 45%">Keterangan</th>
+                <th style="width: 40%">Keterangan</th>
                 <th data-orderable="false" style="width: 15%" class="text-center">Aksi</th>
             </tr>
         </x-slot>
         <x-slot name="tbody">
             @foreach ($perwakilanRi as $item)
                 <tr>
+                    <x-pilih-baris :id="$item->getKey()" />
                     <td>
                         <span class="fw-bold">{{ $item->nama_perwakilan_ri }}</span>
                     </td>

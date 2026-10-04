@@ -6,6 +6,7 @@ use App\Exports\DaftarExport;
 use App\Support\DaftarEkspor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\DomPDF\PDF as DomPdf;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,30 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait MengunduhEkspor
 {
+    /**
+     * Query "?pilih=3,7,12" dari x-tombol-ekspor (ekspor parsial: baris yang
+     * dicentang di tabel index). Tidak ada parameter = ekspor seluruh data;
+     * ada tapi tak satu pun id valid = 422, supaya pilihan yang rusak tidak
+     * diam-diam mengunduh seluruh data.
+     *
+     * @return list<int>|null
+     */
+    protected function idTerpilih(Request $request): ?array
+    {
+        if (! $request->filled('pilih')) {
+            return null;
+        }
+
+        $id = collect(explode(',', (string) $request->query('pilih')))
+            ->filter(fn (string $nilai) => ctype_digit(trim($nilai)))
+            ->map(fn (string $nilai) => (int) $nilai)
+            ->unique()
+            ->values()
+            ->all();
+
+        return $id === [] ? abort(422, 'Data yang dipilih tidak valid.') : $id;
+    }
+
     protected function unduhExcel(DaftarEkspor $ekspor): BinaryFileResponse
     {
         return Excel::download(new DaftarExport($ekspor), $ekspor->namaFile('xlsx'));

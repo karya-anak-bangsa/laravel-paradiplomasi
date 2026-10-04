@@ -123,10 +123,12 @@ abstract class DaftarEkspor
         $lebar = [];
 
         foreach (array_intersect($this->header(), $this->kolomAutofit()) as $label) {
-            $karakter = max(
+            // Bentuk array, bukan spread: tabel kosong (filter tanpa hasil)
+            // membuat spread kosong dan max() hanya menerima satu angka → error.
+            $karakter = max([
                 mb_strlen(Str::after($label, self::GRUP_TANGGAL.' ')),
                 ...array_map(fn (array $baris) => self::panjangTeks($baris[$label] ?? null), $daftarBaris),
-            );
+            ]);
             $lebar[$label] = round(($karakter * self::PT_PER_KARAKTER + self::PADDING_SEL_PT) / self::LEBAR_CETAK_PT * 100, 2);
         }
 

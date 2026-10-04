@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * Perbedaan Acara DKI (banyak mitra per acara, lihat CLAUDE.md Bagian 4)
  * diwakili ModulDiplomasi::berbasisMitraTunggal(), bukan if per nama modul.
+ *
+ * Ekspor parsial: bila $idTerpilih diisi, hanya baris ber-primary key itu
+ * (di antara hasil filter status/tahun) yang masuk file. null = semua.
  */
 class EksporDiplomasi extends DaftarEkspor
 {
@@ -24,8 +27,13 @@ class EksporDiplomasi extends DaftarEkspor
         public readonly ModulDiplomasi $modul,
         public readonly ?string $status = null,
         public readonly ?string $tahun = null,
+        private readonly ?array $idTerpilih = null,
     ) {
-        $this->data = $modul->modelClass()::daftarIndex($status, $tahun)->get();
+        $model = new ($modul->modelClass());
+
+        $this->data = $model::daftarIndex($status, $tahun)
+            ->when($idTerpilih !== null, fn ($query) => $query->whereIn($model->getQualifiedKeyName(), $idTerpilih))
+            ->get();
     }
 
     public function judul(): string
@@ -35,6 +43,10 @@ class EksporDiplomasi extends DaftarEkspor
 
     public function keteranganFilter(): string
     {
+        if ($this->idTerpilih !== null) {
+            return 'Data terpilih';
+        }
+
         return 'Status: '.($this->status ?? 'Semua Status').' | Tahun: '.($this->tahun ?? 'Semua Tahun');
     }
 

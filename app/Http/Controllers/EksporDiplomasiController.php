@@ -25,6 +25,7 @@ class EksporDiplomasiController extends Controller
     /**
      * Filter status/tahun divalidasi dulu karena nilainya ikut tercetak di
      * judul file, jadi tidak boleh berisi teks sembarang dari query string.
+     * Baris yang dicentang (query "pilih") menyaring hasil filter tersebut.
      */
     private function ekspor(Request $request, string $slug): EksporDiplomasi
     {
@@ -35,6 +36,6 @@ class EksporDiplomasiController extends Controller
             'tahun' => ['nullable', 'integer'],
         ]);
 
-        return new EksporDiplomasi($modul, $filter['status'] ?? null, $filter['tahun'] ?? null);
+        return new EksporDiplomasi($modul, $filter['status'] ?? null, $filter['tahun'] ?? null, $this->idTerpilih($request));
     }
 }

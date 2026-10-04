@@ -19,8 +19,9 @@
         </x-slot>
         <x-slot name="thead">
             <tr>
-                <th data-orderable="true" style="width:30%" class="text-start">Mitra</th>
-                <th data-orderable="true" style="width:30%" class="text-start">Kerjasama</th>
+                <x-pilih-semua />
+                <th data-orderable="true" style="width:27%" class="text-start">Mitra</th>
+                <th data-orderable="true" style="width:28%" class="text-start">Kerjasama</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Tanggal Diterima</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Tanggal Selesai</th>
                 <th data-orderable="true" style="width:10%" class="text-center">Status</th>
@@ -30,6 +31,7 @@
         <x-slot name="tbody">
             @foreach ($kerjasama as $item)
                 <tr>
+                    <x-pilih-baris :id="$item->getKey()" />
                     <td class="text-start">
                         <div class="d-flex align-items-center">
                             <x-mitra-icon :mitra="$item->mitra" />
