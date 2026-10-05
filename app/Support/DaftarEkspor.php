@@ -15,7 +15,9 @@ use Illuminate\Support\Str;
  *
  * Turunan: EksporDiplomasi (6 modul Riwayat Diplomasi) dan EksporMitra
  * (8 modul Mitra). Keduanya dirender oleh App\Exports\DaftarExport (Excel)
- * dan view ekspor.daftar-pdf (PDF).
+ * dan view ekspor.daftar-pdf (PDF). Turunan ketiga, BagianRiwayatMitra,
+ * adalah satu sheet/bagian dari file Riwayat Diplomasi satu mitra
+ * (EksporRiwayatMitra).
  */
 abstract class DaftarEkspor
 {
@@ -25,7 +27,7 @@ abstract class DaftarEkspor
     public const KOLOM_TANGGAL = [self::GRUP_TANGGAL.' Diterima', self::GRUP_TANGGAL.' Selesai'];
 
     /** Kolom berisi nilai pendek, dirata-tengah di PDF & dibuat sempit di Excel. */
-    public const KOLOM_SEMPIT = ['No', ...self::KOLOM_TANGGAL, 'Status', 'Tipe'];
+    public const KOLOM_SEMPIT = ['No', ...self::KOLOM_TANGGAL, 'Status', 'Tipe', 'Kehadiran'];
 
     /** Perkiraan lebar PDF seragam (pt): area cetak A4 landscape, 1 karakter font 11px, padding kiri+kanan sel. */
     private const LEBAR_CETAK_PT = 770;

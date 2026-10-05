@@ -4,6 +4,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Enums\ModulDiplomasi;
 use App\Models\AcaraDKI;
 use App\Models\AcaraDkiMitra;
 use App\Models\Audiensi;
@@ -69,5 +70,62 @@ trait HasRiwayatDiplomasi
             ->withPivot('status_kehadiran', 'keterangan_kehadiran')
             ->withTimestamps()
             ->where('tb_acara_dki.is_active', true);
+    }
+
+    // --------------------------------------------------------------------------
+    // FILTER TAHUN — kartu "Riwayat Diplomasi" di halaman profil mitra beserta
+    // ekspornya (EksporRiwayatMitra). Tahun = tahun tanggal_diterima, sama
+    // dengan filter Tahun di index Riwayat Diplomasi.
+    // --------------------------------------------------------------------------
+
+    /** @var list<string>|null cache tahunRiwayatDiplomasi() */
+    private ?array $tahunRiwayatTersedia = null;
+
+    /**
+     * Tahun yang punya riwayat diplomasi aktif untuk mitra ini (keenam modul),
+     * terbaru dulu — pilihan dropdown tahun. Tahunnya diambil di PHP, bukan
+     * YEAR() milik MySQL, supaya tetap jalan di SQLite pengujian.
+     *
+     * @return list<string>
+     */
+    public function tahunRiwayatDiplomasi(): array
+    {
+        return $this->tahunRiwayatTersedia ??= collect(ModulDiplomasi::cases())
+            ->flatMap(function (ModulDiplomasi $modul) {
+                $relasi = $this->{$modul->relasi()}();
+                $kolom = $relasi->getRelated()->qualifyColumn('tanggal_diterima');
+
+                return $relasi->whereNotNull($kolom)->pluck($kolom);
+            })
+            ->map(fn ($tanggal) => substr((string) $tanggal, 0, 4))
+            ->unique()
+            ->sortDesc()
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Tahun dari query string yang sah dipakai menyaring, atau null (= semua
+     * tahun) bila kosong/di luar tahunRiwayatDiplomasi(). Dengan begitu
+     * dropdown, isi tab, dan isi file ekspor selalu sepakat.
+     */
+    public function saringTahunRiwayat(mixed $tahun): ?string
+    {
+        // is_scalar: "?tahun[]=..." menghasilkan array — abaikan, jangan error.
+        return is_scalar($tahun) && in_array((string) $tahun, $this->tahunRiwayatDiplomasi(), true) ? (string) $tahun : null;
+    }
+
+    /**
+     * Muat keenam relasi Riwayat Diplomasi (urut tanggal_diterima terbaru),
+     * disaring tahun bila $tahun sah. Dipakai show() kedelapan controller
+     * mitra dan EksporRiwayatMitra.
+     */
+    public function muatRiwayatDiplomasi(mixed $tahun = null): static
+    {
+        $tahun = $this->saringTahunRiwayat($tahun);
+
+        return $this->load(collect(ModulDiplomasi::cases())->mapWithKeys(fn (ModulDiplomasi $modul) => [
+            $modul->relasi() => fn ($query) => $query->filterTahun($tahun)->latest('tanggal_diterima'),
+        ])->all());
     }
 }

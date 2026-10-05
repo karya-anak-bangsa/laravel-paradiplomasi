@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreNonPerwakilanNegaraAsingRequest;
 use App\Http\Requests\UpdateNonPerwakilanNegaraAsingRequest;
 use App\Models\NonPerwakilanNegaraAsing;
+use Illuminate\Http\Request;
 
 class NonPerwakilanNegaraAsingController extends Controller
 {
@@ -18,16 +19,9 @@ class NonPerwakilanNegaraAsingController extends Controller
         return view('mod_non_perwakilan_negara_asing.index', compact('nonPerwakilanNegaraAsing'));
     }
 
-    public function show(NonPerwakilanNegaraAsing $nonPerwakilanNegaraAsing)
+    public function show(Request $request, NonPerwakilanNegaraAsing $nonPerwakilanNegaraAsing)
     {
-        $nonPerwakilanNegaraAsing->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $nonPerwakilanNegaraAsing->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_non_perwakilan_negara_asing.show', compact('nonPerwakilanNegaraAsing'));
     }

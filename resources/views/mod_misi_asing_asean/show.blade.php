@@ -15,6 +15,10 @@
             </x-page-body-show>
 
             <x-page-body-show title="Riwayat Diplomasi">
+                <x-slot:actions>
+                    <x-mitra-riwayat-aksi :mitra="$misiAsingAsean" />
+                </x-slot>
+
                 <x-mitra-riwayat :mitra="$misiAsingAsean" sebutan="misi ini" />
             </x-page-body-show>
 

@@ -94,6 +94,7 @@ class DaftarExport extends DefaultValueBinder implements FromArray, WithColumnFo
             'No' => 6,
             'Tipe' => 10,
             'Status' => 14,
+            'Kehadiran' => 16,
             'Negara' => 22,
             'Tanggal Diterima', 'Tanggal Selesai' => 18,
             default => 60,

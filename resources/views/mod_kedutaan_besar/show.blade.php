@@ -17,6 +17,10 @@
             </x-page-body-show>
 
             <x-page-body-show title="Riwayat Diplomasi">
+                <x-slot:actions>
+                    <x-mitra-riwayat-aksi :mitra="$kedutaanBesar" />
+                </x-slot>
+
                 <x-mitra-riwayat :mitra="$kedutaanBesar" sebutan="kedutaan ini" />
             </x-page-body-show>
 

@@ -1,6 +1,7 @@
-{{-- $modul: case App\Enums\ModulDiplomasi atau App\Enums\TipeMitra — keduanya punya urlEkspor() --}}
-{{-- Ekspor parsial: tabel di kartu yang sama wajib punya kolom checkbox (<x-pilih-semua /> di thead, <x-pilih-baris :id="$item->getKey()" /> di tiap baris). Pilihan dikirim sebagai query "pilih", dibaca trait MengunduhEkspor. --}}
-@props(['modul'])
+{{-- $modul: case App\Enums\ModulDiplomasi atau App\Enums\TipeMitra, atau model App\Models\Mitra (riwayat diplomasi satu mitra di halaman profil) — ketiganya punya urlEkspor() --}}
+{{-- $judul: judul dropdown. --}}
+{{-- Ekspor parsial: tabel di kartu yang sama wajib punya kolom checkbox (<x-pilih-semua /> di thead, <x-pilih-baris :id="$item->getKey()" /> di tiap baris). Pilihan dikirim sebagai query "pilih", dibaca trait MengunduhEkspor. Kartu tanpa table.datatable (mis. profil mitra) otomatis tanpa ekspor parsial. --}}
+@props(['modul', 'judul' => 'Sesuai Filter Yang Aktif'])
 
 @php
     // Filter yang sedang aktif ikut dibawa ke tombol ekspor, supaya isi file
@@ -14,7 +15,7 @@
         <span class="badge bg-blue text-blue-fg ms-2 d-none" data-ekspor-jumlah></span>
     </button>
     <div class="dropdown-menu dropdown-menu-end">
-        <span class="dropdown-header" data-ekspor-judul>Sesuai Filter Yang Aktif</span>
+        <span class="dropdown-header" data-ekspor-judul>{{ $judul }}</span>
         <a class="dropdown-item" href="{{ $modul->urlEkspor('excel', $filterAktif) }}" data-ekspor-tautan>
             <i class="fa-solid fa-file-excel text-green me-2"></i>Excel (.xlsx)
         </a>

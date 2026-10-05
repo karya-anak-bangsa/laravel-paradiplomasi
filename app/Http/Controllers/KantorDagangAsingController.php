@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKantorDagangAsingRequest;
 use App\Http\Requests\UpdateKantorDagangAsingRequest;
 use App\Models\KantorDagangAsing;
+use Illuminate\Http\Request;
 
 /**
  * Kantor dagang/ekonomi asing di Jakarta.
@@ -25,16 +26,9 @@ class KantorDagangAsingController extends Controller
         return view('mod_kantor_dagang_asing.index', compact('kantorDagangAsing'));
     }
 
-    public function show(KantorDagangAsing $kantorDagangAsing)
+    public function show(Request $request, KantorDagangAsing $kantorDagangAsing)
     {
-        $kantorDagangAsing->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $kantorDagangAsing->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_kantor_dagang_asing.show', compact('kantorDagangAsing'));
     }

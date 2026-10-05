@@ -15,6 +15,10 @@
             </x-page-body-show>
 
             <x-page-body-show title="Riwayat Diplomasi">
+                <x-slot:actions>
+                    <x-mitra-riwayat-aksi :mitra="$perwakilanRi" />
+                </x-slot>
+
                 <x-mitra-riwayat :mitra="$perwakilanRi" sebutan="perwakilan RI ini" />
             </x-page-body-show>
 

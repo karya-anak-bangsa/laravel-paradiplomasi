@@ -38,6 +38,11 @@
     $induk = $mitra->mitra;
     $namaTampil = $induk->label_mitra;
     $isAdmin = session('auth_role') === 'admin';
+
+    // Filter tahun dari dropdown x-mitra-riwayat-aksi — hanya untuk pesan tab kosong;
+    // datanya sendiri sudah disaring controller lewat muatRiwayatDiplomasi().
+    $tahun = $mitra->saringTahunRiwayat(request('tahun'));
+    $padaTahun = $tahun ? ' pada tahun '.$tahun : '';
 @endphp
 
 <div class="mb-0">
@@ -172,7 +177,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p class="text-danger mb-0">Belum ada riwayat {{ strtolower($label) }} untuk {{ $sebutan }}.</p>
+                    <p class="text-danger mb-0">Belum ada riwayat {{ strtolower($label) }} untuk {{ $sebutan }}{{ $padaTahun }}.</p>
                 @endif
             </div>
         @endforeach
@@ -312,7 +317,7 @@
                     </div>
                 @endforeach
             @else
-                <p class="text-danger mb-0">Belum ada riwayat acara DKI untuk {{ $sebutan }}.</p>
+                <p class="text-danger mb-0">Belum ada riwayat acara DKI untuk {{ $sebutan }}{{ $padaTahun }}.</p>
             @endif
         </div>
 

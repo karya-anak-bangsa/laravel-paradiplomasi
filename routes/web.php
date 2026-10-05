@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EksporDiplomasiController;
 use App\Http\Controllers\EksporMitraController;
+use App\Http\Controllers\EksporRiwayatMitraController;
 use App\Http\Controllers\KantorDagangAsingController;
 use App\Http\Controllers\KedutaanBesarController;
 use App\Http\Controllers\KerjasamaController;
@@ -105,6 +106,17 @@ Route::middleware('cek.auth')->group(function () {
         ->prefix('ekspor/mitra/{tipe}')
         ->where(['tipe' => implode('|', array_map(fn (TipeMitra $tipe) => $tipe->slug(), TipeMitra::cases()))])
         ->name('ekspor.mitra.')
+        ->group(function () {
+            Route::get('excel', 'excel')->name('excel');
+            Route::get('pdf', 'pdf')->name('pdf');
+        });
+
+    // Ekspor Excel/PDF seluruh Riwayat Diplomasi satu mitra (kartu Riwayat
+    // Diplomasi di halaman profil mitra), {mitra} = id_mitra di tb_mitra.
+    Route::controller(EksporRiwayatMitraController::class)
+        ->prefix('ekspor/riwayat-mitra/{mitra}')
+        ->whereNumber('mitra')
+        ->name('ekspor.riwayat-mitra.')
         ->group(function () {
             Route::get('excel', 'excel')->name('excel');
             Route::get('pdf', 'pdf')->name('pdf');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StorePusatKebudayaanAsingRequest;
 use App\Http\Requests\UpdatePusatKebudayaanAsingRequest;
 use App\Models\PusatKebudayaanAsing;
+use Illuminate\Http\Request;
 
 /**
  * Pusat kebudayaan asing di Jakarta.
@@ -25,16 +26,9 @@ class PusatKebudayaanAsingController extends Controller
         return view('mod_pusat_kebudayaan_asing.index', compact('pusatKebudayaanAsing'));
     }
 
-    public function show(PusatKebudayaanAsing $pusatKebudayaanAsing)
+    public function show(Request $request, PusatKebudayaanAsing $pusatKebudayaanAsing)
     {
-        $pusatKebudayaanAsing->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $pusatKebudayaanAsing->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_pusat_kebudayaan_asing.show', compact('pusatKebudayaanAsing'));
     }

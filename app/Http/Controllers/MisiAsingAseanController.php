@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreMisiAsingAseanRequest;
 use App\Http\Requests\UpdateMisiAsingAseanRequest;
 use App\Models\MisiAsingAsean;
+use Illuminate\Http\Request;
 
 class MisiAsingAseanController extends Controller
 {
@@ -18,16 +19,9 @@ class MisiAsingAseanController extends Controller
         return view('mod_misi_asing_asean.index', compact('misiAsingAsean'));
     }
 
-    public function show(MisiAsingAsean $misiAsingAsean)
+    public function show(Request $request, MisiAsingAsean $misiAsingAsean)
     {
-        $misiAsingAsean->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $misiAsingAsean->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_misi_asing_asean.show', compact('misiAsingAsean'));
     }

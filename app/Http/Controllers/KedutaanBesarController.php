@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StoreKedutaanBesarRequest;
 use App\Http\Requests\UpdateKedutaanBesarRequest;
 use App\Models\KedutaanBesar;
+use Illuminate\Http\Request;
 
 class KedutaanBesarController extends Controller
 {
@@ -18,16 +19,9 @@ class KedutaanBesarController extends Controller
         return view('mod_kedutaan_besar.index', compact('kedutaanBesar'));
     }
 
-    public function show(KedutaanBesar $kedutaanBesar)
+    public function show(Request $request, KedutaanBesar $kedutaanBesar)
     {
-        $kedutaanBesar->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $kedutaanBesar->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_kedutaan_besar.show', compact('kedutaanBesar'));
     }

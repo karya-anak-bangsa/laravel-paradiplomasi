@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StorePerwakilanRiRequest;
 use App\Http\Requests\UpdatePerwakilanRiRequest;
 use App\Models\PerwakilanRi;
+use Illuminate\Http\Request;
 
 /**
  * Perwakilan RI di luar negeri (KBRI, KJRI, PTRI).
@@ -25,16 +26,9 @@ class PerwakilanRiController extends Controller
         return view('mod_perwakilan_ri.index', compact('perwakilanRi'));
     }
 
-    public function show(PerwakilanRi $perwakilanRi)
+    public function show(Request $request, PerwakilanRi $perwakilanRi)
     {
-        $perwakilanRi->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $perwakilanRi->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_perwakilan_ri.show', compact('perwakilanRi'));
     }

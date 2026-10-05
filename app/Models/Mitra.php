@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 
 class Mitra extends Model
 {
@@ -143,5 +144,18 @@ class Mitra extends Model
                 ? $this->nama_mitra
                 : $this->nama_resmi_mitra,
         );
+    }
+
+    /**
+     * URL unduhan seluruh Riwayat Diplomasi mitra ini, dipakai x-tombol-ekspor
+     * di halaman profil mitra. Padanan TipeMitra::urlEkspor(); dari $filter
+     * hanya tahun yang dipakai (dropdown tahun kartu Riwayat Diplomasi).
+     *
+     * @param  'excel'|'pdf'  $format
+     * @param  array{tahun?: string}  $filter
+     */
+    public function urlEkspor(string $format, array $filter = []): string
+    {
+        return route('ekspor.riwayat-mitra.'.$format, ['mitra' => $this->id_mitra, ...Arr::only($filter, ['tahun'])]);
     }
 }

@@ -114,17 +114,41 @@ class EksporDiplomasi extends DaftarEkspor
             ? ['Mitra' => fn (Model $item) => $item->mitra->nama_resmi_mitra]
             : ['Daftar Undangan' => fn (Model $item) => $this->daftarUndangan($item)];
 
-        $judul = [
-            $this->modul->labelJudul() => fn (Model $item) => str(html_entity_decode(strip_tags((string) $item->{$this->modul->kolomJudul()})))
-                ->squish()
-                ->toString(),
-        ];
+        $judul = self::kolomJudul($this->modul);
 
         return [
             ...($this->modul->berbasisMitraTunggal() ? $mitra + $judul : $judul + $mitra),
+            ...self::kolomJadwal($this->modul),
+        ];
+    }
+
+    /**
+     * Kolom judul peristiwa, ditulis utuh tanpa tag HTML. Dipakai juga oleh
+     * ekspor Riwayat Diplomasi satu mitra (BagianRiwayatMitra).
+     *
+     * @return array<string, \Closure(Model): string>
+     */
+    public static function kolomJudul(ModulDiplomasi $modul): array
+    {
+        return [
+            $modul->labelJudul() => fn (Model $item) => str(html_entity_decode(strip_tags((string) $item->{$modul->kolomJudul()})))
+                ->squish()
+                ->toString(),
+        ];
+    }
+
+    /**
+     * Kolom Tanggal Diterima, Tanggal Selesai, dan Status. Dipakai juga oleh
+     * ekspor Riwayat Diplomasi satu mitra (BagianRiwayatMitra).
+     *
+     * @return array<string, \Closure(Model): mixed>
+     */
+    public static function kolomJadwal(ModulDiplomasi $modul): array
+    {
+        return [
             'Tanggal Diterima' => fn (Model $item) => $item->tanggal_diterima,
             'Tanggal Selesai' => fn (Model $item) => $item->tanggal_selesai ?? 'Masih Berjalan',
-            'Status' => fn (Model $item) => $item->{$this->modul->kolomStatus()},
+            'Status' => fn (Model $item) => $item->{$modul->kolomStatus()},
         ];
     }
 

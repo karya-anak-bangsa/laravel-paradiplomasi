@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\MenonaktifkanData;
 use App\Http\Requests\StorePemprovDkiRequest;
 use App\Http\Requests\UpdatePemprovDkiRequest;
 use App\Models\PemprovDki;
+use Illuminate\Http\Request;
 
 /**
  * Perangkat daerah Pemprov DKI Jakarta (biro/dinas/badan) sebagai mitra Biro KSD.
@@ -25,16 +26,9 @@ class PemprovDkiController extends Controller
         return view('mod_pemprov_dki.index', compact('pemprovDki'));
     }
 
-    public function show(PemprovDki $pemprovDki)
+    public function show(Request $request, PemprovDki $pemprovDki)
     {
-        $pemprovDki->load([
-            'kerjasama' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kolaborasi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'undangan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'audiensi' => fn ($query) => $query->latest('tanggal_diterima'),
-            'kunjungan' => fn ($query) => $query->latest('tanggal_diterima'),
-            'acaraDki' => fn ($query) => $query->latest('tanggal_diterima'),
-        ]);
+        $pemprovDki->muatRiwayatDiplomasi($request->query('tahun'));
 
         return view('mod_pemprov_dki.show', compact('pemprovDki'));
     }
