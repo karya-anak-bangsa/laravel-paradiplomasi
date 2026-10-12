@@ -20,7 +20,7 @@ class AuthController extends Controller
 
         $daftarAkun = [
             'admin@mail.com' => [
-                'password' => '2026paradiplomasi2026',
+                'password' => '2026paradiplomasiY0L0',
                 'nama' => 'Administrator',
                 'role' => 'admin',
             ],

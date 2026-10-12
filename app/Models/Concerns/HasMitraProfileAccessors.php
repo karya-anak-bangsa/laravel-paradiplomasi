@@ -64,16 +64,18 @@ trait HasMitraProfileAccessors
     }
 
     /**
-     * Kolom Email & Alamat pada file ekspor ketiga mitra berbasis negara
-     * (Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN) — sengaja
-     * tambahan di luar kolom tabel index (arahan user, 25 Sep 2026). Beberapa
-     * email ditulis satu per baris dalam satu sel.
+     * Kolom Format Undangan, Email & Alamat pada file ekspor ketiga mitra
+     * berbasis negara (Kedutaan Besar, Misi Asing ASEAN, Misi Permanen ASEAN)
+     * — sengaja tambahan di luar kolom tabel index (Email & Alamat: arahan
+     * user, 25 Sep 2026; Format Undangan: arahan Bu Melisa, 12 Okt 2026).
+     * Beberapa email ditulis satu per baris dalam satu sel.
      *
      * @return array<string, Closure(Model): mixed>
      */
     public static function kolomKontakEkspor(): array
     {
         return [
+            'Format Undangan' => fn (self $item) => $item->format_undangan,
             'Email' => fn (self $item) => implode("\n", $item->email_kantor_array) ?: null,
             'Alamat' => fn (self $item) => $item->alamat_lengkap,
         ];
